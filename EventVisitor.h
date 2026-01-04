@@ -1,0 +1,4 @@
+#ifndef EVENTVISITOR_H
+#define EVENTVISITOR_H
+
+#endif // EVENTVISITOR_H

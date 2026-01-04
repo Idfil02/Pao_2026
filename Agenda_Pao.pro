@@ -13,6 +13,13 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
+    Appuntamento.h \
+    Attivita.h \
+    Calendario.h \
+    Deadline.h \
+    EventVisitor.h \
+    Evento.h \
+    Riunione.h \
     mainwindow.h
 
 FORMS += \
