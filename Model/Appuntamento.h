@@ -6,9 +6,9 @@ private:
     QString luogo;
     QString contatto;
 public:
-    QString setLuogo() const;
-    QString setContatto() const;
-    QString getLuogo(QString);
-    QString getContatto(QString);
+    QString getLuogo() const;
+    QString getContatto() const;
+    void setLuogo(QString);
+    void setContatto(QString);
 };
 #endif // APPUNTAMENTO_H

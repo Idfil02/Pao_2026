@@ -8,7 +8,7 @@ private:
     QVector<QString> partecipanti;
 public:
     QString getLink() const;
-    QString getPartecipanti() const;
+    QVector<QString> getPartecipanti() const;
     void setLink(QString);
     void setPartecipanti(const QVector<QString>&);
     void addPartecipante(QString);

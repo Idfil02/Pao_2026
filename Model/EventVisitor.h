@@ -9,5 +9,5 @@ public:
     void visit(Attivita&);
     void visit(Riunione&);
     void visit(Appuntamento&);
-}
+};
 #endif // EVENTVISITOR_H

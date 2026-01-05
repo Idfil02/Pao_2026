@@ -19,5 +19,6 @@ public:
     void setData(const QDate&);
  //   void acceptVisitor(EventVisitor);
     virtual ~Evento();
+    virtual bool operator==(const Evento&);
 };
 #endif // EVENTO_H
