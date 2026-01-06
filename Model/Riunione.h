@@ -10,7 +10,7 @@ public:
     QString getLink() const;
     QVector<QString> getPartecipanti() const;
     void setLink(QString);
-    void setPartecipanti(const QVector<QString>&);
+    void setPartecipanti(QVector<QString>&);
     void addPartecipante(QString);
     void removePartecipante(QString);
 };

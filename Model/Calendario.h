@@ -7,7 +7,7 @@ private:
     QVector<Evento*> impegni;
 public:
     void addEvento(Evento&);
-    void removeEvento();
+    void removeEvento(Evento&);
 //  void mostra() const;
 };
 #endif // CALENDARIO_H
