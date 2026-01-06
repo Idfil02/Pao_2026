@@ -9,6 +9,7 @@ private:
     QString desc;
     QDate data;
 public:
+    Evento(QString,QString,QString,QDate);
     QString getNome() const;
     QString getTag() const;
     QString getDesc() const;
@@ -18,7 +19,7 @@ public:
     void setDesc(const QString&);
     void setData(const QDate&);
  //   void acceptVisitor(EventVisitor);
-    virtual ~Evento();
-    virtual bool operator==(const Evento&);
+    virtual ~Evento() = default;
+    virtual bool operator==(const Evento&) const ;
 };
 #endif // EVENTO_H

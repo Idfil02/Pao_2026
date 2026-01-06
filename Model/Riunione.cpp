@@ -1,5 +1,6 @@
 #include "Riunione.h"
-
+Riunione::Riunione(QString name,QString tg,QString dsc,QDate date,QTime start,QTime end, QString lnk):
+    Attivita(name,tg,dsc,date,start,end), link(lnk){}
 QString Riunione::getLink() const {return link; }
 QVector<QString> Riunione::getPartecipanti() const {return partecipanti;}
 void Riunione::setLink(QString l) {link = l;}

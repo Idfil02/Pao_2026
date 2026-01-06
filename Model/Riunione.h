@@ -7,6 +7,7 @@ private:
     QString link;
     QVector<QString> partecipanti;
 public:
+    Riunione(QString,QString,QString,QDate,QTime,QTime,QString);
     QString getLink() const;
     QVector<QString> getPartecipanti() const;
     void setLink(QString);

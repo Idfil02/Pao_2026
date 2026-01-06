@@ -1,5 +1,6 @@
 #include "Appuntamento.h"
-
+Appuntamento::Appuntamento(QString name,QString tg,QString desc,QDate date,QTime start,QTime end,QString place,QString cont):
+    Attivita(name,tg,desc,date,start,end), luogo(place), contatto(cont){}
 QString Appuntamento::getLuogo() const {return luogo;}
 QString Appuntamento::getContatto() const {return contatto;}
 void Appuntamento::setLuogo(QString l){luogo = l;}
