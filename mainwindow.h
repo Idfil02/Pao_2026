@@ -2,6 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTabWidget>
+
+class Agenda;
+class DeadlineWindow;
 
 class MainWindow : public QMainWindow
 {
@@ -9,5 +13,11 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
+    ~MainWindow() = default;
+
+private:
+    QTabWidget* tabWidgets;
+    Agenda* agendaTab;
+    DeadlineWindow* deadlinesTab;
 };
 #endif // MAINWINDOW_H

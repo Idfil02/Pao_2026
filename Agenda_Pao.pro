@@ -15,6 +15,8 @@ SOURCES += \
     Model/Deadline.cpp \
     Model/Evento.cpp \
     Model/Riunione.cpp \
+    View/Agenda.cpp \
+    View/DeadlineWindow.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -26,6 +28,8 @@ HEADERS += \
     Model/EventVisitor.h \
     Model/Evento.h \
     Model/Riunione.h \
+    View/Agenda.h \
+    View/DeadlineWindow.h \
     mainwindow.h
 
 FORMS += \
