@@ -6,7 +6,7 @@
 #include <QTextEdit>
 #include <QSplitter>
 #include <QHBoxLayout>
-
+#include "../Model/Calendario.h"
 class Agenda : public QWidget
 {
     Q_OBJECT
@@ -14,16 +14,20 @@ class Agenda : public QWidget
 public:
     explicit Agenda(QWidget *parent = nullptr);
     ~Agenda() = default;
-
-    QCalendarWidget* getCalendar() const { return calendario; }
+    Calendario* getCalendar() const { return calendario; }
+    QCalendarWidget* getCalendarWidget() const { return calendarWidget; }
     QListWidget* getEventList() const { return eventiDelGiorno; }
     QTextEdit* getEventDetails() const { return dettagliEvento; }
-
 private:
-    QCalendarWidget* calendario;
+    QCalendarWidget* calendarWidget;
     QListWidget* eventiDelGiorno;
     QTextEdit* dettagliEvento;
     QSplitter* splitterGiorno;
+    Calendario* calendario;
+    void viewUpdate(const QDate& data);
+private slots:
+    void dataConImpegni(const QDate& data);
+    void cambioData();
 };
 
 #endif // AGENDA_H
