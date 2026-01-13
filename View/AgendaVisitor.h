@@ -6,6 +6,7 @@
 class AgendaVisitor : public EventVisitor{
 private:
     QListWidget* eventiDelGiorno;
+    QWidget* buildListItem(Evento*);
 public:
     explicit AgendaVisitor(QListWidget*);
     virtual void visit(Deadline&) override;
