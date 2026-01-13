@@ -4,7 +4,6 @@
 #include <QListWidget>
 #include <QTextEdit>
 #include <QVBoxLayout>
-
 class DeadlineWindow : public QWidget
 {
     Q_OBJECT

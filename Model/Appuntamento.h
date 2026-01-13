@@ -11,5 +11,6 @@ public:
     QString getContatto() const;
     void setLuogo(QString);
     void setContatto(QString);
+    virtual void acceptVisitor(EventVisitor&) override;
 };
 #endif // APPUNTAMENTO_H

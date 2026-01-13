@@ -5,9 +5,9 @@
 #include "Appuntamento.h"
 class EventVisitor{
 public:
-    void visit(Deadline&);
-    void visit(Attivita&);
-    void visit(Riunione&);
-    void visit(Appuntamento&);
+    virtual void visit(Deadline&) = 0;
+    virtual void visit(Attivita&) = 0;
+    virtual void visit(Riunione&) = 0;
+    virtual void visit(Appuntamento&) = 0;
 };
 #endif // EVENTVISITOR_H

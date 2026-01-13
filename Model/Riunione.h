@@ -14,5 +14,6 @@ public:
     void setPartecipanti(QVector<QString>&);
     void addPartecipante(QString);
     void removePartecipante(QString);
+    virtual void acceptVisitor(EventVisitor&) override;
 };
 #endif // RIUNIONE_H

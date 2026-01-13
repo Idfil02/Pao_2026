@@ -2,6 +2,7 @@
 #define EVENTO_H
 #include <QString>
 #include <QDate>
+class EventVisitor;
 class Evento{
 private:
     QString nome;
@@ -18,8 +19,9 @@ public:
     void setTag(const QString&);
     void setDesc(const QString&);
     void setData(const QDate&);
- //   void acceptVisitor(EventVisitor);
+    virtual void acceptVisitor(EventVisitor&) = 0;
     virtual ~Evento() = default;
     virtual bool operator==(const Evento&) const ;
 };
+Q_DECLARE_METATYPE(Evento*)
 #endif // EVENTO_H

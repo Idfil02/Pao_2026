@@ -1,4 +1,6 @@
 #include "mainwindow.h"
+#include "Model/Attivita.h"
+#include "Model/Deadline.h"
 #include "View/Agenda.h"
 #include "View/DeadlineWindow.h"
 #include "View/Menu.h"
@@ -6,7 +8,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
     // Set window properties
     setWindowTitle("Agenda - PAO 2026");
-
     // Create main tab widget
     QTabWidget* tabWidgets = new QTabWidget(this);
     setCentralWidget(tabWidgets);
@@ -23,8 +24,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     Menu* menu = new Menu;
     addToolBar(Qt::TopToolBarArea, menu);
 
-    Attivita* a1 = new Attivita("Prova", "tag", "desc",
-                QDate(2026,1,13),QTime(13,00),QTime(15,00));
-    agendaTab->getCalendar()->addEvento(*a1);
+    Evento* e1 = new Deadline("SCADENZA","TAG#1","DESC#1",QDate(2026,01,20));
+    Evento* e2 = new Attivita("ATTIVITA","TAG#2","DESC#2",QDate(2026,01,20),QTime(12,00),QTime(13,00));
+    agendaTab->getCalendar()->addEvento(e1);
+    agendaTab->getCalendar()->addEvento(e2);
 }
 

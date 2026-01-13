@@ -12,5 +12,6 @@ public:
     QTime getOraFine() const;
     void setOraInizio(QTime);
     void setOraFine(QTime);
+    virtual void acceptVisitor(EventVisitor&) override;
 };
 #endif // ATTIVITA_H

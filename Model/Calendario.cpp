@@ -10,9 +10,9 @@ void Calendario::setEventi(const QVector<Evento*>& evs) {
     impegni = evs;
 }
 
-void Calendario::addEvento(Evento& e) {
-    impegni.push_back(&e);
-    emit aggiuntoEvento(e.getData());
+void Calendario::addEvento(Evento* e) {
+    impegni.push_back(e);
+    emit aggiuntoEvento(e->getData());
 }
 
 void Calendario::removeEvento(const Evento& e) {

@@ -5,7 +5,7 @@
 #include <QListWidget>
 #include <QTextEdit>
 #include <QSplitter>
-#include <QHBoxLayout>
+#include <QFormLayout>
 #include "../Model/Calendario.h"
 class Agenda : public QWidget
 {
@@ -17,17 +17,18 @@ public:
     Calendario* getCalendar() const { return calendario; }
     QCalendarWidget* getCalendarWidget() const { return calendarWidget; }
     QListWidget* getEventList() const { return eventiDelGiorno; }
-    QTextEdit* getEventDetails() const { return dettagliEvento; }
+    QFormLayout* getEventDetails() const { return dettagliEvento; }
 private:
     QCalendarWidget* calendarWidget;
     QListWidget* eventiDelGiorno;
-    QTextEdit* dettagliEvento;
+    QFormLayout* dettagliEvento;
     QSplitter* splitterGiorno;
     Calendario* calendario;
-    void viewUpdate(const QDate& data);
+    void clearView();
 private slots:
-    void dataConImpegni(const QDate& data);
-    void cambioData();
+    void dataConImpegni(const QDate&);
+    void cambioEvento(QListWidgetItem*);
+    void viewUpdate();
 };
 
 #endif // AGENDA_H
