@@ -4,7 +4,6 @@
 #include <QCalendarWidget>
 #include <QListWidget>
 #include <QTextEdit>
-#include <QSplitter>
 #include <QFormLayout>
 #include "../Model/Calendario.h"
 class Agenda : public QWidget
@@ -22,7 +21,6 @@ private:
     QCalendarWidget* calendarWidget;
     QListWidget* eventiDelGiorno;
     QFormLayout* dettagliEvento;
-    QSplitter* splitterGiorno;
     Calendario* calendario;
     void clearView();
 private slots:
@@ -32,3 +30,4 @@ private slots:
 };
 
 #endif // AGENDA_H
+
