@@ -4,13 +4,13 @@
 #include <QFormLayout>
 #include <QVBoxLayout>
 #include <QLabel>
-Agenda::Agenda(QWidget *parent) : QWidget(parent)
+Agenda::Agenda(Calendario* cal, QWidget *parent) : QWidget(parent)
 {
     QHBoxLayout* layoutAgenda = new QHBoxLayout(this);
     //creo il lato sx per il calendario
     calendarWidget = new QCalendarWidget;
     layoutAgenda->addWidget(calendarWidget, 2);
-    calendario= new Calendario(this);
+    calendario= cal;
     connect(calendario,&Calendario::aggiuntoEvento,this,&Agenda::dataConImpegni);
     connect(calendarWidget, &QCalendarWidget::selectionChanged, this, &Agenda::viewUpdate);
     //creo il container dx per le informazioni deglì eventi

@@ -1,5 +1,7 @@
 #ifndef DEADLINEWINDOW_H
 #define DEADLINEWINDOW_H
+#include "Model/Calendario.h"
+#include "Model/Deadline.h"
 #include <QWidget>
 #include <QListWidget>
 #include <QTextEdit>
@@ -9,14 +11,18 @@ class DeadlineWindow : public QWidget
     Q_OBJECT
 
 public:
-    explicit DeadlineWindow(QWidget *parent = nullptr);
+    explicit DeadlineWindow(Calendario*,QWidget *parent = nullptr);
     ~DeadlineWindow() = default;
 
     QListWidget* getDeadlinesList() const { return scadenze; }
     QTextEdit* getDeadlineDetails() const { return dettagliDeadline; }
+    void viewRefresh();
 
 private:
+    QVector<Deadline*> deadlines;
     QListWidget* scadenze;
     QTextEdit* dettagliDeadline;
+private slots:
+    void scadenzaSelezionata(QListWidgetItem*);
 };
 #endif // DEADLINEWINDOW_H

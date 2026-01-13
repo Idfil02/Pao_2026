@@ -14,7 +14,8 @@ public:
     void setEventi(const QVector<Evento*>& evs);
     void addEvento(Evento* e);
     void removeEvento(const Evento& e);
-    QVector<Evento*> getImpegni(const QDate& data);
+    QVector<Evento*> getImpegni() const ;
+    QVector<Evento*> getImpegni(const QDate& data) const;
 signals:
     void aggiuntoEvento(const QDate& data);
 };

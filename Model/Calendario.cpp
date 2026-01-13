@@ -23,8 +23,8 @@ void Calendario::removeEvento(const Evento& e) {
         }
     }
 }
-
-QVector<Evento*> Calendario::getImpegni(const QDate& data){
+QVector<Evento*> Calendario::getImpegni() const{return impegni;}
+QVector<Evento*> Calendario::getImpegni(const QDate& data) const{
     QVector<Evento*> impegniGiorno;
     for(int i=0; i<impegni.size(); ++i){
         if(impegni.at(i)->getData() == data){

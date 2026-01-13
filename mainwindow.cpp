@@ -13,19 +13,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     // Create main tab widget
     QTabWidget* tabWidgets = new QTabWidget(this);
     setCentralWidget(tabWidgets);
+    Calendario* calendario = new Calendario(this);
 
     // Create and add Agenda tab
-    Agenda* agendaTab = new Agenda(this);
+    Agenda* agendaTab = new Agenda(calendario,this);
     tabWidgets->addTab(agendaTab, "Agenda");
-
-    // Create and add Deadlines tab
-    DeadlineWindow* deadlinesTab = new DeadlineWindow(this);
-    tabWidgets->addTab(deadlinesTab, "Scadenze");
-
-    //Aggiunta del Menu
-    Menu* menu = new Menu;
-    addToolBar(Qt::TopToolBarArea, menu);
-
     Evento* e1 = new Deadline("SCADENZA","TAG#1","DESC#1",QDate(2026,01,20));
     Evento* e2 = new Attivita("ATTIVITA","TAG#2","DESC#2",QDate(2026,01,20),QTime(12,00),QTime(13,00));
     Evento* e3 = new Deadline("SCADENZA #2","TAG#2","DESC#3",QDate(2026,01,22));
@@ -40,5 +32,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     agendaTab->getCalendar()->addEvento(e4);
     agendaTab->getCalendar()->addEvento(e5);
     agendaTab->getCalendar()->addEvento(e6);
+    // Create and add Deadlines tab
+    DeadlineWindow* deadlinesTab = new DeadlineWindow(calendario,this);
+    tabWidgets->addTab(deadlinesTab, "Scadenze");
+
+    //Aggiunta del Menu
+    Menu* menu = new Menu;
+    addToolBar(Qt::TopToolBarArea, menu);
+
+
 }
 

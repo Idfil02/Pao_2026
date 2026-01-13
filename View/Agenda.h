@@ -5,13 +5,13 @@
 #include <QListWidget>
 #include <QTextEdit>
 #include <QFormLayout>
-#include "../Model/Calendario.h"
+#include "Model/Calendario.h"
 class Agenda : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit Agenda(QWidget *parent = nullptr);
+    explicit Agenda(Calendario*,QWidget *parent = nullptr);
     ~Agenda() = default;
     Calendario* getCalendar() const { return calendario; }
     QCalendarWidget* getCalendarWidget() const { return calendarWidget; }
