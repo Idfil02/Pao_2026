@@ -15,11 +15,11 @@ SOURCES += \
     Model/Deadline.cpp \
     Model/Evento.cpp \
     Model/Riunione.cpp \
-    View/Agenda.cpp \
-    View/AgendaVisitor.cpp \
-    View/DeadlineWindow.cpp \
-    View/InfoVisitor.cpp \
-    View/Menu.cpp \
+    View/Agenda/Agenda.cpp \
+    View/Agenda/AgendaVisitor.cpp \
+    View/DeadlineWindow/DeadlineWindow.cpp \
+    View/Agenda/InfoVisitor.cpp \
+    View/Menu/Menu.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -31,11 +31,11 @@ HEADERS += \
     Model/EventVisitor.h \
     Model/Evento.h \
     Model/Riunione.h \
-    View/Agenda.h \
-    View/AgendaVisitor.h \
-    View/DeadlineWindow.h \
-    View/InfoVisitor.h \
-    View/Menu.h \
+    View/Agenda/Agenda.h \
+    View/Agenda/AgendaVisitor.h \
+    View/DeadlineWindow/DeadlineWindow.h \
+    View/Agenda/InfoVisitor.h \
+    View/Menu/Menu.h \
     mainwindow.h
 
 FORMS += \

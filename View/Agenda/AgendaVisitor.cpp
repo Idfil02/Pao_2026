@@ -6,15 +6,13 @@ AgendaVisitor::AgendaVisitor(QListWidget* list):
 QWidget* AgendaVisitor::buildListItem(Evento* ev){
     QWidget* eventItem = new QWidget;
     QHBoxLayout* layout = new QHBoxLayout(eventItem);
-    layout->setContentsMargins(8, 2, 8, 2);
-    QLabel* nome = new QLabel(ev->getNome());
-    nome->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    layout->setContentsMargins(1, 0, 1, 0);
+    QLabel* nome = new QLabel(ev->getNome()); //inserisco titolo dell'evento
     layout->addWidget(nome);
-    if(!dynamic_cast<Deadline*>(ev)){
-        Attivita* att = static_cast<Attivita*>(ev);
+    if(!dynamic_cast<Deadline*>(ev)){ // se non è una Deadline allora mostro anche l'orario dell'impegno
+        Attivita* att = static_cast<Attivita*>(ev); //sono sicuro che non è deadline e quindi sono sicuro avrà orario di inizio e fine
         QString time = att->getOraInizio().toString("HH:mm")+"-"+att->getOraFine().toString("HH:mm");
         QLabel* dx = new QLabel(time);
-        dx->setAlignment(Qt::AlignRight| Qt::AlignVCenter);
         layout->addWidget(dx);
     }
     return eventItem;

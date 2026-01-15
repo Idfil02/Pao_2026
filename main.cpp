@@ -1,4 +1,3 @@
-#include "Model/Evento.h"
 #include "mainwindow.h"
 
 #include <QApplication>

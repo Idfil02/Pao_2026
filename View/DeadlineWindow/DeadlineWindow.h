@@ -17,6 +17,7 @@ public:
     QListWidget* getDeadlinesList() const { return scadenze; }
     QTextEdit* getDeadlineDetails() const { return dettagliDeadline; }
     void viewRefresh();
+    QWidget* buildDeadlineItem(Deadline*);
 
 private:
     QVector<Deadline*> deadlines;

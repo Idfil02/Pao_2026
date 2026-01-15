@@ -5,11 +5,11 @@ Riunione::Riunione(QString name,QString tg,QString dsc,QDate date,QTime start,QT
 QString Riunione::getLink() const {return link; }
 QVector<QString> Riunione::getPartecipanti() const {return partecipanti;}
 void Riunione::setLink(QString l) {link = l;}
-void Riunione::setPartecipanti(QVector<QString>& p) {
+void Riunione::setPartecipanti(QVector<QString>& p) { //sostituisco l'intero vettore dei partecipanti
     partecipanti.clear();
     partecipanti = p;
 }
-void Riunione::addPartecipante(QString p){partecipanti.push_back(p);}
+void Riunione::addPartecipante(QString p){partecipanti.push_back(p);} //aggiungo un singolo partecipante
 void Riunione::removePartecipante(QString p){
     partecipanti.removeAll(p); //funzione di QList che rimuove tutti gli elementi uguali a p
 }
