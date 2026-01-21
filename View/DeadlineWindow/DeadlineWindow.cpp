@@ -7,7 +7,7 @@ DeadlineWindow::DeadlineWindow(Calendario* cal, QWidget *parent) : QWidget(paren
     //prende tutte le attività che sono scadenze e le aggiunge al vettore interno
     QVector<Evento*> impegni = cal->getImpegni();
     for(int i=0; i<impegni.size(); ++i){
-        if(dynamic_cast<Deadline*>(impegni[i])){
+        if(dynamic_cast<Deadline*>(impegni[i])){ //voglio inserire nella lista solo le scadenze
             deadlines.append(static_cast<Deadline*>(impegni[i]));
         }
     }
@@ -32,7 +32,7 @@ QWidget* DeadlineWindow::buildDeadlineItem(Deadline* d){
     QCheckBox* checkbox = new QCheckBox;
     checkbox->setChecked(d->getCompletato());
     layout->addWidget(checkbox);
-    //connect(checkbox, &QCheckBox::checkStateChanged, this, &::DeadlineWindow::scadenzaModificata);
+    //quando cliccata la checkbox modifico la scadenza e aggiorno
     connect(checkbox, &QCheckBox::checkStateChanged, this, [this,d](Qt::CheckState stato){
         d->setCompletato(stato);
         viewRefresh();
@@ -54,12 +54,11 @@ void DeadlineWindow::viewRefresh(){
     for(int i=0; i<deadlines.size(); ++i){
         //costruisco un nuovo elemento della lista a partire dalla Deadline
         Deadline* scad = deadlines[i];
-        QListWidgetItem* item = new QListWidgetItem;
+        QListWidgetItem* item = new QListWidgetItem(scadenze);
         QWidget* dItem = buildDeadlineItem(scad);
         item->setBackground(scad->getCompletato() ? QColor(165,214,167) : Qt::gray);
         item->setData(Qt::UserRole,QVariant::fromValue(scad));//allego il puntatore
         //aggiungo l'oggetto alla lista
-        scadenze->addItem(item);
         scadenze->setItemWidget(item, dItem);
         connect(scadenze, &QListWidget::itemClicked, this, [this](QListWidgetItem* item){
             dettagliDeadline->clear();//pulisco la descrizione

@@ -7,19 +7,19 @@ QWidget* AgendaVisitor::buildListItem(Evento* ev){
     QWidget* eventItem = new QWidget;
     QHBoxLayout* layout = new QHBoxLayout(eventItem);
     layout->setContentsMargins(1, 0, 1, 0);
-    QLabel* nome = new QLabel(ev->getNome()); //inserisco titolo dell'evento
+    QLabel* nome = new QLabel(ev->getNome());    //inserisco titolo dell'evento
     layout->addWidget(nome);
     if(!dynamic_cast<Deadline*>(ev)){ // se non è una Deadline allora mostro anche l'orario dell'impegno
         Attivita* att = static_cast<Attivita*>(ev); //sono sicuro che non è deadline e quindi sono sicuro avrà orario di inizio e fine
         QString time = att->getOraInizio().toString("HH:mm")+"-"+att->getOraFine().toString("HH:mm");
-        QLabel* dx = new QLabel(time);
-        layout->addWidget(dx);
+        QLabel* orario = new QLabel(time);
+        layout->addWidget(orario);
     }
     return eventItem;
 }
 void AgendaVisitor::visit(Deadline& scadenza){
     Evento* event = &scadenza;
-    QListWidgetItem* item = new QListWidgetItem;
+    QListWidgetItem* item = new QListWidgetItem(eventiDelGiorno);
     QWidget* evItem = buildListItem(event);
     item->setData(Qt::UserRole, QVariant::fromValue(event));
     item->setBackground(QColor(255,51,51));
@@ -28,7 +28,7 @@ void AgendaVisitor::visit(Deadline& scadenza){
 }
 void AgendaVisitor::visit(Attivita& att){
     Evento* event = &att;
-    QListWidgetItem* item = new QListWidgetItem;
+    QListWidgetItem* item = new QListWidgetItem(eventiDelGiorno);
     QWidget* evItem = buildListItem(event);
     item->setData(Qt::UserRole, QVariant::fromValue(event));
     item->setBackground(QColor(0,204,204));
@@ -37,7 +37,7 @@ void AgendaVisitor::visit(Attivita& att){
 }
 void AgendaVisitor::visit(Riunione& riunione){
     Evento* event = &riunione;
-    QListWidgetItem* item = new QListWidgetItem;
+    QListWidgetItem* item = new QListWidgetItem(eventiDelGiorno);
     QWidget* evItem = buildListItem(event);
     item->setData(Qt::UserRole, QVariant::fromValue(event));
     item->setBackground(QColor(224,224,224));
@@ -46,7 +46,7 @@ void AgendaVisitor::visit(Riunione& riunione){
 }
 void AgendaVisitor::visit(Appuntamento& app){
     Evento* event = &app;
-    QListWidgetItem* item = new QListWidgetItem;
+    QListWidgetItem* item = new QListWidgetItem(eventiDelGiorno);
     QWidget* evItem = buildListItem(event);
     item->setData(Qt::UserRole, QVariant::fromValue(event));
     item->setBackground(QColor(224,224,224));
