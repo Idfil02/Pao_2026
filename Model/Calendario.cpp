@@ -4,7 +4,7 @@ Calendario::Calendario(QObject* parent): QObject(parent){}
 
 void Calendario::setEventi(const QVector<Evento*>& evs) { //sostituisco l'intero vettore
     for(int i=0;i<impegni.size();++i){
-        delete impegni[i];
+        delete impegni.at(i);
     }
     impegni.clear();
     impegni = evs;
@@ -17,12 +17,11 @@ void Calendario::addEvento(Evento* e) { //aggiungo un singolo evento
 
 void Calendario::removeEvento(const Evento& e) { //rimuovo singolo evento
     for (int i = 0; i < impegni.size(); ++i) {
-        if (*(impegni[i]) == e) {
-            delete impegni[i];
-            impegni.remove(i);
-            break;
+        if (*(impegni.at(i)) == e) {
+            delete impegni.at(i);
         }
     }
+    impegni.removeAll(&e);
 }
 QVector<Evento*> Calendario::getImpegni() const{return impegni;}
 QVector<Evento*> Calendario::getImpegni(const QDate& data) const{

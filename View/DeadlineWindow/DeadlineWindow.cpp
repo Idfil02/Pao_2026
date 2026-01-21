@@ -2,7 +2,8 @@
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QCheckBox>
-DeadlineWindow::DeadlineWindow(Calendario* cal, QWidget *parent) : QWidget(parent)
+#include <QPushButton>
+DeadlineWindow::DeadlineWindow(Calendario* cal, QWidget *parent) : QWidget(parent), calendario(cal)
 {
     //prende tutte le attività che sono scadenze e le aggiunge al vettore interno
     QVector<Evento*> impegni = cal->getImpegni();
@@ -18,7 +19,7 @@ DeadlineWindow::DeadlineWindow(Calendario* cal, QWidget *parent) : QWidget(paren
     //crea i dettagli delle scadenze
     dettagliDeadline = new QTextEdit;
     dettagliDeadline->setReadOnly(true);
-    dettagliDeadline->setPlaceholderText("Nessuna Descrizione per la scadenza selezionata"); //se per caso la scadenza non ha descrizone
+    dettagliDeadline->setPlaceholderText("Selezionare una scadenza per visualizzare i dettagli"); //se per caso la scadenza non ha descrizone
     layoutDeadline->addWidget(dettagliDeadline);
     viewRefresh();//visualizzo la lista
 }
@@ -26,8 +27,7 @@ QWidget* DeadlineWindow::buildDeadlineItem(Deadline* d){
     //creo l'oggetto
     QWidget* deadlineItem = new QWidget;
     QHBoxLayout* layout = new QHBoxLayout(deadlineItem);
-    layout->setContentsMargins(1, 1, 1, 1);
-    layout->setSpacing(5);
+    layout->setContentsMargins(1, 2, 1, 2);
     //creo la spunta
     QCheckBox* checkbox = new QCheckBox;
     checkbox->setChecked(d->getCompletato());
@@ -44,6 +44,16 @@ QWidget* DeadlineWindow::buildDeadlineItem(Deadline* d){
     QString scad = "Scadenza: " + d->getData().toString("dd/MM/yyyy");
     QLabel* termine = new QLabel(scad);
     layout->addWidget(termine,2);
+    //aggiungo pulsante per l'eliminazione
+    QPushButton* tastoElimina = new QPushButton("Elimina");
+    tastoElimina->setStyleSheet("background-color: red");
+    connect(tastoElimina, &QPushButton::clicked, this, [this,d](){
+        this->deadlines.removeOne(d);
+        this->calendario->removeEvento(*d);
+        viewRefresh();
+        dettagliDeadline->clear();
+    });
+    layout->addWidget(tastoElimina);
     return deadlineItem;
 }
 
@@ -53,7 +63,7 @@ void DeadlineWindow::viewRefresh(){
     //rigenero gli oggetti per ogni elemento del vettore delle scadenze
     for(int i=0; i<deadlines.size(); ++i){
         //costruisco un nuovo elemento della lista a partire dalla Deadline
-        Deadline* scad = deadlines[i];
+        Deadline* scad = deadlines.at(i);
         QListWidgetItem* item = new QListWidgetItem(scadenze);
         QWidget* dItem = buildDeadlineItem(scad);
         item->setBackground(scad->getCompletato() ? QColor(165,214,167) : Qt::gray);

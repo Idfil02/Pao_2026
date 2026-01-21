@@ -21,6 +21,7 @@ public:
 
 private:
     QVector<Deadline*> deadlines;
+    Calendario* calendario;
     QListWidget* scadenze;
     QTextEdit* dettagliDeadline;
 };

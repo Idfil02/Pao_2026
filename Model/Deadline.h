@@ -12,4 +12,5 @@ public:
     void setCompletato(bool);
     virtual void acceptVisitor(EventVisitor&) override;
 };
+Q_DECLARE_METATYPE(Deadline*);
 #endif // DEADLINE_H
