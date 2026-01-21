@@ -22,10 +22,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     Evento* e2 = new Attivita("ATTIVITA","TAG#2","DESC#2",QDate(2026,01,20),QTime(12,00),QTime(13,00));
     Evento* e3 = new Deadline("CONSEGNARE RELAZIONE","TAG#2","DESC#3",QDate(2026,01,22));
     Evento* e4 = new Appuntamento("DOTTORE","TAG#2","DESC#2",QDate(2026,02,10),QTime(12,00),QTime(13,00),"INDIRIZZO OSPEDALE","123456");
-    Evento* e5 = new Deadline("PAGARE TASSE","TAG#3","DESC#4",QDate(2026,01,23));
+    Deadline* e5 = new Deadline("PAGARE TASSE","TAG#3","DESC#4",QDate(2026,01,23));
     Riunione* e6 = new Riunione("RIUNIONE","TAG#2","DESC#2",QDate(2026,02,26),QTime(12,00),QTime(13,00),"https://www.google.com");
     QVector<QString> part = {"PERSONA 1", "PERSONA 2","PERSONA 3"};
     e6->setPartecipanti(part);
+    e5->setCompletato(true);
     agendaTab->getCalendar()->addEvento(e1);
     agendaTab->getCalendar()->addEvento(e2);
     agendaTab->getCalendar()->addEvento(e3);

@@ -23,7 +23,5 @@ private:
     QVector<Deadline*> deadlines;
     QListWidget* scadenze;
     QTextEdit* dettagliDeadline;
-private slots:
-    void scadenzaSelezionata(QListWidgetItem*);
 };
 #endif // DEADLINEWINDOW_H
