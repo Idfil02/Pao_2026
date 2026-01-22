@@ -23,10 +23,10 @@ private:
     QFormLayout* dettagliEvento;
     Calendario* calendario;
     void clearView();
-private slots:
+public slots:
     void dataConImpegni(const QDate&);
     void cambioEvento(QListWidgetItem*);
-    void viewUpdate();
+    void giornoSelezionato(const QDate&);
 };
 
 #endif // AGENDA_H
