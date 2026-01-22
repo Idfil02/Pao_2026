@@ -27,6 +27,7 @@ public slots:
     void dataConImpegni(const QDate&);
     void cambioEvento(QListWidgetItem*);
     void giornoSelezionato(const QDate&);
+    void eventoEliminato(Evento*, QDate);
 };
 
 #endif // AGENDA_H

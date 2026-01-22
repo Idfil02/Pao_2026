@@ -2,6 +2,7 @@
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QCheckBox>
+#include <QLabel>
 #include <QPushButton>
 DeadlineWindow::DeadlineWindow(Calendario* cal, QWidget *parent) : QWidget(parent), calendario(cal)
 {
@@ -27,7 +28,7 @@ QWidget* DeadlineWindow::buildDeadlineItem(Deadline* d){
     //creo l'oggetto
     QWidget* deadlineItem = new QWidget;
     QHBoxLayout* layout = new QHBoxLayout(deadlineItem);
-    layout->setContentsMargins(1, 2, 1, 2);
+    layout->setContentsMargins(2, 2, 2, 2);
     //creo la spunta
     QCheckBox* checkbox = new QCheckBox;
     checkbox->setChecked(d->getCompletato());
@@ -45,18 +46,17 @@ QWidget* DeadlineWindow::buildDeadlineItem(Deadline* d){
     QLabel* termine = new QLabel(scad);
     layout->addWidget(termine,2);
     //aggiungo pulsante per l'eliminazione
-    QPushButton* tastoElimina = new QPushButton("Elimina");
+    QPushButton* tastoElimina = new QPushButton(QIcon(":/Icons/View/Icons/deleteIcon.svg"),"\0");
     tastoElimina->setStyleSheet("background-color: red");
     connect(tastoElimina, &QPushButton::clicked, this, [this,d](){
-        this->deadlines.removeOne(d);
-        this->calendario->removeEvento(*d);
+        deadlines.removeOne(d);
         viewRefresh();
         dettagliDeadline->clear();
+        emit eventoEliminato(d,d->getData());
     });
     layout->addWidget(tastoElimina);
     return deadlineItem;
 }
-
 void DeadlineWindow::viewRefresh(){
     //pulisco la lista
     scadenze->clear();

@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     // Create and add Deadlines tab
     DeadlineWindow* deadlinesTab = new DeadlineWindow(calendario,this);
     tabWidgets->addTab(deadlinesTab, "Scadenze");
-
+    connect(deadlinesTab, &DeadlineWindow::eventoEliminato, agendaTab, &Agenda::eventoEliminato);
     //Aggiunta del Menu
     Menu* menu = new Menu(this);
     addToolBar(Qt::TopToolBarArea, menu);

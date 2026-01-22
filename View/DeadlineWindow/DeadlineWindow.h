@@ -24,5 +24,7 @@ private:
     Calendario* calendario;
     QListWidget* scadenze;
     QTextEdit* dettagliDeadline;
+signals:
+    void eventoEliminato(Evento*,QDate);
 };
 #endif // DEADLINEWINDOW_H

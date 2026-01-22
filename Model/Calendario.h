@@ -13,7 +13,7 @@ public:
     ~Calendario() = default;
     void setEventi(const QVector<Evento*>& evs);
     void addEvento(Evento* e);
-    void removeEvento(const Evento& e);
+    void removeEvento(Evento* e);
     QVector<Evento*> getImpegni() const ;
     QVector<Evento*> getImpegni(const QDate& data) const;
 signals:

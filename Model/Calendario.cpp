@@ -15,13 +15,9 @@ void Calendario::addEvento(Evento* e) { //aggiungo un singolo evento
     emit aggiuntoEvento(e->getData());
 }
 
-void Calendario::removeEvento(const Evento& e) { //rimuovo singolo evento
-    for (int i = 0; i < impegni.size(); ++i) {
-        if (*(impegni.at(i)) == e) {
-            delete impegni.at(i);
-        }
-    }
-    impegni.removeAll(&e);
+void Calendario::removeEvento(Evento* e) { //rimuovo singolo evento
+    impegni.removeAll(e);
+    delete e;
 }
 QVector<Evento*> Calendario::getImpegni() const{return impegni;}
 QVector<Evento*> Calendario::getImpegni(const QDate& data) const{
