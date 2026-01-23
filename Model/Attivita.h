@@ -13,5 +13,6 @@ public:
     void setOraInizio(QTime);
     void setOraFine(QTime);
     virtual void acceptVisitor(EventVisitor&) override;
+    QJsonObject toJson() const override;
 };
 #endif // ATTIVITA_H

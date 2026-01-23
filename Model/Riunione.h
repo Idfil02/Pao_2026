@@ -15,5 +15,6 @@ public:
     void addPartecipante(QString);
     void removePartecipante(QString);
     virtual void acceptVisitor(EventVisitor&) override;
+    virtual QJsonObject toJson() const override;
 };
 #endif // RIUNIONE_H

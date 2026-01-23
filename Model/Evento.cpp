@@ -1,4 +1,5 @@
 #include "Evento.h"
+#include <QJsonObject>
 Evento::Evento(QString name,QString tg, QString dsc,QDate date):nome(name),tag(tg), desc(dsc), data(date){}
 QString Evento::getNome() const {return nome;}
 QString Evento::getTag() const {return tag;}
@@ -14,3 +15,12 @@ bool Evento::operator==(const Evento& e) const{
            desc==e.getDesc() &&
            data==e.getData();
 }
+QJsonObject Evento::toJson() const{
+    QJsonObject output;
+    output["Nome"] = nome;
+    output["Tag"] = tag;
+    output["Desc"] = desc;
+    output["Data"] = data.toString();
+    return output;
+}
+

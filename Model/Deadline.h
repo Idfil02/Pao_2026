@@ -11,6 +11,7 @@ public:
     bool getCompletato() const;
     void setCompletato(bool);
     virtual void acceptVisitor(EventVisitor&) override;
+    virtual QJsonObject toJson() const override;
 };
 Q_DECLARE_METATYPE(Deadline*);
 #endif // DEADLINE_H

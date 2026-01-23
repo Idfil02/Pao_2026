@@ -2,7 +2,12 @@
 #include <QToolButton>
 #include <QMenu>
 #include <QMessageBox>
-Menu::Menu(QWidget *parent) : QToolBar("Menu", parent){
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QFile>
+#include <QFileDialog>
+Menu::Menu(Calendario* cal, QWidget *parent) : QToolBar("Menu", parent),calendario(cal){
     this->setMovable(false);
     this->setFloatable(false);
 
@@ -19,6 +24,7 @@ Menu::Menu(QWidget *parent) : QToolBar("Menu", parent){
     esportazione->addAction(saveXML);
     save->setMenu(esportazione);
     save->setPopupMode(QToolButton::InstantPopup);
+    save->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     this->addWidget(save);
 
     QAction* import = new QAction(QIcon(":/Icons/View/Icons/upload.svg"),"Importa", this);
@@ -27,14 +33,33 @@ Menu::Menu(QWidget *parent) : QToolBar("Menu", parent){
     QAction* preferenze = new QAction(QIcon(":/Icons/View/Icons/settings.svg"),"Preferenze", this);
     this->addAction(preferenze);
 
-    save->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+
     this->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 
     connect(addNew, &QAction::triggered, this, [this](){
         QMessageBox::information(this, "CREAZIONE EVENTO", "NUOVO EVENTO CLICCATO");
     });
     connect(saveJSON, &QAction::triggered, this, [this](){
-        QMessageBox::information(this, "ESPORTAZIONE", "ESPORTAZIONE IN FORMATO JSON");
+        QString percorso = QFileDialog::getSaveFileName(this,"ESPORTAZIONE AGENDA", QDir::homePath()+"/agendaExport.json");
+        if(percorso.isEmpty()){
+            QMessageBox::information(this, "ESPORTAZIONE", "L'OPERAZIONE DI ESPORTAZIONE E' STATA ANNULLATA");
+            return;
+        }
+        QFile output(percorso);
+        QVector<Evento*> eventi = calendario->getImpegni();
+        QJsonArray eventiOutput;
+        if(!output.open(QFile::WriteOnly)){
+            QMessageBox::critical(this, "ESPORTAZIONE", "ERRORE NELL'ESPORTAZIONE IN FORMATO JSON");
+            return;
+        }
+        for(int i=0; i<eventi.size(); ++i){
+            Evento* ev = eventi.at(i);
+            eventiOutput.append(ev->toJson());
+        }
+        QJsonDocument eventiJson(eventiOutput);
+        output.write(eventiJson.toJson());
+        output.close();
+        QMessageBox::information(this, "ESPORTAZIONE", "ESPORTAZIONE IN FORMATO JSON NEL FILE:\n" + percorso);
     });
     connect(saveXML, &QAction::triggered, this, [this](){
         QMessageBox::information(this, "ESPORTAZIONE", "ESPORTAZIONE IN FORMATO XML");

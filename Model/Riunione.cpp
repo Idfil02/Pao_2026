@@ -1,5 +1,7 @@
 #include "Riunione.h"
 #include "EventVisitor.h"
+#include <QJsonObject>
+#include <QJsonArray>
 Riunione::Riunione(QString name,QString tg,QString dsc,QDate date,QTime start,QTime end, QString lnk):
     Attivita(name,tg,dsc,date,start,end), link(lnk){}
 QString Riunione::getLink() const {return link; }
@@ -15,4 +17,14 @@ void Riunione::removePartecipante(QString p){
 }
 void Riunione::acceptVisitor(EventVisitor& visitor){
     visitor.visit(*this);
+}
+QJsonObject Riunione::toJson() const{
+    QJsonObject output = this->Attivita::toJson();
+    output["Link"] = link;
+    QJsonArray part;
+    for(const QString& p : partecipanti){
+        part += p;
+    }
+    output["Partecipanti"] = part;
+    return output;
 }

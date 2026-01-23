@@ -21,7 +21,8 @@ public:
     void setData(const QDate&);
     virtual void acceptVisitor(EventVisitor&) = 0;
     virtual ~Evento() = default;
-    virtual bool operator==(const Evento&) const ;
+    virtual QJsonObject toJson() const;
+    virtual bool operator==(const Evento&) const;
 };
 Q_DECLARE_METATYPE(Evento*)
 #endif // EVENTO_H
