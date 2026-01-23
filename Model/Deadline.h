@@ -7,11 +7,12 @@ class Deadline : public Evento{
 private:
     bool completato;
 public:
-    Deadline(QString,QString,QString,QDate);
+    Deadline(QString,QString,QString,QDate,bool c=false);
     bool getCompletato() const;
     void setCompletato(bool);
     virtual void acceptVisitor(EventVisitor&) override;
     virtual QJsonObject toJson() const override;
+    virtual ~Deadline() override = default;
 };
-Q_DECLARE_METATYPE(Deadline*);
+//Q_DECLARE_METATYPE(Deadline*);
 #endif // DEADLINE_H

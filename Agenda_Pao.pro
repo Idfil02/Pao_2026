@@ -20,6 +20,7 @@ SOURCES += \
     View/DeadlineWindow/DeadlineWindow.cpp \
     View/Agenda/InfoVisitor.cpp \
     View/Menu/Menu.cpp \
+    View/Menu/eventofactory.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -36,6 +37,7 @@ HEADERS += \
     View/DeadlineWindow/DeadlineWindow.h \
     View/Agenda/InfoVisitor.h \
     View/Menu/Menu.h \
+    View/Menu/eventofactory.h \
     mainwindow.h
 FORMS += \
     mainwindow.ui

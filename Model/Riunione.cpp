@@ -26,5 +26,6 @@ QJsonObject Riunione::toJson() const{
         part += p;
     }
     output["Partecipanti"] = part;
+    output["Tipo"] = 2;
     return output;
 }

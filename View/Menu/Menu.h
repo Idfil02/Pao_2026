@@ -11,5 +11,7 @@ private:
 public:
     Menu(Calendario* cal,QWidget* parent = nullptr);
     ~Menu() = default;
+signals:
+    void agendaLoaded();
 };
 #endif // MENU_H

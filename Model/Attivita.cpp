@@ -14,5 +14,6 @@ QJsonObject Attivita::toJson() const{
     QJsonObject output=this->Evento::toJson();
     output["OraInizio"] = oraInizio.toString();
     output["OraFine"] = oraFine.toString();
+    output["Tipo"] = 1;
     return output;
 }

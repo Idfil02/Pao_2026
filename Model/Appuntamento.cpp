@@ -14,5 +14,6 @@ QJsonObject Appuntamento::toJson() const{
     QJsonObject output = this->Attivita::toJson();
     output["Luogo"] = luogo;
     output["Contatto"] = contatto;
+    output["Tipo"] = 3;
     return output;
 }

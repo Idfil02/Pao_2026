@@ -11,10 +11,10 @@ private:
 public:
     explicit Calendario(QObject* parent = nullptr);
     ~Calendario() = default;
-    void setEventi(const QVector<Evento*>& evs);
+    void clear();
     void addEvento(Evento* e);
     void removeEvento(Evento* e);
-    QVector<Evento*> getImpegni() const ;
+    QVector<Evento*> getImpegni() const;
     QVector<Evento*> getImpegni(const QDate& data) const;
 signals:
     void aggiuntoEvento(const QDate& data);

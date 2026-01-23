@@ -77,3 +77,6 @@ void DeadlineWindow::viewRefresh(){
         });//connetto il segnale allo slot per mostrare le informazioni
     }
 }
+void DeadlineWindow::addDeadline(Deadline* d){
+    deadlines.append(d);
+}

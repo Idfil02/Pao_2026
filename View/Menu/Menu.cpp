@@ -1,4 +1,5 @@
 #include "Menu.h"
+#include "eventofactory.h"
 #include <QToolButton>
 #include <QMenu>
 #include <QMessageBox>
@@ -65,7 +66,26 @@ Menu::Menu(Calendario* cal, QWidget *parent) : QToolBar("Menu", parent),calendar
         QMessageBox::information(this, "ESPORTAZIONE", "ESPORTAZIONE IN FORMATO XML");
     });
     connect(import, &QAction::triggered, this, [this](){
-        QMessageBox::information(this, "IMPORTAZIONE", "IMPORTAZIONE AGENDA");
+        QString percorso = QFileDialog::getOpenFileName(this, "IMPORTAZIONE FILE", QDir::homePath());
+        if(percorso.isEmpty()){
+            QMessageBox::information(this, "IMPORTAZIONE", "L'OPERAZIONE DI IMPORTAZIONE E' STATA ANNULLATA");
+            return;
+        }
+        QFile input(percorso);
+        if(!input.open(QFile::ReadOnly)){
+            QMessageBox::critical(this, "IMPORTAZIONE", "ERRORE NELL'APERTURA DEL FILE:\n" + percorso);
+            return;
+        }
+        QJsonDocument eventiInput = QJsonDocument::fromJson(input.readAll());
+        QJsonArray eventi = eventiInput.array();
+        EventoFactory evFactory;
+        calendario->clear();
+        for(int i=0; i<eventi.size(); ++i){
+            QJsonObject ev = (eventi.at(i)).toObject();
+            evFactory.BuildEvento(calendario, ev);
+        }
+        QMessageBox::information(this, "IMPORTAZIONE", "IMPORTAZIONE AGENDA TERMINATA");
+        emit agendaLoaded();
     });
     connect(preferenze, &QAction::triggered, this, [this](){
         QMessageBox::information(this, "ESPORTAZIONE", "SCELTA IMPOSTAZIONI");
