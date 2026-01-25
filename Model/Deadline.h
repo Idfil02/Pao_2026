@@ -12,7 +12,9 @@ public:
     void setCompletato(bool);
     virtual void acceptVisitor(EventVisitor&) override;
     virtual QJsonObject toJson() const override;
+    virtual void toXml(QXmlStreamWriter&) const override;
     virtual ~Deadline() override = default;
+
 };
 //Q_DECLARE_METATYPE(Deadline*);
 #endif // DEADLINE_H

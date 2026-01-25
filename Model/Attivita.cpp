@@ -17,3 +17,13 @@ QJsonObject Attivita::toJson() const{
     output["Tipo"] = 1;
     return output;
 }
+void Attivita::toXml(QXmlStreamWriter& w) const{
+    w.writeStartElement("attivita");
+    w.writeTextElement("nome",getNome());
+    w.writeTextElement("tag",getTag());
+    w.writeTextElement("desc",getDesc());
+    w.writeTextElement("data",getData().toString());
+    w.writeTextElement("ora_inizio",oraInizio.toString());
+    w.writeTextElement("ora_fine",oraFine.toString());
+    w.writeEndElement();
+}

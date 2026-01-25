@@ -29,3 +29,19 @@ QJsonObject Riunione::toJson() const{
     output["Tipo"] = 2;
     return output;
 }
+void Riunione::toXml(QXmlStreamWriter& w) const{
+    w.writeStartElement("riunione");
+    w.writeTextElement("nome",getNome());
+    w.writeTextElement("tag",getTag());
+    w.writeTextElement("desc",getDesc());
+    w.writeTextElement("data",getData().toString());
+    w.writeTextElement("ora_inizio",getOraInizio().toString());
+    w.writeTextElement("ora_fine",getOraFine().toString());
+    w.writeTextElement("link",link);
+    w.writeStartElement("partecipanti");
+    for (const QString& p : partecipanti){
+        w.writeTextElement("persona",p);
+    }
+    w.writeEndElement();
+    w.writeEndElement();
+}

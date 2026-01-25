@@ -23,4 +23,12 @@ QJsonObject Evento::toJson() const{
     output["Data"] = data.toString();
     return output;
 }
+void Evento::toXml(QXmlStreamWriter& w) const{
+    w.writeStartElement("evento");
+    w.writeTextElement("nome",nome);
+    w.writeTextElement("tag",tag);
+    w.writeTextElement("desc",desc);
+    w.writeTextElement("data",data.toString());
+    w.writeEndElement();
+}
 

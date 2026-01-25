@@ -16,3 +16,12 @@ QJsonObject Deadline::toJson() const{
     output["Tipo"] = 0;
     return output;
 }
+void Deadline::toXml(QXmlStreamWriter& w) const{
+    w.writeStartElement("deadline");
+    w.writeTextElement("nome",getNome());
+    w.writeTextElement("tag",getTag());
+    w.writeTextElement("desc",getDesc());
+    w.writeTextElement("data",getData().toString());
+    w.writeTextElement("completato",completato ? "true":"false");
+    w.writeEndElement();
+}

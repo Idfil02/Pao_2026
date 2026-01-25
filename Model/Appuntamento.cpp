@@ -17,3 +17,15 @@ QJsonObject Appuntamento::toJson() const{
     output["Tipo"] = 3;
     return output;
 }
+void Appuntamento::toXml(QXmlStreamWriter& w) const{
+    w.writeStartElement("appuntamento");
+    w.writeTextElement("nome",getNome());
+    w.writeTextElement("tag",getTag());
+    w.writeTextElement("desc",getDesc());
+    w.writeTextElement("data",getData().toString());
+    w.writeTextElement("ora_inizio",getOraInizio().toString());
+    w.writeTextElement("ora_fine",getOraFine().toString());
+    w.writeTextElement("luogo",luogo);
+    w.writeTextElement("contatto",contatto);
+    w.writeEndElement();
+}

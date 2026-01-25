@@ -1,5 +1,8 @@
 #include "Menu.h"
+//#include "Model/Attivita.h"
+//#include "Model/Deadline.h"
 #include "eventofactory.h"
+#include "XmlParser.h"
 #include <QToolButton>
 #include <QMenu>
 #include <QMessageBox>
@@ -39,6 +42,10 @@ Menu::Menu(Calendario* cal, QWidget *parent) : QToolBar("Menu", parent),calendar
 
     connect(addNew, &QAction::triggered, this, [this](){
         QMessageBox::information(this, "CREAZIONE EVENTO", "NUOVO EVENTO CLICCATO");
+        /*Evento* a = new Attivita("pipo","pupo","papo",QDate::currentDate(),QTime::currentTime(),QTime::fromMSecsSinceStartOfDay(300));
+        Evento* b = new Deadline("culo","anus","patongs",QDate::currentDate(),true);
+        calendario->addEvento(a);
+        calendario->addEvento(b); TEST*/
     });
     connect(saveJSON, &QAction::triggered, this, [this](){
         QString percorso = QFileDialog::getSaveFileName(this,"ESPORTAZIONE AGENDA", QDir::homePath()+"/agendaExport.json");
@@ -63,7 +70,17 @@ Menu::Menu(Calendario* cal, QWidget *parent) : QToolBar("Menu", parent),calendar
         QMessageBox::information(this, "ESPORTAZIONE", "ESPORTAZIONE IN FORMATO JSON NEL FILE:\n" + percorso);
     });
     connect(saveXML, &QAction::triggered, this, [this](){
-        QMessageBox::information(this, "ESPORTAZIONE", "ESPORTAZIONE IN FORMATO XML");
+        QString percorso = QFileDialog::getSaveFileName(this,"ESPORTAZIONE AGENDA", QDir::homePath()+"/agendaExport.xml");
+        if (percorso.isEmpty()){
+            QMessageBox::information(this, "ESPORTAZIONE", "L'OPERAZIONE DI ESPORTAZIONE E' STATA ANNULLATA");
+            return;
+        }
+        if(XmlParser::saveToXml(percorso,*calendario)){
+            QMessageBox::information(this, "ESPORTAZIONE", "ESPORTAZIONE IN FORMATO XML NEL FILE:\n" + percorso);
+        }
+        else {
+            QMessageBox::critical(this, "ESPORTAZIONE", "ERRORE NELL'ESPORTAZIONE IN FORMATO XML");
+        }
     });
     connect(import, &QAction::triggered, this, [this](){
         QString percorso = QFileDialog::getOpenFileName(this, "IMPORTAZIONE FILE", QDir::homePath());

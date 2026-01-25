@@ -1,7 +1,9 @@
 #ifndef EVENTO_H
 #define EVENTO_H
+#include <QXmlStreamWriter>
 #include <QString>
 #include <QDate>
+
 class EventVisitor;
 class Evento{
 private:
@@ -23,6 +25,7 @@ public:
     virtual ~Evento() = default;
     virtual QJsonObject toJson() const;
     virtual bool operator==(const Evento&) const;
+    virtual void toXml(QXmlStreamWriter&) const;
 };
 Q_DECLARE_METATYPE(Evento*)
 #endif // EVENTO_H
