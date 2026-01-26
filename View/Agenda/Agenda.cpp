@@ -47,10 +47,10 @@ void Agenda::giornoSelezionato(const QDate& data){
     dataConImpegni(data);
 }
 void Agenda::dataConImpegni(const QDate& data){ //attivato quando si aggiunge un impegno a una data, cambio colore per segnalare
-    QTextCharFormat format;
+    QTextCharFormat* format = new QTextCharFormat;
     int num_impegni = calendario->getImpegni(data).size();
-    format.setBackground(num_impegni == 0 ? Qt::white : QColor(217,101,43));
-    calendarWidget->setDateTextFormat(data, format);
+    format->setBackground(num_impegni == 0 ? Qt::white : QColor(217,101,43));
+    calendarWidget->setDateTextFormat(data, *format);
 }
 void Agenda::cambioEvento(QListWidgetItem* item){ //quando cliccato un evento, mostro i suoi dettagli
     clearView();//ripulisco le informazioni vecchie

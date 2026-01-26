@@ -11,10 +11,6 @@ void Riunione::setPartecipanti(QVector<QString>& p) { //sostituisco l'intero vet
     partecipanti.clear();
     partecipanti = p;
 }
-void Riunione::addPartecipante(QString p){partecipanti.push_back(p);} //aggiungo un singolo partecipante
-void Riunione::removePartecipante(QString p){
-    partecipanti.removeAll(p); //funzione di QList che rimuove tutti gli elementi uguali a p
-}
 void Riunione::acceptVisitor(EventVisitor& visitor){
     visitor.visit(*this);
 }

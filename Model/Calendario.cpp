@@ -3,13 +3,11 @@
 Calendario::Calendario(QObject* parent): QObject(parent){}
 
 void Calendario::clear() { //sostituisco l'intero vettore
-    for(int i=0;i<impegni.size();++i){
-        delete impegni.at(i);
-    }
+    qDeleteAll(impegni);
     impegni.clear();
 }
 
-void Calendario::addEvento(Evento* e) { //aggiungo un singolo evento
+void Calendario::addEvento(Evento* e){ //aggiungo un singolo evento
     impegni.push_back(e);
     emit aggiuntoEvento(e->getData());
 }

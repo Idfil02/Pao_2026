@@ -22,6 +22,7 @@ SOURCES += \
     View/Menu/Menu.cpp \
     View/Menu/XmlParser.cpp \
     View/Menu/eventofactory.cpp \
+    View/editvisitor.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -40,6 +41,7 @@ HEADERS += \
     View/Menu/Menu.h \
     View/Menu/XmlParser.h \
     View/Menu/eventofactory.h \
+    View/editvisitor.h \
     mainwindow.h
 FORMS += \
     mainwindow.ui

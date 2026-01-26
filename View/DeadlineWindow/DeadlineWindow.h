@@ -13,13 +13,11 @@ class DeadlineWindow : public QWidget
 public:
     explicit DeadlineWindow(Calendario*,QWidget *parent = nullptr);
     ~DeadlineWindow() = default;
-
-    QListWidget* getDeadlinesList() const { return scadenze; }
-    QTextEdit* getDeadlineDetails() const { return dettagliDeadline; }
-    QVector<Deadline*> getDeadlines() const {return deadlines;}
     void setDeadlines(const QVector<Deadline*>&);
     void addDeadline(Deadline*);
+    QVector<Deadline*> getDeadlines() const {return deadlines;}
     void viewRefresh();
+    void clearDeadlines();
     QWidget* buildDeadlineItem(Deadline*);
 
 private:
@@ -29,5 +27,6 @@ private:
     QTextEdit* dettagliDeadline;
 signals:
     void eventoEliminato(Evento*,QDate);
+    void richiestaEdit(Evento*);
 };
 #endif // DEADLINEWINDOW_H

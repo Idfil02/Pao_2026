@@ -16,5 +16,4 @@ public:
     virtual ~Deadline() override = default;
 
 };
-//Q_DECLARE_METATYPE(Deadline*);
 #endif // DEADLINE_H

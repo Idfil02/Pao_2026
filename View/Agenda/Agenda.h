@@ -12,11 +12,8 @@ class Agenda : public QWidget
 
 public:
     explicit Agenda(Calendario*,QWidget *parent = nullptr);
+    void clearView();
     ~Agenda() = default;
-    Calendario* getCalendar() const { return calendario; }
-    QCalendarWidget* getCalendarWidget() const { return calendarWidget; }
-    QListWidget* getEventList() const { return eventiDelGiorno; }
-    QFormLayout* getEventDetails() const { return dettagliEvento; }
 private:
     QCalendarWidget* calendarWidget;
     QListWidget* eventiDelGiorno;
@@ -27,7 +24,6 @@ public slots:
     void cambioEvento(QListWidgetItem*);
     void giornoSelezionato(const QDate&);
     void eventoEliminato(Evento*, QDate);
-    void clearView();
 };
 
 #endif // AGENDA_H

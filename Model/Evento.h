@@ -24,7 +24,6 @@ public:
     virtual void acceptVisitor(EventVisitor&) = 0;
     virtual ~Evento() = default;
     virtual QJsonObject toJson() const;
-    virtual bool operator==(const Evento&) const;
     virtual void toXml(QXmlStreamWriter&) const;
 };
 Q_DECLARE_METATYPE(Evento*)

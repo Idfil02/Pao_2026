@@ -12,8 +12,6 @@ public:
     QVector<QString> getPartecipanti() const;
     void setLink(QString);
     void setPartecipanti(QVector<QString>&);
-    void addPartecipante(QString);
-    void removePartecipante(QString);
     virtual void acceptVisitor(EventVisitor&) override;
     virtual QJsonObject toJson() const override;
     virtual void toXml(QXmlStreamWriter&) const override;

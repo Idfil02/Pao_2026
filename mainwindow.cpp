@@ -1,37 +1,61 @@
 #include "mainwindow.h"
-/*#include "Model/Attivita.h"
-#include "Model/Deadline.h"
-#include "Model/Appuntamento.h"
-#include "Model/Riunione.h"*/
+#include "Model/Attivita.h"
 #include "View/Agenda/Agenda.h"
 #include "View/DeadlineWindow/DeadlineWindow.h"
 #include "View/Menu/Menu.h"
+#include "View/editvisitor.h"
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
     // Set window properties
     setWindowTitle("Agenda - PAO 2026");
     // Create main tab widget
-    QTabWidget* tabWidgets = new QTabWidget(this);
+    tabWidgets = new QTabWidget(this);
     setCentralWidget(tabWidgets);
-    Calendario* calendario = new Calendario(this);
+    cal = new Calendario(this);
     // Create and add Agenda tab
-    Agenda* agendaTab = new Agenda(calendario,this);
+    agendaTab = new Agenda(cal,this);
     tabWidgets->addTab(agendaTab, "Agenda");
     // Create and add Deadlines tab
-    DeadlineWindow* deadlinesTab = new DeadlineWindow(calendario,this);
+    Evento* e1 = new Deadline("Scadenza","TAG","Desc",QDate(2026,01,20));
+    Evento* e2 = new Deadline("Scadenza 2 ","TAG 2","Desc 2 ",QDate(2026,01,21));
+    Evento* e3 = new Attivita("Attivita", "Tag 3 ","Desc 3", QDate(2026,01,22),QTime(12,00),QTime(13,00));
+    cal->addEvento(e1);
+    cal->addEvento(e2);
+    cal->addEvento(e3);
+    deadlinesTab = new DeadlineWindow(cal,this);
     tabWidgets->addTab(deadlinesTab, "Scadenze");
     connect(deadlinesTab, &DeadlineWindow::eventoEliminato, agendaTab, &Agenda::eventoEliminato);
     //Aggiunta del Menu
-    Menu* menu = new Menu(calendario, this);
+    Menu* menu = new Menu(cal, deadlinesTab, this);
     addToolBar(Qt::TopToolBarArea, menu);
-    connect(menu, &Menu::agendaLoaded, deadlinesTab, [calendario,deadlinesTab](){
-        QVector<Evento*> impegni = calendario->getImpegni();
+    this->setContextMenuPolicy(Qt::PreventContextMenu);
+    connect(menu, &Menu::agendaLoaded, deadlinesTab, [this](){
+        QVector<Evento*> impegni = cal->getImpegni();
         for(int i=0; i<impegni.size(); ++i){
-            if(dynamic_cast<Deadline*>(impegni[i])){ //voglio inserire nella lista solo le scadenze
-                deadlinesTab->addDeadline(static_cast<Deadline*>(impegni.at(i)));
+            auto ev = dynamic_cast<Deadline*>(impegni.at(i));
+            if(ev){ //voglio inserire nella lista solo le scadenze
+                deadlinesTab->addDeadline(ev);
             }
         }
         deadlinesTab->viewRefresh();
     });
+    connect(deadlinesTab, &DeadlineWindow::richiestaEdit, this, &MainWindow::richiestaEdit);
 }
 
+void MainWindow::richiestaEdit(Evento* ev){
+    QWidget* editPage = new QWidget(tabWidgets);
+    tabWidgets->addTab(editPage, "Modifica Evento");
+    tabWidgets->setCurrentWidget(editPage);
+    QFormLayout* layout = new QFormLayout(editPage);
+    EditVisitor* EDITOR = new EditVisitor(layout, editPage);
+    ev->acceptVisitor(*EDITOR);
+    connect(EDITOR, &EditVisitor::eventoModificato, this, &MainWindow::eventoModificato);
+}
+void MainWindow::eventoModificato(const QDate& dataPrec, const QDate& newData){
+    tabWidgets->removeTab(tabWidgets->currentIndex());
+    deadlinesTab->viewRefresh();
+    agendaTab->giornoSelezionato(dataPrec);
+    agendaTab->giornoSelezionato(newData);
+    agendaTab->clearView();
+
+}
