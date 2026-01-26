@@ -36,15 +36,16 @@ void Agenda::giornoSelezionato(const QDate& data){
     eventiDelGiorno->clear(); //pulisco la lista degli eventi
     clearView(); //pulisco la vista
     QVector<Evento*> impegniGiorno = calendario->getImpegni(data); //prendo tutti gli impegni della data selezionata
-    AgendaVisitor VST(eventiDelGiorno);
+    AgendaVisitor VST(eventiDelGiorno, this);
     for(int i=0; i<impegniGiorno.size(); ++i){        //visito gli eventi
         impegniGiorno.at(i)->acceptVisitor(VST);
     }
     if(eventiDelGiorno->count()==0){ //se la data non ha eventi, metto un placeholder per segnalarlo
-        QListWidgetItem* placeholder = new QListWidgetItem("Nessun Evento",eventiDelGiorno);
-        placeholder->setFlags(Qt::ItemIsSelectable);
+        QListWidgetItem* placeholder = new QListWidgetItem("Nessun Evento", eventiDelGiorno);
+        placeholder->setFlags(Qt::ItemIsEnabled);
     }
     dataConImpegni(data);
+    calendarWidget->setSelectedDate(data);
 }
 void Agenda::dataConImpegni(const QDate& data){ //attivato quando si aggiunge un impegno a una data, cambio colore per segnalare
     QTextCharFormat* format = new QTextCharFormat;
@@ -55,8 +56,10 @@ void Agenda::dataConImpegni(const QDate& data){ //attivato quando si aggiunge un
 void Agenda::cambioEvento(QListWidgetItem* item){ //quando cliccato un evento, mostro i suoi dettagli
     clearView();//ripulisco le informazioni vecchie
     Evento* e = item->data(Qt::UserRole).value<Evento*>(); //recupero il puntatore dalla lista degli eventi
-    InfoVisitor IVST(dettagliEvento);
-    e->acceptVisitor(IVST); //visito l'evento
+    if(e){
+        InfoVisitor IVST(dettagliEvento);
+        e->acceptVisitor(IVST); //visito l'evento
+    }
 }
 void Agenda::eventoEliminato(Evento* ev, QDate data){
     calendario->removeEvento(ev);

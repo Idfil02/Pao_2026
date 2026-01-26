@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "Model/Attivita.h"
 #include "View/Agenda/Agenda.h"
 #include "View/DeadlineWindow/DeadlineWindow.h"
 #include "View/Menu/Menu.h"
@@ -16,12 +15,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     agendaTab = new Agenda(cal,this);
     tabWidgets->addTab(agendaTab, "Agenda");
     // Create and add Deadlines tab
-    Evento* e1 = new Deadline("Scadenza","TAG","Desc",QDate(2026,01,20));
-    Evento* e2 = new Deadline("Scadenza 2 ","TAG 2","Desc 2 ",QDate(2026,01,21));
-    Evento* e3 = new Attivita("Attivita", "Tag 3 ","Desc 3", QDate(2026,01,22),QTime(12,00),QTime(13,00));
-    cal->addEvento(e1);
-    cal->addEvento(e2);
-    cal->addEvento(e3);
     deadlinesTab = new DeadlineWindow(cal,this);
     tabWidgets->addTab(deadlinesTab, "Scadenze");
     connect(deadlinesTab, &DeadlineWindow::eventoEliminato, agendaTab, &Agenda::eventoEliminato);
@@ -40,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
         deadlinesTab->viewRefresh();
     });
     connect(deadlinesTab, &DeadlineWindow::richiestaEdit, this, &MainWindow::richiestaEdit);
+    connect(agendaTab, &Agenda::richiestaEdit, this, &MainWindow::richiestaEdit);
 }
 
 void MainWindow::richiestaEdit(Evento* ev){
@@ -56,6 +50,4 @@ void MainWindow::eventoModificato(const QDate& dataPrec, const QDate& newData){
     deadlinesTab->viewRefresh();
     agendaTab->giornoSelezionato(dataPrec);
     agendaTab->giornoSelezionato(newData);
-    agendaTab->clearView();
-
 }

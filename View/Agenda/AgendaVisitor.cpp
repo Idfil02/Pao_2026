@@ -1,8 +1,8 @@
 #include "AgendaVisitor.h"
 #include <QLabel>
 #include <QPushButton>
-AgendaVisitor::AgendaVisitor(QListWidget* list):
-    eventiDelGiorno(list){}
+AgendaVisitor::AgendaVisitor(QListWidget* list, Agenda* agendaParent):
+    eventiDelGiorno(list), agenda(agendaParent){}
 QWidget* AgendaVisitor::buildListItem(Evento* ev, QHBoxLayout* layout){
     QWidget* eventItem = new QWidget;
     eventItem->setLayout(layout);
@@ -11,12 +11,20 @@ QWidget* AgendaVisitor::buildListItem(Evento* ev, QHBoxLayout* layout){
     layout->addWidget(nome,3);
     return eventItem;
 }
-void AgendaVisitor::buildButtons(QHBoxLayout* layout){
+void AgendaVisitor::buildButtons(QHBoxLayout* layout, Evento* ev){
+    Agenda* agendaLocale = agenda;
     QPushButton* tastoEdit = new QPushButton(QIcon(":/Icons/View/Icons/edit.svg"),"");
     tastoEdit->setStyleSheet("background-color: cyan");
+    QObject::connect(tastoEdit, &QPushButton::clicked, agenda, [agendaLocale,ev](){
+        agendaLocale->emit richiestaEdit(ev);
+    });
     layout->addWidget(tastoEdit,1);
     QPushButton* tastoElimina = new QPushButton(QIcon(":/Icons/View/Icons/deleteIcon.svg"),"\0");
     tastoElimina->setStyleSheet("background-color: red");
+
+    QObject::connect(tastoElimina, &QPushButton::clicked, agenda,[agendaLocale,ev](){
+        agendaLocale->eventoEliminato(ev, ev->getData());
+    });
     layout->addWidget(tastoElimina,1);
 }
 void AgendaVisitor::visit(Deadline& scadenza){
@@ -24,7 +32,7 @@ void AgendaVisitor::visit(Deadline& scadenza){
     QListWidgetItem* item = new QListWidgetItem(eventiDelGiorno);
     QHBoxLayout* layout = new QHBoxLayout;
     QWidget* evItem = buildListItem(event, layout);
-    buildButtons(layout);
+    buildButtons(layout,event);
     item->setData(Qt::UserRole, QVariant::fromValue(event));
     item->setBackground(scadenza.getCompletato() ? QColor(165,214,167) : QColor(225,0,0));
     item->setSizeHint(evItem->sizeHint());
@@ -39,7 +47,7 @@ void AgendaVisitor::visit(Attivita& att){
     QString time = att.getOraInizio().toString("HH:mm")+"-"+att.getOraFine().toString("HH:mm");
     QLabel* orario = new QLabel(time);
     layout->addWidget(orario,3);
-    buildButtons(layout);
+    buildButtons(layout,event);
 
     item->setData(Qt::UserRole, QVariant::fromValue(event));
     item->setBackground(QColor(0,204,204));
@@ -55,7 +63,7 @@ void AgendaVisitor::visit(Riunione& riunione){
     QString time = riunione.getOraInizio().toString("HH:mm")+"-"+riunione.getOraFine().toString("HH:mm");
     QLabel* orario = new QLabel(time);
     layout->addWidget(orario,3);
-    buildButtons(layout);
+    buildButtons(layout,event);
 
     item->setData(Qt::UserRole, QVariant::fromValue(event));
     item->setBackground(QColor(224,224,224));
@@ -71,7 +79,7 @@ void AgendaVisitor::visit(Appuntamento& app){
     QString time = app.getOraInizio().toString("HH:mm")+"-"+app.getOraFine().toString("HH:mm");
     QLabel* orario = new QLabel(time);
     layout->addWidget(orario,3);
-    buildButtons(layout);
+    buildButtons(layout,event);
 
     item->setData(Qt::UserRole, QVariant::fromValue(event));
     item->setBackground(QColor(224,224,224));

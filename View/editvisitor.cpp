@@ -19,12 +19,10 @@ void EditVisitor::visit(Deadline& scadenza){
     editPage->addWidget(salva);
     Deadline* ptr = &scadenza;
     QObject::connect(salva, &QPushButton::clicked,[=](){
-        QString param = nome->text();
-        ptr->setNome(param);
-        param = tag->text();
-        ptr->setTag(param);
-        param = desc->toPlainText();
-        ptr->setDesc(param);
+        ptr->setNome(nome->text());
+        ptr->setTag(tag->text());
+        QString dsc = desc->toPlainText();
+        ptr->setDesc(dsc);
         QDate newData(data->date());
         ptr->setData(newData);
         emit eventoModificato(dataPrec, newData);
@@ -48,18 +46,16 @@ void EditVisitor::visit(Attivita& att){
     editPage->addWidget(salva);
     Attivita* ptr = &att;
     QObject::connect(salva, &QPushButton::clicked,[=](){
-        QString param = nome->text();
-        ptr->setNome(param);
-        param = tag->text();
-        ptr->setTag(param);
-        param = desc->toPlainText();
-        ptr->setDesc(param);
+        ptr->setNome(nome->text());
+        ptr->setTag(tag->text());
+        QString dsc = desc->toPlainText();
+        ptr->setDesc(dsc);
         QDate newData(data->date());
         ptr->setData(newData);
         QTime newOraInizio(oraInizio->time());
         ptr->setOraInizio(newOraInizio);
         QTime newOraFine(oraFine->time());
-        ptr->setOraInizio(newOraFine);
+        ptr->setOraFine(newOraFine);
         emit eventoModificato(dataPrec, newData);
     });
 }
@@ -83,20 +79,17 @@ void EditVisitor::visit(Riunione& riun){
     editPage->addWidget(salva);
     Riunione* ptr = &riun;
     QObject::connect(salva, &QPushButton::clicked,[=](){
-        QString param = nome->text();
-        ptr->setNome(param);
-        param = tag->text();
-        ptr->setTag(param);
-        param = desc->toPlainText();
-        ptr->setDesc(param);
+        ptr->setNome(nome->text());
+        ptr->setTag(tag->text());
+        QString dsc = desc->toPlainText();
+        ptr->setDesc(dsc);
         QDate newData(data->date());
         ptr->setData(newData);
         QTime newOraInizio(oraInizio->time());
         ptr->setOraInizio(newOraInizio);
         QTime newOraFine(oraFine->time());
-        ptr->setOraInizio(newOraFine);
-        param = link->text();
-        ptr->setLink(param);
+        ptr->setOraFine(newOraFine);
+        ptr->setLink(link->text());
         emit eventoModificato(dataPrec, newData);
     });
 }
@@ -122,22 +115,18 @@ void EditVisitor::visit(Appuntamento& app){
     editPage->addWidget(salva);
     Appuntamento* ptr = &app;
     QObject::connect(salva, &QPushButton::clicked,[=](){
-        QString param = nome->text();
-        ptr->setNome(param);
-        param = tag->text();
-        ptr->setTag(param);
-        param = desc->toPlainText();
-        ptr->setDesc(param);
+        ptr->setNome(nome->text());
+        ptr->setTag(tag->text());
+        QString dsc = desc->toPlainText();
+        ptr->setDesc(dsc);
         QDate newData(data->date());
         ptr->setData(newData);
         QTime newOraInizio(oraInizio->time());
         ptr->setOraInizio(newOraInizio);
         QTime newOraFine(oraFine->time());
-        ptr->setOraInizio(newOraFine);
-        param = contatto->text();
-        ptr->setContatto(param);
-        param = luogo->text();
-        ptr->setLuogo(param);
+        ptr->setOraFine(newOraFine);
+        ptr->setContatto(contatto->text());
+        ptr->setLuogo(luogo->text());
         emit eventoModificato(dataPrec, newData);
     });
 }
