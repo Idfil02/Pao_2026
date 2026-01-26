@@ -98,6 +98,7 @@ void Menu:: initConnections(){
             QMessageBox::critical(this, "IMPORTAZIONE", "Errore nell'apertura del file:\n" + percorso);
             return;
         }
+        if(percorso.endsWith(".json",Qt::CaseInsensitive)){
         QJsonDocument eventiInput = QJsonDocument::fromJson(input.readAll());
         if(eventiInput.isNull()){
             QMessageBox::critical(this, "IMPORTAZIONE", "Formato del file\n" + percorso+"\n Non supportato");
@@ -110,6 +111,15 @@ void Menu:: initConnections(){
         for(int i=0; i<eventi.size(); ++i){
             QJsonObject ev = (eventi.at(i)).toObject();
             evFactory.BuildEvento(calendario, ev);
+        }
+        }
+        if(percorso.endsWith(".xml",Qt::CaseInsensitive)){
+            input.close();
+            scadenze->clearDeadlines();
+            calendario->clear();
+            bool success = XmlParser::loadFromXml(percorso,*calendario);
+            if (!success)
+                QMessageBox::critical(this, "IMPORTAZIONE", "Errore nell'importazione del file XML:\n" + percorso);
         }
         QMessageBox::information(this, "IMPORTAZIONE", "Importazione da\n" + percorso + "\nTerminata");
         emit agendaLoaded();

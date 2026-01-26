@@ -22,149 +22,149 @@ bool XmlParser::saveToXml(const QString& filename, const Calendario& calendario)
     return true;
 }
 
-bool loadFromXml(const QString& filename, Calendario& calendario){
+bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
     QFile file(filename);
-    if(!file.open(QFile::ReadOnly | QFile::Text))
+    if(!file.open(QFile::ReadOnly | QFile::Text)){
+        qDebug() << "Failed to open file:" << filename;
         return false;
-    QXmlStreamReader r;
-    r.setDevice(&file);
-    r.readNext();
-    while(!r.atEnd()){
-        if(r.isStartElement()){
-            if(r.name()=="deadline"){
-                Deadline deadline;
-                r.readNext();
-                if(r.name()=="nome"){
-                    deadline.setNome(r.readElementText());
+    }
+
+    QXmlStreamReader r(&file);
+
+    while(!r.atEnd() && !r.hasError()){
+        QXmlStreamReader::TokenType token = r.readNext();
+
+        if(token == QXmlStreamReader::StartDocument){
+            qDebug() << "Start document";
+            continue;
+        }
+
+        if(token == QXmlStreamReader::StartElement){
+            QString elementName = r.name().toString();
+            qDebug() << "Start element:" << elementName;
+
+            if(elementName == "deadline"){
+                Deadline* deadline = new Deadline();
+                while(!(r.tokenType() == QXmlStreamReader::EndElement && r.name() == "deadline")){
                     r.readNext();
-                }
-                if(r.name()=="tag"){
-                    deadline.setTag(r.readElementText());
-                    r.readNext();
-                }
-                if(r.name()=="desc"){
-                    deadline.setDesc(r.readElementText());
-                    r.readNext();
-                }
-                if(r.name()=="data"){
-                    deadline.setData(QDate::fromString(r.readElementText()));
-                    r.readNext();
-                }
-                if(r.name()=="completato"){
-                    deadline.setCompletato(r.readElementText()=="true" ? true : false);
-                    r.readNext();
-                }
-                calendario.addEvento(&deadline);
-                r.readNext();
-            }
-            if(r.name()=="attivita"){
-                Attivita attivita;
-                r.readNext();
-                if(r.name()=="nome"){
-                    attivita.setNome(r.readElementText());
-                    r.readNext();
-                }
-                if(r.name()=="tag"){
-                    attivita.setTag(r.readElementText());
-                    r.readNext();
-                }
-                if(r.name()=="desc"){
-                    attivita.setDesc(r.readElementText());
-                    r.readNext();
-                }
-                if(r.name()=="data"){
-                    attivita.setData(QDate::fromString(r.readElementText()));
-                    r.readNext();
-                }
-                if(r.name()=="ora_inizio"){
-                    attivita.setOraInizio(QTime::fromString(r.readElementText()));
-                    r.readNext();
-                }
-                if(r.name()=="ora_fine"){
-                    attivita.setOraFine(QTime::fromString(r.readElementText()));
-                    r.readNext();
-                }
-                calendario.addEvento(&attivita);
-            }
-            if(r.name()=="riunione"){
-                Riunione riunione;
-                r.readNext();
-                if(r.name()=="nome"){
-                    riunione.setNome(r.readElementText());
-                    r.readNext();
-                }
-                if(r.name()=="tag"){
-                    riunione.setTag(r.readElementText());
-                    r.readNext();
-                }
-                if(r.name()=="desc"){
-                    riunione.setDesc(r.readElementText());
-                    r.readNext();
-                }
-                if(r.name()=="data"){
-                    riunione.setData(QDate::fromString(r.readElementText()));
-                    r.readNext();
-                }
-                if(r.name()=="ora_inizio"){
-                    riunione.setOraInizio(QTime::fromString(r.readElementText()));
-                    r.readNext();
-                }
-                if(r.name()=="ora_fine"){
-                    riunione.setOraFine(QTime::fromString(r.readElementText()));
-                    r.readNext();
-                }
-                if(r.name()=="link"){
-                    riunione.setLink(r.readElementText());
-                    r.readNext();
-                }
-                if(r.name()=="partecipanti"){
-                    QVector<QString> partecipanti;
-                    r.readNext();
-                    while(r.name()=="persona"){
-                        partecipanti.push_back(r.readElementText());
+                    if(r.tokenType() == QXmlStreamReader::StartElement){
+                        QString fieldName = r.name().toString();
                         r.readNext();
+                        if(r.tokenType() == QXmlStreamReader::Characters){
+                            QString value = r.text().toString();
+                            qDebug() << "Field:" << fieldName << "Value:" << value;
+
+                            if(fieldName == "nome") deadline->setNome(value);
+                            else if(fieldName == "tag") deadline->setTag(value);
+                            else if(fieldName == "desc") deadline->setDesc(value);
+                            else if(fieldName == "data") deadline->setData(QDate::fromString(value));
+                            else if(fieldName == "completato") deadline->setCompletato(value == "true");
+                        }
                     }
-                    riunione.setPartecipanti(partecipanti);
                 }
-                calendario.addEvento(&riunione);
+                calendario.addEvento(deadline);
+                qDebug() << "Added deadline:" << deadline->getNome();
             }
-            if(r.name()=="appuntamento"){
-                Appuntamento appuntamento;
-                r.readNext();
-                if(r.name()=="nome"){
-                    appuntamento.setNome(r.readElementText());
+            else if(elementName == "attivita"){
+                Attivita* attivita = new Attivita();
+                while(!(r.tokenType() == QXmlStreamReader::EndElement && r.name() == "attivita")){
                     r.readNext();
+                    if(r.tokenType() == QXmlStreamReader::StartElement){
+                        QString fieldName = r.name().toString();
+                        r.readNext();
+                        if(r.tokenType() == QXmlStreamReader::Characters){
+                            QString value = r.text().toString();
+                            qDebug() << "Field:" << fieldName << "Value:" << value;
+
+                            if(fieldName == "nome") attivita->setNome(value);
+                            else if(fieldName == "tag") attivita->setTag(value);
+                            else if(fieldName == "desc") attivita->setDesc(value);
+                            else if(fieldName == "data") attivita->setData(QDate::fromString(value));
+                            else if(fieldName == "ora_inizio") attivita->setOraInizio(QTime::fromString(value));
+                            else if(fieldName == "ora_fine") attivita->setOraFine(QTime::fromString(value));
+                        }
+                    }
                 }
-                if(r.name()=="tag"){
-                    appuntamento.setTag(r.readElementText());
+                calendario.addEvento(attivita);
+                qDebug() << "Added attivita:" << attivita->getNome();
+            }
+            else if(elementName == "riunione"){
+                Riunione* riunione = new Riunione();
+                QVector<QString> partecipanti;
+
+                while(!(r.tokenType() == QXmlStreamReader::EndElement && r.name() == "riunione")){
                     r.readNext();
+                    if(r.tokenType() == QXmlStreamReader::StartElement){
+                        QString fieldName = r.name().toString();
+
+                        if(fieldName == "partecipanti"){
+                            // Skip to content
+                            r.readNext();
+                            while(!(r.tokenType() == QXmlStreamReader::EndElement && r.name() == "partecipanti")){
+                                if(r.tokenType() == QXmlStreamReader::StartElement && r.name() == "persona"){
+                                    r.readNext();
+                                    if(r.tokenType() == QXmlStreamReader::Characters){
+                                        partecipanti.push_back(r.text().toString());
+                                    }
+                                }
+                                r.readNext();
+                            }
+                        }
+                        else{
+                            r.readNext();
+                            if(r.tokenType() == QXmlStreamReader::Characters){
+                                QString value = r.text().toString();
+                                qDebug() << "Field:" << fieldName << "Value:" << value;
+
+                                if(fieldName == "nome") riunione->setNome(value);
+                                else if(fieldName == "tag") riunione->setTag(value);
+                                else if(fieldName == "desc") riunione->setDesc(value);
+                                else if(fieldName == "data") riunione->setData(QDate::fromString(value));
+                                else if(fieldName == "ora_inizio") riunione->setOraInizio(QTime::fromString(value));
+                                else if(fieldName == "ora_fine") riunione->setOraFine(QTime::fromString(value));
+                                else if(fieldName == "link") riunione->setLink(value);
+                            }
+                        }
+                    }
                 }
-                if(r.name()=="desc"){
-                    appuntamento.setDesc(r.readElementText());
+                riunione->setPartecipanti(partecipanti);
+                calendario.addEvento(riunione);
+                qDebug() << "Added riunione:" << riunione->getNome();
+            }
+            else if(elementName == "appuntamento"){
+                Appuntamento* appuntamento = new Appuntamento();
+                while(!(r.tokenType() == QXmlStreamReader::EndElement && r.name() == "appuntamento")){
                     r.readNext();
+                    if(r.tokenType() == QXmlStreamReader::StartElement){
+                        QString fieldName = r.name().toString();
+                        r.readNext();
+                        if(r.tokenType() == QXmlStreamReader::Characters){
+                            QString value = r.text().toString();
+                            qDebug() << "Field:" << fieldName << "Value:" << value;
+
+                            if(fieldName == "nome") appuntamento->setNome(value);
+                            else if(fieldName == "tag") appuntamento->setTag(value);
+                            else if(fieldName == "desc") appuntamento->setDesc(value);
+                            else if(fieldName == "data") appuntamento->setData(QDate::fromString(value));
+                            else if(fieldName == "ora_inizio") appuntamento->setOraInizio(QTime::fromString(value));
+                            else if(fieldName == "ora_fine") appuntamento->setOraFine(QTime::fromString(value));
+                            else if(fieldName == "luogo") appuntamento->setLuogo(value);
+                            else if(fieldName == "contatto") appuntamento->setContatto(value);
+                        }
+                    }
                 }
-                if(r.name()=="data"){
-                    appuntamento.setData(QDate::fromString(r.readElementText()));
-                    r.readNext();
-                }
-                if(r.name()=="ora_inizio"){
-                    appuntamento.setOraInizio(QTime::fromString(r.readElementText()));
-                    r.readNext();
-                }
-                if(r.name()=="ora_fine"){
-                    appuntamento.setOraFine(QTime::fromString(r.readElementText()));
-                    r.readNext();
-                }
-                if(r.name()=="luogo"){
-                    appuntamento.setLuogo(r.readElementText());
-                    r.readNext();
-                }
-                if(r.name()=="contatto"){
-                    appuntamento.setContatto(r.readElementText());
-                    r.readNext();
-                }
+                calendario.addEvento(appuntamento);
+                qDebug() << "Added appuntamento:" << appuntamento->getNome();
             }
         }
     }
+
+    if(r.hasError()){
+        qDebug() << "XML parsing error:" << r.errorString();
+        return false;
+    }
+
+    file.close();
+    qDebug() << "XML loaded successfully";
     return true;
 }
