@@ -1,5 +1,5 @@
 #include "Menu.h"
-#include "Model/Attivita.h"
+#include "Model/Riunione.h"
 #include "eventofactory.h"
 #include "XmlParser.h"
 #include <QMessageBox>
@@ -44,7 +44,9 @@ void Menu:: initConnections(){
 
     connect(addNew, &QAction::triggered, this, [this](){
         QMessageBox::information(this, "CREAZIONE EVENTO", "Nuovo Evento Cliccato");
-        Evento* a = new Attivita("pipo","pupo","papo",QDate::currentDate(),QTime::currentTime(),QTime::fromMSecsSinceStartOfDay(300));
+        Riunione* a = new Riunione("pipo","pupo","papo",QDate::currentDate(),QTime::currentTime(),QTime::fromMSecsSinceStartOfDay(300),"Linkaccio");
+        QVector<QString> m = {"persona 1", "persona 2", "persona 3"};
+        a->setPartecipanti(m);
         Evento* b = new Deadline("culo","anus","patongs",QDate::currentDate(),true);
         calendario->addEvento(a);
         calendario->addEvento(b);

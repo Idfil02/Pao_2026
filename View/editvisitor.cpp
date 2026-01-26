@@ -68,6 +68,8 @@ void EditVisitor::visit(Riunione& riun){
     QTimeEdit* oraInizio = new QTimeEdit(riun.getOraInizio());
     QTimeEdit* oraFine = new QTimeEdit(riun.getOraFine());
     QLineEdit* link = new QLineEdit(riun.getLink());
+    QTextEdit* partecipanti = new QTextEdit((riun.getPartecipanti()).toList().join(','));
+
     editPage->addRow("Nome:", nome);
     editPage->addRow("Tag:", tag);
     editPage->addRow("Descrizione:", desc);
@@ -75,9 +77,12 @@ void EditVisitor::visit(Riunione& riun){
     editPage->addRow("Ora Inizio:", oraInizio);
     editPage->addRow("Ora Fine:", oraFine);
     editPage->addRow("Link:", link);
+    editPage->addRow("Partecipanti:", partecipanti);
+
     QPushButton* salva = new QPushButton("Salva Modifiche");
     editPage->addWidget(salva);
     Riunione* ptr = &riun;
+
     QObject::connect(salva, &QPushButton::clicked,[=](){
         ptr->setNome(nome->text());
         ptr->setTag(tag->text());
@@ -90,6 +95,9 @@ void EditVisitor::visit(Riunione& riun){
         QTime newOraFine(oraFine->time());
         ptr->setOraFine(newOraFine);
         ptr->setLink(link->text());
+        QStringList membri = partecipanti->toPlainText().split(',');
+        QVector<QString> part = membri.toVector();
+        ptr->setPartecipanti(part);
         emit eventoModificato(dataPrec, newData);
     });
 }
