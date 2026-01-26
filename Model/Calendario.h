@@ -9,6 +9,7 @@ class Calendario: public QObject {
 private:
     QVector<Evento*> impegni;
 public:
+    Calendario() = default;
     Calendario(QObject* parent = nullptr);
     ~Calendario() = default;
     void clear();

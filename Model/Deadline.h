@@ -7,6 +7,7 @@ class Deadline : public Evento{
 private:
     bool completato;
 public:
+    Deadline() = default;
     Deadline(QString,QString,QString,QDate,bool c=false);
     bool getCompletato() const;
     void setCompletato(bool);

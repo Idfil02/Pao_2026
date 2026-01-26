@@ -7,6 +7,7 @@ private:
     QTime oraInizio;
     QTime oraFine;
 public:
+    Attivita() = default;
     Attivita(QString,QString,QString,QDate,QTime,QTime);
     QTime getOraInizio() const;
     QTime getOraFine() const;

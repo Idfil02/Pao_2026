@@ -12,6 +12,7 @@ private:
     QString desc;
     QDate data;
 public:
+    Evento() = default;
     Evento(QString,QString,QString,QDate);
     QString getNome() const;
     QString getTag() const;

@@ -9,6 +9,6 @@ private:
 public:
     static bool saveToXml(const QString& filename, const Calendario& calendario);
 
-    bool loadFromXml(const QString& filname, Calendario& calendario);
+    static bool loadFromXml(const QString& filename, Calendario& calendario);
 };
 #endif // XMLPARSER_H

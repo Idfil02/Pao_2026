@@ -6,6 +6,7 @@ private:
     QString luogo;
     QString contatto;
 public:
+    Appuntamento() = default;
     Appuntamento(QString,QString,QString,QDate,QTime,QTime,QString,QString);
     QString getLuogo() const;
     QString getContatto() const;
