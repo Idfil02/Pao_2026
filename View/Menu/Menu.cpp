@@ -1,5 +1,6 @@
 #include "Menu.h"
 #include "Model/Riunione.h"
+#include "Model/Appuntamento.h"
 #include "eventofactory.h"
 #include "XmlParser.h"
 #include <QMessageBox>
@@ -12,15 +13,29 @@ Menu::Menu(Calendario* cal, DeadlineWindow* scad, QWidget *parent) : QToolBar("M
     this->setMovable(false);
     this->setFloatable(false);
 
-    addNew = new QAction(QIcon(":/Icons/View/Icons/addnew.svg"),"&Nuovo",this);
+    addNew = new QToolButton;
+    addNew->setText("&Nuovo");
+    addNew->setIcon(QIcon(":/Icons/View/Icons/addnew.svg"));
     addNew->setShortcut(Qt::Key_N|Qt::CTRL);
-    this->addAction(addNew);
+    addMenu = new QMenu("Nuovo", this);
+    addAppuntamento = new QAction("Appuntamento",addMenu);
+    addAttivita = new QAction("Attivita",addMenu);
+    addDeadline = new QAction("Deadline",addMenu);
+    addRiunione = new QAction("Riunione",addMenu);
+    addMenu->addAction(addAppuntamento);
+    addMenu->addAction(addAttivita);
+    addMenu->addAction(addDeadline);
+    addMenu->addAction(addRiunione);
+    addNew->setMenu(addMenu);
+    addNew->setPopupMode(QToolButton::InstantPopup);
+    addNew->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    this->addWidget(addNew);
 
     save = new QToolButton;
     save->setText("&Salva");
     save->setIcon(QIcon(":/Icons/View/Icons/download.svg"));
-    menuEsportazione = new QMenu("Salva", this);
     save->setShortcut(Qt::Key_S | Qt::CTRL);
+    menuEsportazione = new QMenu("Salva", this);
     saveJSON = new QAction("Salva in JSON", menuEsportazione);
     saveXML = new QAction("Salva in XML", menuEsportazione);
     menuEsportazione->addAction(saveJSON);
@@ -42,16 +57,26 @@ Menu::Menu(Calendario* cal, DeadlineWindow* scad, QWidget *parent) : QToolBar("M
 
 void Menu:: initConnections(){
 
-    connect(addNew, &QAction::triggered, this, [this](){
-        QMessageBox::information(this, "CREAZIONE EVENTO", "Nuovo Evento Cliccato");
-        Riunione* a = new Riunione("pipo","pupo","papo",QDate::currentDate(),QTime::currentTime(),QTime::fromMSecsSinceStartOfDay(300),"Linkaccio");
-        QVector<QString> m = {"persona 1", "persona 2", "persona 3"};
-        a->setPartecipanti(m);
-        Evento* b = new Deadline("culo","anus","patongs",QDate::currentDate(),true);
-        calendario->addEvento(a);
-        calendario->addEvento(b);
-        emit agendaLoaded();
+    connect(addAppuntamento, &QAction::triggered, this, [this](){
+        Appuntamento* appuntamento = new Appuntamento();
+        emit createNew(appuntamento);
     });
+
+    connect(addAttivita, &QAction::triggered, this, [this](){
+        Attivita* attivita = new Attivita();
+        emit createNew(attivita);
+    });
+
+    connect(addDeadline, &QAction::triggered, this, [this](){
+        Deadline* deadline = new Deadline();
+        emit createNew(deadline);
+    });
+
+    connect(addRiunione, &QAction::triggered, this, [this](){
+        Riunione* riunione = new Riunione();
+        emit createNew(riunione);
+    });
+
     connect(saveJSON, &QAction::triggered, this, [this](){
         QString percorso = QFileDialog::getSaveFileName(this,"ESPORTAZIONE AGENDA", QDir::homePath()+"/agendaExport.json");
         if(percorso.isEmpty()){
@@ -65,6 +90,7 @@ void Menu:: initConnections(){
             QMessageBox::critical(this, "ESPORTAZIONE JSON", "Errore nell'esportazione in formato JSON");
             return;
         }
+
         for(int i=0; i<eventi.size(); ++i){
             Evento* ev = eventi.at(i);
             eventiOutput.append(ev->toJson());

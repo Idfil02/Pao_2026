@@ -24,6 +24,23 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     initConnections();
 }
 
+void MainWindow::richiestaCreate(Evento* ev){
+    QWidget* editPage = new QWidget(tabWidgets);
+    tabWidgets->addTab(editPage, "Aggiungi Evento");
+    tabWidgets->setCurrentWidget(editPage);
+    QFormLayout* layout = new QFormLayout(editPage);
+    EditVisitor* EDITOR = new EditVisitor(layout, editPage);
+    ev->acceptVisitor(*EDITOR);
+    connect(EDITOR, &EditVisitor::eventoModificato, this, [this, ev](){
+        this->cal->addEvento(ev);
+        auto t = dynamic_cast<Deadline*>(ev);
+        if(t){
+            this->deadlinesTab->addDeadline(t);
+        }
+        this->eventoModificato(ev->getData(),ev->getData());
+    });
+}
+
 void MainWindow::richiestaEdit(Evento* ev){
     QWidget* editPage = new QWidget(tabWidgets);
     tabWidgets->addTab(editPage, "Modifica Evento");
@@ -65,4 +82,5 @@ void MainWindow::initConnections(){
         }
         deadlinesTab->viewRefresh();
     });
+    connect(menu, &Menu::createNew, this, &MainWindow::richiestaCreate);
 }

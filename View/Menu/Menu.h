@@ -12,9 +12,14 @@ class Menu: public QToolBar{
 private:
     Calendario* calendario;
     DeadlineWindow* scadenze;
-    QAction* addNew;
+    QToolButton* addNew;
+    QAction* addAppuntamento;
+    QAction* addAttivita;
+    QAction* addDeadline;
+    QAction* addRiunione;
     QToolButton* save;
     QMenu* menuEsportazione;
+    QMenu* addMenu;
     QAction* saveJSON;
     QAction* saveXML;
     QAction* import;
@@ -24,5 +29,6 @@ public:
     ~Menu() = default;
 signals:
     void agendaLoaded();
+    void createNew(Evento*);
 };
 #endif // MENU_H
