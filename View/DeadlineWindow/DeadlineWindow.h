@@ -15,9 +15,9 @@ public:
     ~DeadlineWindow() = default;
     void setDeadlines(const QVector<Deadline*>&);
     void addDeadline(Deadline*);
-    QVector<Deadline*> getDeadlines() const {return deadlines;}
     void viewRefresh();
     void clearDeadlines();
+    void deleteDeadline(Deadline*);
     QWidget* buildDeadlineItem(Deadline*);
 
 private:
@@ -26,7 +26,8 @@ private:
     QListWidget* scadenze;
     QTextEdit* dettagliDeadline;
 signals:
-    void eventoEliminato(Evento*,QDate);
+    void eventoEliminato(Evento*,const QDate&);
     void richiestaEdit(Evento*);
+    void deadlineModificata(const QDate&);
 };
 #endif // DEADLINEWINDOW_H

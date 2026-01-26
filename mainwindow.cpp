@@ -17,23 +17,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     // Create and add Deadlines tab
     deadlinesTab = new DeadlineWindow(cal,this);
     tabWidgets->addTab(deadlinesTab, "Scadenze");
-    connect(deadlinesTab, &DeadlineWindow::eventoEliminato, agendaTab, &Agenda::eventoEliminato);
     //Aggiunta del Menu
-    Menu* menu = new Menu(cal, deadlinesTab, this);
+    menu = new Menu(cal, deadlinesTab, this);
     addToolBar(Qt::TopToolBarArea, menu);
     this->setContextMenuPolicy(Qt::PreventContextMenu);
-    connect(menu, &Menu::agendaLoaded, deadlinesTab, [this](){
-        QVector<Evento*> impegni = cal->getImpegni();
-        for(int i=0; i<impegni.size(); ++i){
-            auto ev = dynamic_cast<Deadline*>(impegni.at(i));
-            if(ev){ //voglio inserire nella lista solo le scadenze
-                deadlinesTab->addDeadline(ev);
-            }
-        }
-        deadlinesTab->viewRefresh();
-    });
-    connect(deadlinesTab, &DeadlineWindow::richiestaEdit, this, &MainWindow::richiestaEdit);
-    connect(agendaTab, &Agenda::richiestaEdit, this, &MainWindow::richiestaEdit);
+    initConnections();
 }
 
 void MainWindow::richiestaEdit(Evento* ev){
@@ -50,4 +38,31 @@ void MainWindow::eventoModificato(const QDate& dataPrec, const QDate& newData){
     deadlinesTab->viewRefresh();
     agendaTab->giornoSelezionato(dataPrec);
     agendaTab->giornoSelezionato(newData);
+}
+void MainWindow::eventoEliminato(Evento* ev, const QDate& data){
+    Deadline* scad = dynamic_cast<Deadline*>(ev);
+    if(scad){ //se è una scadenza la devo togliere anche dal vettore di scadenze
+        deadlinesTab->deleteDeadline(scad);
+        deadlinesTab->viewRefresh();
+    }
+    cal->removeEvento(ev);
+    agendaTab->giornoSelezionato(data);
+
+}
+void MainWindow::initConnections(){
+    connect(deadlinesTab, &DeadlineWindow::eventoEliminato, this, &MainWindow::eventoEliminato);
+    connect(agendaTab, &Agenda::eventoEliminato, this, &MainWindow::eventoEliminato);
+    connect(deadlinesTab, &DeadlineWindow::deadlineModificata, agendaTab, &Agenda::giornoSelezionato);
+    connect(deadlinesTab, &DeadlineWindow::richiestaEdit, this, &MainWindow::richiestaEdit);
+    connect(agendaTab, &Agenda::richiestaEdit, this, &MainWindow::richiestaEdit);
+    connect(menu, &Menu::agendaLoaded, deadlinesTab, [this](){
+        QVector<Evento*> impegni = cal->getImpegni();
+        for(int i=0; i<impegni.size(); ++i){
+            auto ev = dynamic_cast<Deadline*>(impegni.at(i));
+            if(ev){ //voglio inserire nella lista solo le scadenze
+                deadlinesTab->addDeadline(ev);
+            }
+        }
+        deadlinesTab->viewRefresh();
+    });
 }

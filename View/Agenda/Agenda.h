@@ -20,13 +20,14 @@ private:
     QListWidget* eventiDelGiorno;
     QFormLayout* dettagliEvento;
     Calendario* calendario;
-public slots:
     void dataConImpegni(const QDate&);
+    void initConnections();
+public slots:
     void cambioEvento(QListWidgetItem*);
-    void giornoSelezionato(const QDate&);
-    void eventoEliminato(Evento*, QDate);
+    void giornoSelezionato(const QDate&); 
 signals:
     void richiestaEdit(Evento*);
+    void eventoEliminato(Evento*, QDate);
 };
 
 #endif // AGENDA_H

@@ -6,6 +6,8 @@ InfoVisitor::InfoVisitor(QFormLayout* details):dettagliEvento(details){}
 void InfoVisitor::visit(Deadline& scadenza){
     QLabel* tag = new QLabel(scadenza.getTag()); //tag
     QTextEdit* desc = new QTextEdit(scadenza.getDesc()); //descrizione
+    desc->setReadOnly(true);
+
     //aggiungo tutto ai dettagli dell'evento
     dettagliEvento->addRow(tag);
     dettagliEvento->addRow(desc);
@@ -13,6 +15,8 @@ void InfoVisitor::visit(Deadline& scadenza){
 void InfoVisitor::visit(Attivita& att){
     QLabel* tag = new QLabel(att.getTag()); //tag
     QTextEdit* desc = new QTextEdit(att.getDesc());//descrizione
+    desc->setReadOnly(true);
+
     //aggiungo tutto ai dettagli dell'evento
     dettagliEvento->addRow(tag);
     dettagliEvento->addRow(desc);
@@ -20,6 +24,7 @@ void InfoVisitor::visit(Attivita& att){
 void InfoVisitor::visit(Riunione& riunione){
     QLabel* tag = new QLabel(riunione.getTag()); //tag
     QTextEdit* desc = new QTextEdit(riunione.getDesc());//descrizione
+    desc->setReadOnly(true);
     QLabel* link = new QLabel(riunione.getLink());//link riunione
     QTextEdit* partecipanti = new QTextEdit; //elenco dei partecipanti
 
