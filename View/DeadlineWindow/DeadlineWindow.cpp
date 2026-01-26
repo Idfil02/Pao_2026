@@ -26,10 +26,7 @@ QWidget* DeadlineWindow::buildDeadlineItem(Deadline* d){
     checkbox->setChecked(d->getCompletato());
     layout->addWidget(checkbox);
     //quando cliccata la checkbox modifico la scadenza e aggiorno
-    connect(checkbox, &QCheckBox::checkStateChanged, this, [this,d](Qt::CheckState stato){
-        d->setCompletato(stato);
-        viewRefresh();
-    });
+
     //aggiungo il nome della scadenza d
     QLabel* nome = new QLabel(d->getNome());
     layout->addWidget(nome,2);
@@ -39,22 +36,26 @@ QWidget* DeadlineWindow::buildDeadlineItem(Deadline* d){
     layout->addWidget(termine,2);
     //aggiungo pulsante per la modifica
     QPushButton* tastoEdit = new QPushButton(QIcon(":/Icons/View/Icons/edit.svg"),"");
-    connect(tastoEdit, &QPushButton::clicked, this, [this,d](){
-        emit richiestaEdit(d);
-    });
     tastoEdit->setStyleSheet("background-color: cyan");
     layout->addWidget(tastoEdit);
     //aggiungo pulsante per l'eliminazione
     QPushButton* tastoElimina = new QPushButton(QIcon(":/Icons/View/Icons/deleteIcon.svg"),"\0");
     tastoElimina->setStyleSheet("background-color: red");
-    connect(tastoElimina, &QPushButton::clicked, this, [this,d](){
-        deadlines.removeOne(d);
-        viewRefresh();
-        dettagliDeadline->clear();
-        emit eventoEliminato(d,d->getData());
-    });
     layout->addWidget(tastoElimina);
 
+    connect(checkbox, &QCheckBox::checkStateChanged, this, [this,d](Qt::CheckState stato){
+        d->setCompletato(stato);
+        viewRefresh();
+        emit deadlineModificata(d->getData());
+    });
+    connect(tastoEdit, &QPushButton::clicked, this, [this,d](){
+        emit richiestaEdit(d);
+    });
+    connect(tastoElimina, &QPushButton::clicked, this, [this,d](){
+        dettagliDeadline->clear();
+        deleteDeadline(d);
+        emit eventoEliminato(d,d->getData());
+    });
     return deadlineItem;
 }
 void DeadlineWindow::viewRefresh(){
@@ -74,7 +75,9 @@ void DeadlineWindow::viewRefresh(){
     connect(scadenze, &QListWidget::itemClicked, this, [this](QListWidgetItem* item){
         dettagliDeadline->clear();//pulisco la descrizione
         Deadline* d = item->data(Qt::UserRole).value<Deadline*>();//recupero l'oggetto collegato all'elemento selezionato
-        dettagliDeadline->setText(d->getDesc());
+        if(d){
+            dettagliDeadline->setText(d->getDesc());
+        }
     });//connetto il segnale allo slot per mostrare le informazioni
 }
 void DeadlineWindow::addDeadline(Deadline* d){
@@ -82,4 +85,7 @@ void DeadlineWindow::addDeadline(Deadline* d){
 }
 void DeadlineWindow::clearDeadlines(){
     deadlines.clear();
+}
+void DeadlineWindow::deleteDeadline(Deadline* d){
+    deadlines.removeAll(d);
 }

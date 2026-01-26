@@ -4,28 +4,31 @@
 #include <QFormLayout>
 #include <QVBoxLayout>
 #include <QLabel>
-Agenda::Agenda(Calendario* cal, QWidget *parent) : QWidget(parent)
+Agenda::Agenda(Calendario* cal, QWidget *parent) : QWidget(parent), calendario(cal)
 {
     QHBoxLayout* layoutAgenda = new QHBoxLayout(this);
     //creo il lato sx per il calendario
     calendarWidget = new QCalendarWidget;
     layoutAgenda->addWidget(calendarWidget, 2);
-    calendario = cal; //collego il campo dati al calendario in memoria
-    connect(calendario,&Calendario::aggiuntoEvento,this,&Agenda::dataConImpegni); //collego il segnale di aggiunta evento
-    connect(calendarWidget, &QCalendarWidget::clicked, this, &Agenda::giornoSelezionato); //collego il segnale di selezione data
-    //creo il container dx per le informazioni deglì eventi
+    //creo il container dx per le informazioni degli eventi
     QWidget* infoContainer = new QWidget(this);
     QVBoxLayout* infoLayout = new QVBoxLayout(infoContainer);
+    layoutAgenda->addWidget(infoContainer, 1);
+
     //lista eventi del giorno
     eventiDelGiorno = new QListWidget;
-    connect(eventiDelGiorno,&QListWidget::itemClicked,this,&Agenda::cambioEvento);//collego la selezione di un evento dalla lista del giorno
     infoLayout->addWidget(eventiDelGiorno, 1);
+
     //informazioni evento
     QWidget* containerDettagliEvento = new QWidget;
     dettagliEvento = new QFormLayout(containerDettagliEvento);
     infoLayout->addWidget(containerDettagliEvento,1);
-    layoutAgenda->addWidget(infoContainer, 1);
-    giornoSelezionato(QDate::currentDate());
+
+
+
+    initConnections();
+
+    calendarWidget->setSelectedDate(QDate::currentDate());
 }
 void Agenda::clearView(){
     while(dettagliEvento->rowCount()>0){//rimuovo riga per riga ogni campo, se ce ne sono
@@ -61,8 +64,8 @@ void Agenda::cambioEvento(QListWidgetItem* item){ //quando cliccato un evento, m
         e->acceptVisitor(IVST); //visito l'evento
     }
 }
-void Agenda::eventoEliminato(Evento* ev, QDate data){
-    calendario->removeEvento(ev);
-    giornoSelezionato(data);
+void Agenda::initConnections(){
+    connect(calendario,&Calendario::aggiuntoEvento,this,&Agenda::giornoSelezionato);
+    connect(calendarWidget, &QCalendarWidget::clicked, this, &Agenda::giornoSelezionato);
+    connect(eventiDelGiorno,&QListWidget::itemClicked,this,&Agenda::cambioEvento);
 }
-

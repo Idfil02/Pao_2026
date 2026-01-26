@@ -13,19 +13,22 @@ QWidget* AgendaVisitor::buildListItem(Evento* ev, QHBoxLayout* layout){
 }
 void AgendaVisitor::buildButtons(QHBoxLayout* layout, Evento* ev){
     Agenda* agendaLocale = agenda;
+
     QPushButton* tastoEdit = new QPushButton(QIcon(":/Icons/View/Icons/edit.svg"),"");
     tastoEdit->setStyleSheet("background-color: cyan");
-    QObject::connect(tastoEdit, &QPushButton::clicked, agenda, [agendaLocale,ev](){
-        agendaLocale->emit richiestaEdit(ev);
-    });
-    layout->addWidget(tastoEdit,1);
-    QPushButton* tastoElimina = new QPushButton(QIcon(":/Icons/View/Icons/deleteIcon.svg"),"\0");
+
+    QPushButton* tastoElimina = new QPushButton(QIcon(":/Icons/View/Icons/deleteIcon.svg"),"");
     tastoElimina->setStyleSheet("background-color: red");
 
-    QObject::connect(tastoElimina, &QPushButton::clicked, agenda,[agendaLocale,ev](){
-        agendaLocale->eventoEliminato(ev, ev->getData());
-    });
+    layout->addWidget(tastoEdit,1);
     layout->addWidget(tastoElimina,1);
+
+    QObject::connect(tastoEdit, &QPushButton::clicked, agenda, [agendaLocale, ev](){
+        agendaLocale->emit richiestaEdit(ev);
+    });
+    QObject::connect(tastoElimina, &QPushButton::clicked, agenda,[agendaLocale, ev](){
+        agendaLocale->emit eventoEliminato(ev, ev->getData());
+    });
 }
 void AgendaVisitor::visit(Deadline& scadenza){
     Evento* event = &scadenza;
