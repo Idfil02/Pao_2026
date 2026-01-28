@@ -62,20 +62,24 @@ void Menu:: initConnections(){
         emit createNew(appuntamento);
     });
 
+
     connect(addAttivita, &QAction::triggered, this, [this](){
         Attivita* attivita = new Attivita();
         emit createNew(attivita);
     });
+
 
     connect(addDeadline, &QAction::triggered, this, [this](){
         Deadline* deadline = new Deadline();
         emit createNew(deadline);
     });
 
+
     connect(addRiunione, &QAction::triggered, this, [this](){
         Riunione* riunione = new Riunione();
         emit createNew(riunione);
     });
+
 
     connect(saveJSON, &QAction::triggered, this, [this](){
         QString percorso = QFileDialog::getSaveFileName(this,"ESPORTAZIONE AGENDA", QDir::homePath()+"/agendaExport.json");
@@ -83,6 +87,7 @@ void Menu:: initConnections(){
             QMessageBox::information(this, "ESPORTAZIONE", "L'operazione di esportazione è stata annullata");
             return;
         }
+
         QFile output(percorso);
         QVector<Evento*> eventi = calendario->getImpegni();
         QJsonArray eventiOutput;
@@ -95,41 +100,51 @@ void Menu:: initConnections(){
             Evento* ev = eventi.at(i);
             eventiOutput.append(ev->toJson());
         }
+
         QJsonDocument eventiJson(eventiOutput);
         output.write(eventiJson.toJson());
         output.close();
         QMessageBox::information(this, "ESPORTAZIONE JSON", "Esportazione in formato JSON nel file:\n" + percorso);
     });
+
+
     connect(saveXML, &QAction::triggered, this, [this](){
         QString percorso = QFileDialog::getSaveFileName(this,"ESPORTAZIONE AGENDA", QDir::homePath()+"/agendaExport.xml");
         if (percorso.isEmpty()){
             QMessageBox::information(this, "ESPORTAZIONE", "L'operazione di esportazione è stata annullata");
             return;
         }
+
         if(XmlParser::saveToXml(percorso,*calendario)){
             QMessageBox::information(this, "ESPORTAZIONE", "Esportazione in formato XML nel file:\n" + percorso);
         }
+
         else {
             QMessageBox::critical(this, "ESPORTAZIONE", "Errore durante l'esportazione del file in formato XML");
-        }
+        }     
     });
+
+
     connect(import, &QAction::triggered, this, [this](){
         QString percorso = QFileDialog::getOpenFileName(this, "IMPORTAZIONE FILE", QDir::homePath());
         if(percorso.isEmpty()){
             QMessageBox::information(this, "IMPORTAZIONE", "L'operazione di importazione è stata annullata");
             return;
         }
+
         QFile input(percorso);
         if(!input.open(QFile::ReadOnly)){
             QMessageBox::critical(this, "IMPORTAZIONE", "Errore nell'apertura del file:\n" + percorso);
             return;
         }
+
         if(percorso.endsWith(".json",Qt::CaseInsensitive)){
         QJsonDocument eventiInput = QJsonDocument::fromJson(input.readAll());
         if(eventiInput.isNull()){
             QMessageBox::critical(this, "IMPORTAZIONE", "Formato del file\n" + percorso+"\n Non supportato");
             return;
         }
+
         QJsonArray eventi = eventiInput.array();
         EventoFactory evFactory;
         scadenze->clearDeadlines();
@@ -137,8 +152,9 @@ void Menu:: initConnections(){
         for(int i=0; i<eventi.size(); ++i){
             QJsonObject ev = (eventi.at(i)).toObject();
             evFactory.BuildEvento(calendario, ev);
+        }  
         }
-        }
+
         if(percorso.endsWith(".xml",Qt::CaseInsensitive)){
             input.close();
             scadenze->clearDeadlines();
@@ -147,6 +163,7 @@ void Menu:: initConnections(){
             if (!success)
                 QMessageBox::critical(this, "IMPORTAZIONE", "Errore nell'importazione del file XML:\n" + percorso);
         }
+
         QMessageBox::information(this, "IMPORTAZIONE", "Importazione da\n" + percorso + "\nTerminata");
         emit agendaLoaded();
     });

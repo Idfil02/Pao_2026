@@ -3,8 +3,7 @@
 #include <QHBoxLayout>
 #include <QCheckBox>
 #include <QPushButton>
-DeadlineWindow::DeadlineWindow(Calendario* cal, QWidget *parent) : QWidget(parent), calendario(cal)
-{
+DeadlineWindow::DeadlineWindow(Calendario* cal, QWidget *parent) : QWidget(parent), calendario(cal){
     QVBoxLayout* layoutDeadline = new QVBoxLayout(this);
     //crea la lista delle scadenze
     scadenze = new QListWidget;
@@ -16,6 +15,8 @@ DeadlineWindow::DeadlineWindow(Calendario* cal, QWidget *parent) : QWidget(paren
     layoutDeadline->addWidget(dettagliDeadline);
     viewRefresh();//visualizzo la lista
 }
+
+
 QWidget* DeadlineWindow::buildDeadlineItem(Deadline* d){
     //creo l'oggetto
     QWidget* deadlineItem = new QWidget;
@@ -48,9 +49,11 @@ QWidget* DeadlineWindow::buildDeadlineItem(Deadline* d){
         viewRefresh();
         emit deadlineModificata(d->getData());
     });
+
     connect(tastoEdit, &QPushButton::clicked, this, [this,d](){
         emit richiestaEdit(d);
     });
+
     connect(tastoElimina, &QPushButton::clicked, this, [this,d](){
         dettagliDeadline->clear();
         deleteDeadline(d);
@@ -58,6 +61,8 @@ QWidget* DeadlineWindow::buildDeadlineItem(Deadline* d){
     });
     return deadlineItem;
 }
+
+
 void DeadlineWindow::viewRefresh(){
     //pulisco la lista
     scadenze->clear();
@@ -72,6 +77,7 @@ void DeadlineWindow::viewRefresh(){
         //aggiungo l'oggetto alla lista
         scadenze->setItemWidget(item, dItem);
     }
+
     connect(scadenze, &QListWidget::itemClicked, this, [this](QListWidgetItem* item){
         dettagliDeadline->clear();//pulisco la descrizione
         Deadline* d = item->data(Qt::UserRole).value<Deadline*>();//recupero l'oggetto collegato all'elemento selezionato
@@ -80,12 +86,18 @@ void DeadlineWindow::viewRefresh(){
         }
     });//connetto il segnale allo slot per mostrare le informazioni
 }
+
+
 void DeadlineWindow::addDeadline(Deadline* d){
     deadlines.append(d);
 }
+
+
 void DeadlineWindow::clearDeadlines(){
     deadlines.clear();
 }
+
+
 void DeadlineWindow::deleteDeadline(Deadline* d){
     deadlines.removeAll(d);
 }

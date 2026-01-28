@@ -11,6 +11,8 @@ QWidget* AgendaVisitor::buildListItem(Evento* ev, QHBoxLayout* layout){
     layout->addWidget(nome,3);
     return eventItem;
 }
+
+
 void AgendaVisitor::buildButtons(QHBoxLayout* layout, Evento* ev){
     Agenda* agendaLocale = agenda;
 
@@ -30,6 +32,8 @@ void AgendaVisitor::buildButtons(QHBoxLayout* layout, Evento* ev){
         agendaLocale->emit eventoEliminato(ev, ev->getData());
     });
 }
+
+
 void AgendaVisitor::visit(Deadline& scadenza){
     Evento* event = &scadenza;
     QListWidgetItem* item = new QListWidgetItem(eventiDelGiorno);
@@ -41,6 +45,8 @@ void AgendaVisitor::visit(Deadline& scadenza){
     item->setSizeHint(evItem->sizeHint());
     eventiDelGiorno->setItemWidget(item, evItem);
 }
+
+
 void AgendaVisitor::visit(Attivita& att){
     Evento* event = &att;
     QListWidgetItem* item = new QListWidgetItem(eventiDelGiorno);
@@ -57,6 +63,8 @@ void AgendaVisitor::visit(Attivita& att){
     item->setSizeHint(evItem->sizeHint());
     eventiDelGiorno->setItemWidget(item, evItem);
 }
+
+
 void AgendaVisitor::visit(Riunione& riunione){
     Evento* event = &riunione;
     QListWidgetItem* item = new QListWidgetItem(eventiDelGiorno);
@@ -73,6 +81,8 @@ void AgendaVisitor::visit(Riunione& riunione){
     item->setSizeHint(evItem->sizeHint());
     eventiDelGiorno->setItemWidget(item, evItem);
 }
+
+
 void AgendaVisitor::visit(Appuntamento& app){
     Evento* event = &app;
     QListWidgetItem* item = new QListWidgetItem(eventiDelGiorno);

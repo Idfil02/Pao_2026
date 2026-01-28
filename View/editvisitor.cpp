@@ -28,6 +28,8 @@ void EditVisitor::visit(Deadline& scadenza){
         emit eventoModificato(dataPrec, newData);
     });
 }
+
+
 void EditVisitor::visit(Attivita& att){
     QDate dataPrec = att.getData();
     QLineEdit* nome = new QLineEdit(att.getNome());//nome
@@ -59,6 +61,8 @@ void EditVisitor::visit(Attivita& att){
         emit eventoModificato(dataPrec, newData);
     });
 }
+
+
 void EditVisitor::visit(Riunione& riun){
     QDate dataPrec = riun.getData();
     QLineEdit* nome = new QLineEdit(riun.getNome());//nome
@@ -101,6 +105,8 @@ void EditVisitor::visit(Riunione& riun){
         emit eventoModificato(dataPrec, newData);
     });
 }
+
+
 void EditVisitor::visit(Appuntamento& app){
     QDate dataPrec = app.getData();
     QLineEdit* nome = new QLineEdit(app.getNome());//nome

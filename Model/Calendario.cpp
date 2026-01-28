@@ -7,15 +7,19 @@ void Calendario::clear() { //sostituisco l'intero vettore
     impegni.clear();
 }
 
+
 void Calendario::addEvento(Evento* e){ //aggiungo un singolo evento
     impegni.push_back(e);
     emit aggiuntoEvento(e->getData());
 }
 
+
 void Calendario::removeEvento(Evento* e) { //rimuovo singolo evento
     impegni.removeAll(e);
     delete e;
 }
+
+
 QVector<Evento*> Calendario::getImpegni() const{return impegni;}
 QVector<Evento*> Calendario::getImpegni(const QDate& data) const{
     QVector<Evento*> impegniGiorno;

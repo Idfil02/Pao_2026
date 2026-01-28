@@ -3,8 +3,7 @@
 #include "View/DeadlineWindow/DeadlineWindow.h"
 #include "View/Menu/Menu.h"
 #include "View/editvisitor.h"
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
-{
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent){
     // Set window properties
     setWindowTitle("Agenda - PAO 2026");
     // Create main tab widget
@@ -24,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     initConnections();
 }
 
+
 void MainWindow::richiestaCreate(Evento* ev){
     QWidget* editPage = new QWidget(tabWidgets);
     tabWidgets->addTab(editPage, "Aggiungi Evento");
@@ -41,6 +41,7 @@ void MainWindow::richiestaCreate(Evento* ev){
     });
 }
 
+
 void MainWindow::richiestaEdit(Evento* ev){
     QWidget* editPage = new QWidget(tabWidgets);
     tabWidgets->addTab(editPage, "Modifica Evento");
@@ -50,12 +51,16 @@ void MainWindow::richiestaEdit(Evento* ev){
     ev->acceptVisitor(*EDITOR);
     connect(EDITOR, &EditVisitor::eventoModificato, this, &MainWindow::eventoModificato);
 }
+
+
 void MainWindow::eventoModificato(const QDate& dataPrec, const QDate& newData){
     tabWidgets->removeTab(tabWidgets->currentIndex());
     deadlinesTab->viewRefresh();
     agendaTab->giornoSelezionato(dataPrec);
     agendaTab->giornoSelezionato(newData);
 }
+
+
 void MainWindow::eventoEliminato(Evento* ev, const QDate& data){
     Deadline* scad = dynamic_cast<Deadline*>(ev);
     if(scad){ //se è una scadenza la devo togliere anche dal vettore di scadenze
@@ -66,6 +71,8 @@ void MainWindow::eventoEliminato(Evento* ev, const QDate& data){
     agendaTab->giornoSelezionato(data);
 
 }
+
+
 void MainWindow::initConnections(){
     connect(deadlinesTab, &DeadlineWindow::eventoEliminato, this, &MainWindow::eventoEliminato);
     connect(agendaTab, &Agenda::eventoEliminato, this, &MainWindow::eventoEliminato);

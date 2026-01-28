@@ -4,8 +4,7 @@
 #include <QFormLayout>
 #include <QVBoxLayout>
 #include <QLabel>
-Agenda::Agenda(Calendario* cal, QWidget *parent) : QWidget(parent), calendario(cal)
-{
+Agenda::Agenda(Calendario* cal, QWidget *parent) : QWidget(parent), calendario(cal){
     QHBoxLayout* layoutAgenda = new QHBoxLayout(this);
     //creo il lato sx per il calendario
     calendarWidget = new QCalendarWidget;
@@ -30,11 +29,15 @@ Agenda::Agenda(Calendario* cal, QWidget *parent) : QWidget(parent), calendario(c
 
     calendarWidget->setSelectedDate(QDate::currentDate());
 }
+
+
 void Agenda::clearView(){
     while(dettagliEvento->rowCount()>0){//rimuovo riga per riga ogni campo, se ce ne sono
         dettagliEvento->removeRow(0); //ogni removeRow ricompatta i dettagliEvento
     }
 }
+
+
 void Agenda::giornoSelezionato(const QDate& data){
     eventiDelGiorno->clear(); //pulisco la lista degli eventi
     clearView(); //pulisco la vista
@@ -43,19 +46,25 @@ void Agenda::giornoSelezionato(const QDate& data){
     for(int i=0; i<impegniGiorno.size(); ++i){        //visito gli eventi
         impegniGiorno.at(i)->acceptVisitor(VST);
     }
+
     if(eventiDelGiorno->count()==0){ //se la data non ha eventi, metto un placeholder per segnalarlo
         QListWidgetItem* placeholder = new QListWidgetItem("Nessun Evento", eventiDelGiorno);
         placeholder->setFlags(Qt::ItemIsEnabled);
     }
+
     dataConImpegni(data);
     calendarWidget->setSelectedDate(data);
 }
+
+
 void Agenda::dataConImpegni(const QDate& data){ //attivato quando si aggiunge un impegno a una data, cambio colore per segnalare
     QTextCharFormat* format = new QTextCharFormat;
     int num_impegni = calendario->getImpegni(data).size();
     format->setBackground(num_impegni == 0 ? Qt::white : QColor(217,101,43));
     calendarWidget->setDateTextFormat(data, *format);
 }
+
+
 void Agenda::cambioEvento(QListWidgetItem* item){ //quando cliccato un evento, mostro i suoi dettagli
     clearView();//ripulisco le informazioni vecchie
     Evento* e = item->data(Qt::UserRole).value<Evento*>(); //recupero il puntatore dalla lista degli eventi
@@ -64,6 +73,8 @@ void Agenda::cambioEvento(QListWidgetItem* item){ //quando cliccato un evento, m
         e->acceptVisitor(IVST); //visito l'evento
     }
 }
+
+
 void Agenda::initConnections(){
     connect(calendario,&Calendario::aggiuntoEvento,this,&Agenda::giornoSelezionato);
     connect(calendarWidget, &QCalendarWidget::clicked, this, &Agenda::giornoSelezionato);

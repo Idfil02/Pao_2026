@@ -16,11 +16,13 @@ bool XmlParser::saveToXml(const QString& filename, const Calendario& calendario)
     for(auto e:calendario.getImpegni()){
         e->toXml(*w);
     }
+
     w->writeEndElement();
     w->writeEndDocument();
     save.close();
     return true;
 }
+
 
 bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
     QFile file(filename);
@@ -88,6 +90,7 @@ bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
                 calendario.addEvento(attivita);
                 qDebug() << "Added attivita:" << attivita->getNome();
             }
+
             else if(elementName == "riunione"){
                 Riunione* riunione = new Riunione();
                 QVector<QString> partecipanti;
@@ -110,6 +113,7 @@ bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
                                 r.readNext();
                             }
                         }
+
                         else{
                             r.readNext();
                             if(r.tokenType() == QXmlStreamReader::Characters){
@@ -127,10 +131,12 @@ bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
                         }
                     }
                 }
+
                 riunione->setPartecipanti(partecipanti);
                 calendario.addEvento(riunione);
                 qDebug() << "Added riunione:" << riunione->getNome();
             }
+
             else if(elementName == "appuntamento"){
                 Appuntamento* appuntamento = new Appuntamento();
                 while(!(r.tokenType() == QXmlStreamReader::EndElement && r.name() == "appuntamento")){
