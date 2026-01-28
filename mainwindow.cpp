@@ -33,11 +33,11 @@ void MainWindow::richiestaCreate(Evento* ev){
     ev->acceptVisitor(*EDITOR);
     connect(EDITOR, &EditVisitor::eventoModificato, this, [this, ev](){
         this->cal->addEvento(ev);
+        this->eventoModificato(ev->getData(),ev->getData());
         auto t = dynamic_cast<Deadline*>(ev);
         if(t){
             this->deadlinesTab->addDeadline(t);
         }
-        this->eventoModificato(ev->getData(),ev->getData());
     });
 }
 
