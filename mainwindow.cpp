@@ -1,8 +1,5 @@
 #include "mainwindow.h"
-#include "View/Agenda/Agenda.h"
-#include "View/DeadlineWindow/DeadlineWindow.h"
-#include "View/Menu/Menu.h"
-#include "View/editvisitor.h"
+#include "View/Visitors/editvisitor.h"
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent){
     // Set window properties
     setWindowTitle("Agenda - PAO 2026");
@@ -16,6 +13,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent){
     // Create and add Deadlines tab
     deadlinesTab = new DeadlineWindow(cal,this);
     tabWidgets->addTab(deadlinesTab, "Scadenze");
+    // aggiunta tab lista eventi
+    eventsTab = new ListaEventi(cal, this);
+    tabWidgets->addTab(eventsTab, "Cerca Evento");
     //Aggiunta del Menu
     menu = new Menu(cal, deadlinesTab, this);
     addToolBar(Qt::TopToolBarArea, menu);

@@ -2,9 +2,8 @@
 #define DEADLINEWINDOW_H
 #include "Model/Calendario.h"
 #include "Model/Deadline.h"
-#include <QWidget>
+#include <QFormLayout>
 #include <QListWidget>
-#include <QTextEdit>
 #include <QVBoxLayout>
 class DeadlineWindow : public QWidget
 {
@@ -13,18 +12,19 @@ class DeadlineWindow : public QWidget
 public:
     explicit DeadlineWindow(Calendario*,QWidget *parent = nullptr);
     ~DeadlineWindow() = default;
-    void setDeadlines(const QVector<Deadline*>&);
     void addDeadline(Deadline*);
     void viewRefresh();
+    void clearInfo();
     void clearDeadlines();
     void deleteDeadline(Deadline*);
-    QWidget* buildDeadlineItem(Deadline*);
 
 private:
     QVector<Deadline*> deadlines;
     Calendario* calendario;
     QListWidget* scadenze;
-    QTextEdit* dettagliDeadline;
+    QWidget* dettagliDeadline;
+    QFormLayout* dettagliLayout;
+    QWidget* buildDeadlineItem(Deadline*);
 signals:
     void eventoEliminato(Evento*,const QDate&);
     void richiestaEdit(Evento*);

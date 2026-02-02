@@ -1,4 +1,6 @@
 #include "DeadlineWindow.h"
+#include "View/Visitors//InfoVisitor.h"
+#include "qtextedit.h"
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QCheckBox>
@@ -7,12 +9,11 @@ DeadlineWindow::DeadlineWindow(Calendario* cal, QWidget *parent) : QWidget(paren
     QVBoxLayout* layoutDeadline = new QVBoxLayout(this);
     //crea la lista delle scadenze
     scadenze = new QListWidget;
-    layoutDeadline->addWidget(scadenze);
+    layoutDeadline->addWidget(scadenze,1);
     //crea i dettagli delle scadenze
-    dettagliDeadline = new QTextEdit;
-    dettagliDeadline->setReadOnly(true);
-    dettagliDeadline->setPlaceholderText("Selezionare una scadenza per visualizzare i dettagli"); //se per caso la scadenza non ha descrizone
-    layoutDeadline->addWidget(dettagliDeadline);
+    dettagliDeadline = new QWidget(this);
+    dettagliLayout = new QFormLayout(dettagliDeadline);
+    layoutDeadline->addWidget(dettagliDeadline,1);
     viewRefresh();//visualizzo la lista
 }
 
@@ -55,7 +56,7 @@ QWidget* DeadlineWindow::buildDeadlineItem(Deadline* d){
     });
 
     connect(tastoElimina, &QPushButton::clicked, this, [this,d](){
-        dettagliDeadline->clear();
+        clearInfo();
         deleteDeadline(d);
         emit eventoEliminato(d,d->getData());
     });
@@ -64,6 +65,7 @@ QWidget* DeadlineWindow::buildDeadlineItem(Deadline* d){
 
 
 void DeadlineWindow::viewRefresh(){
+    clearInfo();
     //pulisco la lista
     scadenze->clear();
     //rigenero gli oggetti per ogni elemento del vettore delle scadenze
@@ -77,16 +79,26 @@ void DeadlineWindow::viewRefresh(){
         //aggiungo l'oggetto alla lista
         scadenze->setItemWidget(item, dItem);
     }
-
+    if(dettagliLayout->count() == 0){
+        QTextEdit* placeholder = new QTextEdit;
+        placeholder->setReadOnly(true);
+        placeholder->setPlaceholderText("Selezionare scadenza per maggiori informazioni");
+        dettagliLayout->addRow(placeholder);
+    }
     connect(scadenze, &QListWidget::itemClicked, this, [this](QListWidgetItem* item){
-        dettagliDeadline->clear();//pulisco la descrizione
+        clearInfo();
         Deadline* d = item->data(Qt::UserRole).value<Deadline*>();//recupero l'oggetto collegato all'elemento selezionato
         if(d){
-            dettagliDeadline->setText(d->getDesc());
+            InfoVisitor IVST(dettagliLayout);
+            d->acceptVisitor(IVST);
         }
     });//connetto il segnale allo slot per mostrare le informazioni
 }
-
+void DeadlineWindow::clearInfo(){
+    while(dettagliLayout->count()){
+        dettagliLayout->removeRow(0);
+    }
+}
 
 void DeadlineWindow::addDeadline(Deadline* d){
     deadlines.append(d);

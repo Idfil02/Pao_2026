@@ -1,6 +1,6 @@
 #include "Agenda.h"
-#include "AgendaVisitor.h"
-#include "InfoVisitor.h"
+#include "View/Visitors/AgendaVisitor.h"
+#include "View/Visitors/InfoVisitor.h"
 #include <QFormLayout>
 #include <QVBoxLayout>
 #include <QLabel>
@@ -23,15 +23,13 @@ Agenda::Agenda(Calendario* cal, QWidget *parent) : QWidget(parent), calendario(c
     dettagliEvento = new QFormLayout(containerDettagliEvento);
     infoLayout->addWidget(containerDettagliEvento,1);
 
-
-
     initConnections();
 
     calendarWidget->setSelectedDate(QDate::currentDate());
 }
 
 
-void Agenda::clearView(){
+void Agenda::clearInfo(){
     while(dettagliEvento->rowCount()>0){//rimuovo riga per riga ogni campo, se ce ne sono
         dettagliEvento->removeRow(0); //ogni removeRow ricompatta i dettagliEvento
     }
@@ -40,7 +38,7 @@ void Agenda::clearView(){
 
 void Agenda::giornoSelezionato(const QDate& data){
     eventiDelGiorno->clear(); //pulisco la lista degli eventi
-    clearView(); //pulisco la vista
+    clearInfo(); //pulisco la vista
     QVector<Evento*> impegniGiorno = calendario->getImpegni(data); //prendo tutti gli impegni della data selezionata
     AgendaVisitor VST(eventiDelGiorno, this);
     for(int i=0; i<impegniGiorno.size(); ++i){        //visito gli eventi
@@ -66,7 +64,7 @@ void Agenda::dataConImpegni(const QDate& data){ //attivato quando si aggiunge un
 
 
 void Agenda::cambioEvento(QListWidgetItem* item){ //quando cliccato un evento, mostro i suoi dettagli
-    clearView();//ripulisco le informazioni vecchie
+    clearInfo();//ripulisco le informazioni vecchie
     Evento* e = item->data(Qt::UserRole).value<Evento*>(); //recupero il puntatore dalla lista degli eventi
     if(e){
         InfoVisitor IVST(dettagliEvento);

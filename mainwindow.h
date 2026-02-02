@@ -8,7 +8,7 @@
 #include "View/Agenda/Agenda.h"
 #include "View/DeadlineWindow/DeadlineWindow.h"
 #include "View/Menu/Menu.h"
-
+#include "View/ListaEventi/listaeventi.h"
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -18,10 +18,11 @@ public:
     ~MainWindow() = default;
 
 private:
+    Calendario* cal;
     QTabWidget* tabWidgets;
     Agenda* agendaTab;
     DeadlineWindow* deadlinesTab;
-    Calendario* cal;
+    ListaEventi* eventsTab;
     Menu* menu;
     void initConnections();
 public slots:

@@ -3,7 +3,6 @@
 #include <QWidget>
 #include <QCalendarWidget>
 #include <QListWidget>
-#include <QTextEdit>
 #include <QFormLayout>
 #include "Model/Calendario.h"
 class Agenda : public QWidget
@@ -12,9 +11,8 @@ class Agenda : public QWidget
 
 public:
     explicit Agenda(Calendario*,QWidget *parent = nullptr);
-    void clearView();
+    void clearInfo();
     ~Agenda() = default;
-    Calendario* getCalendario() const {return calendario;}
 private:
     QCalendarWidget* calendarWidget;
     QListWidget* eventiDelGiorno;

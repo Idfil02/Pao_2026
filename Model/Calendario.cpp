@@ -10,12 +10,25 @@ void Calendario::clear() { //sostituisco l'intero vettore
 
 void Calendario::addEvento(Evento* e){ //aggiungo un singolo evento
     impegni.push_back(e);
+    QString tag = e->getTag();
+    if(tags[tag]==0){
+        tags.insert(tag, 1);
+    }else{
+        tags[tag]++;
+    }
     emit aggiuntoEvento(e->getData());
 }
 
 
 void Calendario::removeEvento(Evento* e) { //rimuovo singolo evento
     impegni.removeAll(e);
+    QString t = e->getTag();
+    if(tags.contains(t)){
+        tags[t]--;
+        if(tags[t] <= 0){
+            tags.remove(t);
+        }
+    }
     delete e;
 }
 
@@ -29,4 +42,7 @@ QVector<Evento*> Calendario::getImpegni(const QDate& data) const{
         }
     }
     return impegniGiorno;
+}
+QList<QString> Calendario::getTags() const {
+    return tags.keys();
 }
