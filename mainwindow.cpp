@@ -58,6 +58,8 @@ void MainWindow::eventoModificato(const QDate& dataPrec, const QDate& newData){
     deadlinesTab->viewRefresh();
     agendaTab->giornoSelezionato(dataPrec);
     agendaTab->giornoSelezionato(newData);
+    eventsTab->tagsUpdate();
+    eventsTab->refresh(cal->getImpegni());
 }
 
 
@@ -69,17 +71,27 @@ void MainWindow::eventoEliminato(Evento* ev, const QDate& data){
     }
     cal->removeEvento(ev);
     agendaTab->giornoSelezionato(data);
-
+    eventsTab->tagsUpdate();
+    eventsTab->refresh(cal->getImpegni());
 }
 
 
 void MainWindow::initConnections(){
-    connect(deadlinesTab, &DeadlineWindow::eventoEliminato, this, &MainWindow::eventoEliminato);
     connect(agendaTab, &Agenda::eventoEliminato, this, &MainWindow::eventoEliminato);
+    connect(agendaTab, &Agenda::richiestaEdit, this, &MainWindow::richiestaEdit);
+
+    connect(deadlinesTab, &DeadlineWindow::eventoEliminato, this, &MainWindow::eventoEliminato);
     connect(deadlinesTab, &DeadlineWindow::deadlineModificata, agendaTab, &Agenda::giornoSelezionato);
     connect(deadlinesTab, &DeadlineWindow::richiestaEdit, this, &MainWindow::richiestaEdit);
-    connect(agendaTab, &Agenda::richiestaEdit, this, &MainWindow::richiestaEdit);
-    connect(menu, &Menu::agendaLoaded, deadlinesTab, [this](){
+
+    connect(eventsTab, &ListaEventi::eventoEliminato, this, &MainWindow::eventoEliminato);
+    connect(eventsTab, &ListaEventi::richiestaEdit, this, &MainWindow::richiestaEdit);
+    connect(eventsTab, &ListaEventi::goTo, this, [this](Evento* ev){
+        tabWidgets->setCurrentWidget(agendaTab);
+        agendaTab->giornoSelezionato(ev->getData());
+    });
+    connect(menu, &Menu::agendaLoaded, this, [this](){
+        deadlinesTab->clearDeadlines();
         QVector<Evento*> impegni = cal->getImpegni();
         for(int i=0; i<impegni.size(); ++i){
             auto ev = dynamic_cast<Deadline*>(impegni.at(i));
@@ -88,6 +100,8 @@ void MainWindow::initConnections(){
             }
         }
         deadlinesTab->viewRefresh();
+        eventsTab->tagsUpdate();
+        eventsTab->refresh(cal->getImpegni());
     });
     connect(menu, &Menu::createNew, this, &MainWindow::richiestaCreate);
 }

@@ -147,7 +147,6 @@ void Menu:: initConnections(){
 
         QJsonArray eventi = eventiInput.array();
         EventoFactory evFactory;
-        scadenze->clearDeadlines();
         calendario->clear();
         for(int i=0; i<eventi.size(); ++i){
             QJsonObject ev = (eventi.at(i)).toObject();
@@ -157,7 +156,6 @@ void Menu:: initConnections(){
 
         if(percorso.endsWith(".xml",Qt::CaseInsensitive)){
             input.close();
-            scadenze->clearDeadlines();
             calendario->clear();
             bool success = XmlParser::loadFromXml(percorso,*calendario);
             if (!success)

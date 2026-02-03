@@ -15,20 +15,19 @@ QWidget* ListVisitor::buildListItem(Evento* ev, QHBoxLayout* layout){
 void ListVisitor::buildButtons(QHBoxLayout* layout, Evento* ev){
     ListaEventi* listaLocale = lista;
 
+    QPushButton* tastoGoTO = new QPushButton(QIcon(":/Icons/View/Icons/goto.svg"),"");
+    tastoGoTO->setStyleSheet("background-color: green");
+
     QPushButton* tastoEdit = new QPushButton(QIcon(":/Icons/View/Icons/edit.svg"),"");
     tastoEdit->setStyleSheet("background-color: cyan");
 
-    QPushButton* tastoElimina = new QPushButton(QIcon(":/Icons/View/Icons/deleteIcon.svg"),"");
-    tastoElimina->setStyleSheet("background-color: red");
-
+    layout->addWidget(tastoGoTO, 1);
     layout->addWidget(tastoEdit,1);
-    layout->addWidget(tastoElimina,1);
-
+    QObject::connect(tastoGoTO, &QPushButton::clicked, lista, [listaLocale, ev](){
+        listaLocale->emit goTo(ev);
+    });
     QObject::connect(tastoEdit, &QPushButton::clicked, lista, [listaLocale, ev](){
         listaLocale->emit richiestaEdit(ev);
-    });
-    QObject::connect(tastoElimina, &QPushButton::clicked, lista,[listaLocale, ev](){
-        listaLocale->emit eventoEliminato(ev, ev->getData());
     });
 }
 void ListVisitor::visit(Deadline& scadenza){
@@ -36,6 +35,7 @@ void ListVisitor::visit(Deadline& scadenza){
     QListWidgetItem* item = new QListWidgetItem(eventi);
     QHBoxLayout* layout = new QHBoxLayout;
     QWidget* evItem = buildListItem(event, layout);
+    layout->addStretch(3);
     buildButtons(layout,event);
     item->setData(Qt::UserRole, QVariant::fromValue(event));
     item->setBackground(scadenza.getCompletato() ? QColor(165,214,167) : QColor(225,0,0));

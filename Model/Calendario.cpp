@@ -5,6 +5,7 @@ Calendario::Calendario(QObject* parent): QObject(parent){}
 void Calendario::clear() { //sostituisco l'intero vettore
     qDeleteAll(impegni);
     impegni.clear();
+    tags.clear();
 }
 
 
@@ -42,6 +43,28 @@ QVector<Evento*> Calendario::getImpegni(const QDate& data) const{
         }
     }
     return impegniGiorno;
+}
+QVector<Evento*> Calendario::getImpegniByNome(const QString& nome) const{
+    if(nome.isEmpty()){
+        return impegni;
+    }
+    QVector<Evento*> impegniByNome;
+    for(int i=0; i<impegni.size(); ++i){
+        Evento* ev = impegni.at(i);
+        if(ev->getNome().contains(nome)){
+            impegniByNome.push_back(ev);
+        }
+    }
+    return impegniByNome;
+}
+QVector<Evento*> Calendario::getImpegniByTag(const QString& tag) const{
+    QVector<Evento*> impegniByTag;
+    for(int i=0; i<impegni.size(); ++i){
+        if(impegni.at(i)->getTag() == tag){
+            impegniByTag.push_back(impegni.at(i));
+        }
+    }
+    return impegniByTag;
 }
 QList<QString> Calendario::getTags() const {
     return tags.keys();

@@ -17,9 +17,13 @@ public:
     void clear();
     void addEvento(Evento* e);
     void removeEvento(Evento* e);
+    void tagsRefresh();
     QVector<Evento*> getImpegni() const;
     QVector<Evento*> getImpegni(const QDate& data) const;
+    QVector<Evento*> getImpegniByNome(const QString&) const;
+    QVector<Evento*> getImpegniByTag(const QString&) const;
     QList<QString> getTags() const;
+
 signals:
     void aggiuntoEvento(const QDate& data);
 };

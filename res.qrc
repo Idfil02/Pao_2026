@@ -6,5 +6,6 @@
         <file>View/Icons/settings.svg</file>
         <file>View/Icons/addnew.svg</file>
         <file>View/Icons/edit.svg</file>
+        <file>View/Icons/goto.svg</file>
     </qresource>
 </RCC>

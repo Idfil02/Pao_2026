@@ -1,32 +1,82 @@
 #include "listaeventi.h"
+#include "View/Visitors/listvisitor.h"
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 ListaEventi::ListaEventi(Calendario* cal,QWidget* parent):
     QWidget(parent), calendario(cal){
     QVBoxLayout* layout = new QVBoxLayout(this);
 
-    listaEventi = new QListWidget;
-    layout->addWidget(listaEventi);
+    searchBar = new QWidget(this);
+    QHBoxLayout* searchLayout = new QHBoxLayout(searchBar);
 
-    infoEvento = new QWidget(this);
-    infoEventoLayout = new QFormLayout;
-    layout->addWidget(infoEvento);
+    tagList = new QComboBox(searchBar);
+    searchLayout->addWidget(tagList, 0);
 
-    tags = calendario->getTags();
-    refresh();
+    searchText = new QLineEdit(searchBar);
+    searchText->setPlaceholderText("Cerca Evento...");
+    searchText->setClearButtonEnabled(true);
+    searchLayout->addWidget(searchText,1);
+
+    searchBtn = new QPushButton(searchBar);
+    searchBtn->setIcon(style()->standardIcon(QStyle::SP_FileDialogContentsView));
+    searchLayout->addWidget(searchBtn,0);
+
+    layout->addWidget(searchBar);
+
+    listaEventi = new QListWidget(this);
+    layout->addWidget(listaEventi,3);
+
+    initConnections();
+    tagsUpdate();
+    refresh(calendario->getImpegni());
 }
 
 void ListaEventi::tagsUpdate(){
+    tagList->clear();
     tags.clear();
+    tagList->addItem("Tutti");
     tags = calendario->getTags();
-}
-void ListaEventi::clearInfo(){
-    while(infoEventoLayout->count()){
-        infoEventoLayout->removeRow(0);
+    for(int i=0; i<tags.size(); ++i){
+        tagList->addItem(tags.at(i));
     }
 }
-void ListaEventi::refresh(){
-    clearInfo();
+void ListaEventi::refresh(const QVector<Evento*>& evs){
     listaEventi->clear();
-    QVector<Evento*> eventi = calendario->getImpegni();
+    ListVisitor LVST(listaEventi, this);
+    for(int i=0; i<evs.size(); i++){
+        Evento* e = evs.at(i);
+        if(e){
+            e->acceptVisitor(LVST);
+        }
+    }
 }
-
+QVector<Evento*>ListaEventi::filtraNome(QVector<Evento*>& in, const QString& nome){
+    if(!nome.isEmpty()){
+        for(int i=in.size()-1;i>=0; --i ){
+            if(!((in.at(i))->getNome()).contains(nome)){
+                qWarning() << "Cancellato "<<in.at(i)->getNome();
+                in.erase(in.begin()+i);
+            }
+        }
+    }
+    return in;
+}
+QVector<Evento*> ListaEventi::filtraTag(QVector<Evento*>& in, const QString& tag){
+    if( tag != "Tutti" || !tag.isEmpty()){
+        for(int i=in.size()-1;i>=0; --i){
+            if(in.at(i)->getTag() != tag){
+                qWarning()<<"escluso da ricercangs: "<<in.at(i)->getNome();
+                in.erase(in.begin()+i);
+            }
+        }
+    }
+    return in;
+}
+void ListaEventi::initConnections(){
+    connect(searchBtn, &QPushButton::clicked, this, [this](){
+        QVector<Evento*> inizioRicerca = calendario->getImpegni();
+        QVector<Evento*> filtratoTag = filtraTag(inizioRicerca, tagList->currentText());
+        QVector<Evento*> risultato = filtraNome(filtratoTag, searchText->text());
+        refresh(risultato);
+    });
+}

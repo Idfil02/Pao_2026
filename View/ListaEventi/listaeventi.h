@@ -2,7 +2,9 @@
 #define LISTAEVENTI_H
 #include <QWidget>
 #include <QListWidget>
-#include <QFormLayout>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QPushButton>
 #include "Model/Calendario.h"
 class ListaEventi : public QWidget
 {
@@ -11,20 +13,24 @@ class ListaEventi : public QWidget
 private:
     QList<QString> tags;
     QListWidget* listaEventi;
-    QWidget* infoEvento;
-    QFormLayout* infoEventoLayout;
     Calendario* calendario;
-    void initConnections() {};
+    QWidget* searchBar;
+    QComboBox* tagList;
+    QLineEdit* searchText;
+    QPushButton* searchBtn;
+    void initConnections();
+    QVector<Evento*> filtraNome(QVector<Evento*>&, const QString&);
+    QVector<Evento*> filtraTag(QVector<Evento*>&, const QString&);
+
 public:
     ListaEventi(Calendario*,QWidget* parent = nullptr);
     ~ListaEventi() = default;
     void tagsUpdate();
-    void clearList();
-    void clearInfo();
-    void refresh();
+    void refresh(const QVector<Evento*>&);
 signals:
     void richiestaEdit(Evento*);
     void eventoEliminato(Evento*, const QDate&);
+    void goTo(Evento*);
 };
 
 #endif // LISTAEVENTI_H
