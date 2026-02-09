@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "View/Visitors/editvisitor.h"
+#include "View/Visitors/Editvisitor.h"
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent){
     // Set window properties
     setWindowTitle("Agenda - PAO 2026");
@@ -39,6 +39,9 @@ void MainWindow::richiestaCreate(Evento* ev){
             this->deadlinesTab->addDeadline(t);
         }
     });
+    connect(EDITOR, &EditVisitor::eventoAnnullato, this, [this](){
+        tabWidgets->removeTab(tabWidgets->currentIndex());
+    });
 }
 
 
@@ -50,6 +53,9 @@ void MainWindow::richiestaEdit(Evento* ev){
     EditVisitor* EDITOR = new EditVisitor(layout, editPage);
     ev->acceptVisitor(*EDITOR);
     connect(EDITOR, &EditVisitor::eventoModificato, this, &MainWindow::eventoModificato);
+    connect(EDITOR, &EditVisitor::eventoAnnullato, this, [this](){
+        tabWidgets->removeTab(tabWidgets->currentIndex());
+    });
 }
 
 

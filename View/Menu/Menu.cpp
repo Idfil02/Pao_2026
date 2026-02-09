@@ -1,7 +1,7 @@
 #include "Menu.h"
 #include "Model/Riunione.h"
 #include "Model/Appuntamento.h"
-#include "eventofactory.h"
+#include "Eventofactory.h"
 #include "XmlParser.h"
 #include <QMessageBox>
 #include <QJsonObject>

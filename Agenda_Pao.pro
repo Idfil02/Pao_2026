@@ -18,12 +18,12 @@ SOURCES += \
     View/Agenda/Agenda.cpp \
     View/DeadlineWindow/DeadlineWindow.cpp \
     View/ListaEventi/listaeventi.cpp \
+    View/Menu/Eventofactory.cpp \
     View/Menu/Menu.cpp \
     View/Menu/XmlParser.cpp \
-    View/Menu/eventofactory.cpp \
     View/Visitors/AgendaVisitor.cpp \
+    View/Visitors/Editvisitor.cpp \
     View/Visitors/InfoVisitor.cpp \
-    View/Visitors/editvisitor.cpp \
     View/Visitors/listvisitor.cpp \
     main.cpp \
     mainwindow.cpp
@@ -39,12 +39,12 @@ HEADERS += \
     View/Agenda/Agenda.h \
     View/DeadlineWindow/DeadlineWindow.h \
     View/ListaEventi/listaeventi.h \
+    View/Menu/Eventofactory.h \
     View/Menu/Menu.h \
     View/Menu/XmlParser.h \
-    View/Menu/eventofactory.h \
     View/Visitors/AgendaVisitor.h \
+    View/Visitors/Editvisitor.h \
     View/Visitors/InfoVisitor.h \
-    View/Visitors/editvisitor.h \
     View/Visitors/listvisitor.h \
     mainwindow.h
 FORMS += \

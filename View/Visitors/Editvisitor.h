@@ -15,6 +15,7 @@ public:
     virtual void visit(Appuntamento&) override;
 signals:
     void eventoModificato(const QDate&, const QDate&);
+    void eventoAnnullato();
 };
 
 #endif // EDITVISITOR_H
