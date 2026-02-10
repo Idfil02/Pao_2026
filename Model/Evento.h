@@ -5,6 +5,7 @@
 #include <QDate>
 
 class EventVisitor;
+
 class Evento{
 private:
     QString nome;
@@ -22,8 +23,8 @@ public:
     void setTag(const QString&);
     void setDesc(const QString&);
     void setData(const QDate&);
-    virtual void acceptVisitor(EventVisitor&) = 0;
     virtual ~Evento() = default;
+    virtual void acceptVisitor(EventVisitor&) = 0;
     virtual QJsonObject toJson() const;
     virtual void toXml(QXmlStreamWriter&) const;
 };

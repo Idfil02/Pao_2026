@@ -7,8 +7,10 @@
 #include <QToolButton>
 #include "Model/Calendario.h"
 #include "View/DeadlineWindow/DeadlineWindow.h"
-class Menu: public QToolBar{
+
+class Menu: public QToolBar{    
     Q_OBJECT
+
 private:
     Calendario* calendario;
     DeadlineWindow* scadenze;
@@ -27,6 +29,7 @@ private:
 public:
     Menu(Calendario* cal,DeadlineWindow* scad,QWidget* parent = nullptr);
     ~Menu() = default;
+
 signals:
     void agendaLoaded();
     void createNew(Evento*);

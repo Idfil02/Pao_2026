@@ -2,6 +2,7 @@
 #include "EventVisitor.h"
 #include <QJsonObject>
 #include <QJsonArray>
+
 Riunione::Riunione(QString name,QString tg,QString dsc,QDate date,QTime start,QTime end, QString lnk):
     Attivita(name,tg,dsc,date,start,end), link(lnk){}
 
@@ -16,11 +17,9 @@ void Riunione::setPartecipanti(QVector<QString>& p) { //sostituisco l'intero vet
     partecipanti = p;
 }
 
-
 void Riunione::acceptVisitor(EventVisitor& visitor){
     visitor.visit(*this);
 }
-
 
 QJsonObject Riunione::toJson() const{
     QJsonObject output = this->Attivita::toJson();
@@ -33,7 +32,6 @@ QJsonObject Riunione::toJson() const{
     output["Tipo"] = 2;
     return output;
 }
-
 
 void Riunione::toXml(QXmlStreamWriter& w) const{
     w.writeStartElement("riunione");

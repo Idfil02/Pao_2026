@@ -1,25 +1,24 @@
 #include "mainwindow.h"
-#include "View/Visitors/Editvisitor.h"
+#include "View/Visitors/EditVisitor.h"
+#include <QMessageBox>
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent){
-    // Set window properties
     setWindowTitle("Agenda - PAO 2026");
-    // Create main tab widget
+    cal = new Calendario(this);
+    // Creazione tabs
     tabWidgets = new QTabWidget(this);
     setCentralWidget(tabWidgets);
-    cal = new Calendario(this);
-    // Create and add Agenda tab
     agendaTab = new Agenda(cal,this);
     tabWidgets->addTab(agendaTab, "Agenda");
-    // Create and add Deadlines tab
     deadlinesTab = new DeadlineWindow(cal,this);
     tabWidgets->addTab(deadlinesTab, "Scadenze");
-    // aggiunta tab lista eventi
     eventsTab = new ListaEventi(cal, this);
     tabWidgets->addTab(eventsTab, "Cerca Evento");
     //Aggiunta del Menu
     menu = new Menu(cal, deadlinesTab, this);
     addToolBar(Qt::TopToolBarArea, menu);
     this->setContextMenuPolicy(Qt::PreventContextMenu);
+    //connessione dei segnali
     initConnections();
 }
 
@@ -29,17 +28,25 @@ void MainWindow::richiestaCreate(Evento* ev){
     tabWidgets->addTab(editPage, "Aggiungi Evento");
     tabWidgets->setCurrentWidget(editPage);
     QFormLayout* layout = new QFormLayout(editPage);
-    EditVisitor* EDITOR = new EditVisitor(layout, editPage);
-    ev->acceptVisitor(*EDITOR);
-    connect(EDITOR, &EditVisitor::eventoModificato, this, [this, ev](){
-        this->cal->addEvento(ev);
-        this->eventoModificato(ev->getData(),ev->getData());
-        auto t = dynamic_cast<Deadline*>(ev);
-        if(t){
-            this->deadlinesTab->addDeadline(t);
+    EditVisitor* editor = new EditVisitor(layout, editPage);
+    ev->acceptVisitor(*editor);
+    connect(editor, &EditVisitor::eventoModificato, this, [this, ev](){
+        if(ev){
+            //aggiunta evento al calendario e refresh visualizzazione
+            this->cal->addEvento(ev);
+            //se deadline viene aggiunta nella tab deadlines
+            auto t = dynamic_cast<Deadline*>(ev);
+            if(t){
+                this->deadlinesTab->addDeadline(t);
+            }
+            this->eventoModificato(ev->getData(),ev->getData());
+        }
+        else{
+            QMessageBox::critical(this, "ERRORE","Non è stato possibile creare l'evento");
         }
     });
-    connect(EDITOR, &EditVisitor::eventoAnnullato, this, [this](){
+    connect(editor, &EditVisitor::eventoAnnullato, this, [this](){
+        //chiusura finestra di creazione evento
         tabWidgets->removeTab(tabWidgets->currentIndex());
     });
 }
@@ -50,17 +57,19 @@ void MainWindow::richiestaEdit(Evento* ev){
     tabWidgets->addTab(editPage, "Modifica Evento");
     tabWidgets->setCurrentWidget(editPage);
     QFormLayout* layout = new QFormLayout(editPage);
-    EditVisitor* EDITOR = new EditVisitor(layout, editPage);
-    ev->acceptVisitor(*EDITOR);
-    connect(EDITOR, &EditVisitor::eventoModificato, this, &MainWindow::eventoModificato);
-    connect(EDITOR, &EditVisitor::eventoAnnullato, this, [this](){
+    EditVisitor* editor = new EditVisitor(layout, editPage);
+    ev->acceptVisitor(*editor);
+    connect(editor, &EditVisitor::eventoModificato, this, &MainWindow::eventoModificato);
+    connect(editor, &EditVisitor::eventoAnnullato, this, [this](){
+        //chiusura finestra di creazione evento
         tabWidgets->removeTab(tabWidgets->currentIndex());
     });
 }
 
-
 void MainWindow::eventoModificato(const QDate& dataPrec, const QDate& newData){
+    //chiusura finestra di creazione-edit
     tabWidgets->removeTab(tabWidgets->currentIndex());
+    //aggiornamento visualizzazione eventi
     deadlinesTab->viewRefresh();
     agendaTab->giornoSelezionato(dataPrec);
     agendaTab->giornoSelezionato(newData);
@@ -75,6 +84,7 @@ void MainWindow::eventoEliminato(Evento* ev, const QDate& data){
         deadlinesTab->deleteDeadline(scad);
         deadlinesTab->viewRefresh();
     }
+    //rimozione evento dal calendario e refresh visualizzazione
     cal->removeEvento(ev);
     agendaTab->giornoSelezionato(data);
     eventsTab->tagsUpdate();
@@ -83,20 +93,24 @@ void MainWindow::eventoEliminato(Evento* ev, const QDate& data){
 
 
 void MainWindow::initConnections(){
+    //connessione segnali tab agenda
     connect(agendaTab, &Agenda::eventoEliminato, this, &MainWindow::eventoEliminato);
     connect(agendaTab, &Agenda::richiestaEdit, this, &MainWindow::richiestaEdit);
-
+    //connessione segnali tab deadlines
     connect(deadlinesTab, &DeadlineWindow::eventoEliminato, this, &MainWindow::eventoEliminato);
-    connect(deadlinesTab, &DeadlineWindow::deadlineModificata, agendaTab, &Agenda::giornoSelezionato);
     connect(deadlinesTab, &DeadlineWindow::richiestaEdit, this, &MainWindow::richiestaEdit);
-
+    connect(deadlinesTab, &DeadlineWindow::deadlineModificata, agendaTab, &Agenda::giornoSelezionato);
+    //connessione segnali tab lista eventi
     connect(eventsTab, &ListaEventi::eventoEliminato, this, &MainWindow::eventoEliminato);
     connect(eventsTab, &ListaEventi::richiestaEdit, this, &MainWindow::richiestaEdit);
     connect(eventsTab, &ListaEventi::goTo, this, [this](Evento* ev){
+        //focus sull evento nell'agenda
         tabWidgets->setCurrentWidget(agendaTab);
         agendaTab->giornoSelezionato(ev->getData());
     });
+    //connesione segnali menu
     connect(menu, &Menu::agendaLoaded, this, [this](){
+        //refresh tab secondarie dopo il caricamento del calendario
         deadlinesTab->clearDeadlines();
         QVector<Evento*> impegni = cal->getImpegni();
         for(int i=0; i<impegni.size(); ++i){

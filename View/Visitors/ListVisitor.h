@@ -3,7 +3,7 @@
 #include <QListWidget>
 #include <QHBoxLayout>
 #include "Model/EventVisitor.h"
-#include "View/ListaEventi/listaeventi.h"
+#include "View/ListaEventi/ListaEventi.h"
 
 class ListVisitor : public EventVisitor
 {

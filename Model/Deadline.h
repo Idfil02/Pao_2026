@@ -3,6 +3,7 @@
 #include <QString>
 #include <QDate>
 #include "Evento.h"
+
 class Deadline : public Evento{
 private:
     bool completato;
@@ -14,7 +15,5 @@ public:
     virtual void acceptVisitor(EventVisitor&) override;
     virtual QJsonObject toJson() const override;
     virtual void toXml(QXmlStreamWriter&) const override;
-    virtual ~Deadline() override = default;
-
 };
 #endif // DEADLINE_H

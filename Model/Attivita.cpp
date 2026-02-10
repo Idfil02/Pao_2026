@@ -1,6 +1,7 @@
 #include "Attivita.h"
 #include "EventVisitor.h"
 #include <QJsonObject>
+
 Attivita::Attivita(QString name,QString tg,QString desc,QDate date,QTime start,QTime end):
     Evento(name,tg,desc,date),oraInizio(start),oraFine(end){}
 

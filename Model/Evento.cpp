@@ -1,6 +1,8 @@
 #include "Evento.h"
 #include <QJsonObject>
-Evento::Evento(QString name,QString tg, QString dsc,QDate date):nome(name),tag(tg), desc(dsc), data(date){}
+
+Evento::Evento(QString name,QString tg, QString dsc,QDate date):
+    nome(name),tag(tg), desc(dsc), data(date){}
 
 QString Evento::getNome() const {return nome;}
 

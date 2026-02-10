@@ -1,6 +1,7 @@
 #include "Appuntamento.h"
 #include "EventVisitor.h"
 #include <QJsonObject>
+
 Appuntamento::Appuntamento(QString name,QString tg,QString desc,QDate date,QTime start,QTime end,QString place,QString cont):
     Attivita(name,tg,desc,date,start,end), luogo(place), contatto(cont){}
 
@@ -16,7 +17,6 @@ void Appuntamento::acceptVisitor(EventVisitor& visitor){
     visitor.visit(*this);
 }
 
-
 QJsonObject Appuntamento::toJson() const{
     QJsonObject output = this->Attivita::toJson();
     output["Luogo"] = luogo;
@@ -24,7 +24,6 @@ QJsonObject Appuntamento::toJson() const{
     output["Tipo"] = 3;
     return output;
 }
-
 
 void Appuntamento::toXml(QXmlStreamWriter& w) const{
     w.writeStartElement("appuntamento");

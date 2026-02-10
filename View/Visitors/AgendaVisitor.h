@@ -5,11 +5,12 @@
 #include <QHBoxLayout>
 #include <QListWidget>
 #include <QTextEdit>
+
 class AgendaVisitor : public EventVisitor{
 private:
     QListWidget* eventiDelGiorno;
-    QWidget* buildListItem(Evento*,QHBoxLayout*);
     Agenda* agenda;
+    QWidget* buildListItem(Evento*,QHBoxLayout*);
     void buildButtons(QHBoxLayout*, Evento *ev);
 public:
     AgendaVisitor(QListWidget*, Agenda*);

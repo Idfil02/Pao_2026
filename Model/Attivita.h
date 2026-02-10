@@ -2,6 +2,7 @@
 #define ATTIVITA_H
 #include "Evento.h"
 #include <QTime>
+
 class Attivita : public Evento{
 private:
     QTime oraInizio;

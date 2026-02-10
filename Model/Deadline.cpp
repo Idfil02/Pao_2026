@@ -1,6 +1,7 @@
 #include "Deadline.h"
 #include "EventVisitor.h"
 #include <QJsonObject>
+
 Deadline::Deadline(QString name,QString tg,QString dsc,QDate date, bool c):
     Evento(name,tg,dsc,date), completato(c){}
 
@@ -18,7 +19,6 @@ QJsonObject Deadline::toJson() const{
     output["Tipo"] = 0;
     return output;
 }
-
 
 void Deadline::toXml(QXmlStreamWriter& w) const{
     w.writeStartElement("deadline");

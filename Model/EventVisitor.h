@@ -3,6 +3,7 @@
 #include "Deadline.h"
 #include "Riunione.h"
 #include "Appuntamento.h"
+
 class EventVisitor{
 public:
     virtual void visit(Deadline&) = 0;

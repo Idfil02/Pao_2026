@@ -1,26 +1,27 @@
-#include "listvisitor.h"
+#include "ListVisitor.h"
 #include <QLabel>
 #include <QPushButton>
+
 ListVisitor::ListVisitor(QListWidget* evs, ListaEventi* listaParent):
     eventi(evs), lista(listaParent){}
 
+//metodo di utility per la visulazzazione di un evento nella lista eventi
 QWidget* ListVisitor::buildListItem(Evento* ev, QHBoxLayout* layout){
     QWidget* eventItem = new QWidget;
     eventItem->setLayout(layout);
     layout->setContentsMargins(2, 2, 2, 2);
-    QLabel* nome = new QLabel(ev->getNome());    //inserisco titolo dell'evento
+    QLabel* nome = new QLabel(ev->getNome());
     layout->addWidget(nome,3);
     return eventItem;
 }
+
+//metodo di utility per la visuallazzione dei bottoni a lato dei singoli eventi listati
 void ListVisitor::buildButtons(QHBoxLayout* layout, Evento* ev){
     ListaEventi* listaLocale = lista;
-
     QPushButton* tastoGoTO = new QPushButton(QIcon(":/Icons/View/Icons/goto.svg"),"");
     tastoGoTO->setStyleSheet("background-color: green");
-
     QPushButton* tastoEdit = new QPushButton(QIcon(":/Icons/View/Icons/edit.svg"),"");
     tastoEdit->setStyleSheet("background-color: cyan");
-
     layout->addWidget(tastoGoTO, 1);
     layout->addWidget(tastoEdit,1);
     QObject::connect(tastoGoTO, &QPushButton::clicked, lista, [listaLocale, ev](){
@@ -30,69 +31,57 @@ void ListVisitor::buildButtons(QHBoxLayout* layout, Evento* ev){
         listaLocale->emit richiestaEdit(ev);
     });
 }
+
 void ListVisitor::visit(Deadline& scadenza){
-    Evento* event = &scadenza;
-    QListWidgetItem* item = new QListWidgetItem(eventi);
+    QListWidgetItem* listItem = new QListWidgetItem(eventi);
     QHBoxLayout* layout = new QHBoxLayout;
-    QWidget* evItem = buildListItem(event, layout);
+    QWidget* evItem = buildListItem(&scadenza, layout);
     layout->addStretch(3);
-    buildButtons(layout,event);
-    item->setData(Qt::UserRole, QVariant::fromValue(event));
-    item->setBackground(scadenza.getCompletato() ? QColor(165,214,167) : QColor(225,0,0));
-    item->setSizeHint(evItem->sizeHint());
-    eventi->setItemWidget(item, evItem);
+    buildButtons(layout,&scadenza);
+    listItem->setData(Qt::UserRole, QVariant::fromValue(&scadenza));
+    listItem->setBackground(scadenza.getCompletato() ? QColor(165,214,167) : QColor(225,0,0));
+    listItem->setSizeHint(evItem->sizeHint());
+    eventi->setItemWidget(listItem, evItem);
 }
 
-
 void ListVisitor::visit(Attivita& att){
-    Evento* event = &att;
-    QListWidgetItem* item = new QListWidgetItem(eventi);
+    QListWidgetItem* listItem = new QListWidgetItem(eventi);
     QHBoxLayout* layout = new QHBoxLayout;
-    QWidget* evItem = buildListItem(event, layout);
-
+    QWidget* evItem = buildListItem(&att, layout);
     QString time = att.getOraInizio().toString("HH:mm")+"-"+att.getOraFine().toString("HH:mm");
     QLabel* orario = new QLabel(time);
     layout->addWidget(orario,3);
-    buildButtons(layout,event);
-
-    item->setData(Qt::UserRole, QVariant::fromValue(event));
-    item->setBackground(QColor(0,204,204));
-    item->setSizeHint(evItem->sizeHint());
-    eventi->setItemWidget(item, evItem);
+    buildButtons(layout,&att);
+    listItem->setData(Qt::UserRole, QVariant::fromValue(&att));
+    listItem->setBackground(QColor(0,204,204));
+    listItem->setSizeHint(evItem->sizeHint());
+    eventi->setItemWidget(listItem, evItem);
 }
 
-
 void ListVisitor::visit(Riunione& riunione){
-    Evento* event = &riunione;
-    QListWidgetItem* item = new QListWidgetItem(eventi);
+    QListWidgetItem* listItem = new QListWidgetItem(eventi);
     QHBoxLayout* layout = new QHBoxLayout;
-    QWidget* evItem = buildListItem(event, layout);
-
+    QWidget* evItem = buildListItem(&riunione, layout);
     QString time = riunione.getOraInizio().toString("HH:mm")+"-"+riunione.getOraFine().toString("HH:mm");
     QLabel* orario = new QLabel(time);
     layout->addWidget(orario,3);
-    buildButtons(layout,event);
-
-    item->setData(Qt::UserRole, QVariant::fromValue(event));
-    item->setBackground(QColor(224,224,224));
-    item->setSizeHint(evItem->sizeHint());
-    eventi->setItemWidget(item, evItem);
+    buildButtons(layout,&riunione);
+    listItem->setData(Qt::UserRole, QVariant::fromValue(&riunione));
+    listItem->setBackground(QColor(224,224,224));
+    listItem->setSizeHint(evItem->sizeHint());
+    eventi->setItemWidget(listItem, evItem);
 }
 
-
 void ListVisitor::visit(Appuntamento& app){
-    Evento* event = &app;
-    QListWidgetItem* item = new QListWidgetItem(eventi);
+    QListWidgetItem* listItem = new QListWidgetItem(eventi);
     QHBoxLayout* layout = new QHBoxLayout;
-    QWidget* evItem = buildListItem(event, layout);
-
+    QWidget* evItem = buildListItem(&app, layout);
     QString time = app.getOraInizio().toString("HH:mm")+"-"+app.getOraFine().toString("HH:mm");
     QLabel* orario = new QLabel(time);
     layout->addWidget(orario,3);
-    buildButtons(layout,event);
-
-    item->setData(Qt::UserRole, QVariant::fromValue(event));
-    item->setBackground(QColor(224,224,224));
-    item->setSizeHint(evItem->sizeHint());
-    eventi->setItemWidget(item, evItem);
+    buildButtons(layout,&app);
+    listItem->setData(Qt::UserRole, QVariant::fromValue(&app));
+    listItem->setBackground(QColor(224,224,224));
+    listItem->setSizeHint(evItem->sizeHint());
+    eventi->setItemWidget(listItem, evItem);
 }

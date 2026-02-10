@@ -17,14 +17,14 @@ SOURCES += \
     Model/Riunione.cpp \
     View/Agenda/Agenda.cpp \
     View/DeadlineWindow/DeadlineWindow.cpp \
-    View/ListaEventi/listaeventi.cpp \
-    View/Menu/Eventofactory.cpp \
+    View/ListaEventi/ListaEventi.cpp \
+    View/Menu/EventoFactory.cpp \
     View/Menu/Menu.cpp \
     View/Menu/XmlParser.cpp \
     View/Visitors/AgendaVisitor.cpp \
-    View/Visitors/Editvisitor.cpp \
+    View/Visitors/EditVisitor.cpp \
     View/Visitors/InfoVisitor.cpp \
-    View/Visitors/listvisitor.cpp \
+    View/Visitors/ListVisitor.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -38,14 +38,14 @@ HEADERS += \
     Model/Riunione.h \
     View/Agenda/Agenda.h \
     View/DeadlineWindow/DeadlineWindow.h \
-    View/ListaEventi/listaeventi.h \
-    View/Menu/Eventofactory.h \
+    View/ListaEventi/ListaEventi.h \
+    View/Menu/EventoFactory.h \
     View/Menu/Menu.h \
     View/Menu/XmlParser.h \
     View/Visitors/AgendaVisitor.h \
-    View/Visitors/Editvisitor.h \
+    View/Visitors/EditVisitor.h \
     View/Visitors/InfoVisitor.h \
-    View/Visitors/listvisitor.h \
+    View/Visitors/ListVisitor.h \
     mainwindow.h
 FORMS += \
     mainwindow.ui

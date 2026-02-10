@@ -2,6 +2,7 @@
 #define INFOVISITOR_H
 #include "Model/EventVisitor.h"
 #include <QFormLayout>
+
 class InfoVisitor : public EventVisitor{
 private:
     QFormLayout* dettagliEvento;

@@ -1,6 +1,7 @@
 #ifndef APPUNTAMENTO_H
 #define APPUNTAMENTO_H
 #include "Attivita.h"
+
 class Appuntamento : public Attivita{
 private:
     QString luogo;
