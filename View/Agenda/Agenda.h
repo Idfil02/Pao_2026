@@ -18,7 +18,7 @@ private:
     QListWidget* eventiDelGiorno;
     QFormLayout* dettagliEvento;
     Calendario* calendario;
-    void dataConImpegni(const QDate&);
+    void dataConImpegni(const QDate&) const;
     void initConnections();
 public slots:
     void cambioEvento(QListWidgetItem*);

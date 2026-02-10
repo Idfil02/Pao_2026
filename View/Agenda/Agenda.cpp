@@ -55,7 +55,7 @@ void Agenda::giornoSelezionato(const QDate& data){
 }
 
 
-void Agenda::dataConImpegni(const QDate& data){ //attivato quando si aggiunge un impegno a una data, cambio colore per segnalare
+void Agenda::dataConImpegni(const QDate& data) const{ //attivato quando si aggiunge un impegno a una data, cambio colore per segnalare
     QTextCharFormat* format = new QTextCharFormat;
     int num_impegni = calendario->getImpegni(data).size();
     format->setBackground(num_impegni == 0 ? Qt::white : QColor(217,101,43));

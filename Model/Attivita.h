@@ -14,7 +14,7 @@ public:
     void setOraInizio(QTime);
     void setOraFine(QTime);
     virtual void acceptVisitor(EventVisitor&) override;
-    QJsonObject toJson() const override;
+    virtual QJsonObject toJson() const override;
     virtual void toXml(QXmlStreamWriter&) const override;
 };
 #endif // ATTIVITA_H

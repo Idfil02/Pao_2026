@@ -7,7 +7,6 @@
 
 class ListVisitor : public EventVisitor
 {
-public:
 private:
     QListWidget* eventi;
     QWidget* buildListItem(Evento*,QHBoxLayout*);

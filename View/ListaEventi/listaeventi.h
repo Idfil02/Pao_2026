@@ -19,8 +19,8 @@ private:
     QLineEdit* searchText;
     QPushButton* searchBtn;
     void initConnections();
-    QVector<Evento*> filtraNome(QVector<Evento*>&, const QString&);
-    QVector<Evento*> filtraTag(QVector<Evento*>&, const QString&);
+    QVector<Evento*> filtraNome(QVector<Evento*>&, const QString&) const;
+    QVector<Evento*> filtraTag(QVector<Evento*>&, const QString&) const;
 
 public:
     ListaEventi(Calendario*,QWidget* parent = nullptr);

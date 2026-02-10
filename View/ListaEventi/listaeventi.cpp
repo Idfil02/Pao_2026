@@ -50,22 +50,21 @@ void ListaEventi::refresh(const QVector<Evento*>& evs){
         }
     }
 }
-QVector<Evento*>ListaEventi::filtraNome(QVector<Evento*>& in, const QString& nome){
+QVector<Evento*>ListaEventi::filtraNome(QVector<Evento*>& in, const QString& nome) const{
     if(!nome.isEmpty()){
         for(int i=in.size()-1;i>=0; --i ){
             if(!((in.at(i))->getNome()).contains(nome)){
-                qWarning() << "Cancellato "<<in.at(i)->getNome();
                 in.erase(in.begin()+i);
             }
         }
     }
     return in;
 }
-QVector<Evento*> ListaEventi::filtraTag(QVector<Evento*>& in, const QString& tag){
-    if( tag != "Tutti" || !tag.isEmpty()){
+QVector<Evento*> ListaEventi::filtraTag(QVector<Evento*>& in, const QString& tag) const {
+    if(tag == "Tutti") return calendario->getImpegni();
+    if(!tag.isEmpty()){
         for(int i=in.size()-1;i>=0; --i){
             if(in.at(i)->getTag() != tag){
-                qWarning()<<"escluso da ricercangs: "<<in.at(i)->getNome();
                 in.erase(in.begin()+i);
             }
         }
