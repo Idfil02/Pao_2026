@@ -38,7 +38,7 @@ void ListVisitor::visit(Deadline& scadenza){
     QWidget* evItem = buildListItem(&scadenza, layout);
     layout->addStretch(3);
     buildButtons(layout,&scadenza);
-    listItem->setData(Qt::UserRole, QVariant::fromValue(&scadenza));
+    listItem->setData(Qt::UserRole, QVariant::fromValue(static_cast<Evento*>(&scadenza)));  //cast esplicito a Evento in quanto Qvariant non converte automaticamente i sottotipi
     listItem->setBackground(scadenza.getCompletato() ? QColor(165,214,167) : QColor(225,0,0));
     listItem->setSizeHint(evItem->sizeHint());
     eventi->setItemWidget(listItem, evItem);
@@ -52,7 +52,7 @@ void ListVisitor::visit(Attivita& att){
     QLabel* orario = new QLabel(time);
     layout->addWidget(orario,3);
     buildButtons(layout,&att);
-    listItem->setData(Qt::UserRole, QVariant::fromValue(&att));
+    listItem->setData(Qt::UserRole, QVariant::fromValue(static_cast<Evento*>(&att)));   //cast esplicito a Evento in quanto Qvariant non converte automaticamente i sottotipi
     listItem->setBackground(QColor(0,204,204));
     listItem->setSizeHint(evItem->sizeHint());
     eventi->setItemWidget(listItem, evItem);
@@ -66,7 +66,7 @@ void ListVisitor::visit(Riunione& riunione){
     QLabel* orario = new QLabel(time);
     layout->addWidget(orario,3);
     buildButtons(layout,&riunione);
-    listItem->setData(Qt::UserRole, QVariant::fromValue(&riunione));
+    listItem->setData(Qt::UserRole, QVariant::fromValue(static_cast<Evento*>(&riunione)));  //cast esplicito a Evento in quanto Qvariant non converte automaticamente i sottotipi
     listItem->setBackground(QColor(224,224,224));
     listItem->setSizeHint(evItem->sizeHint());
     eventi->setItemWidget(listItem, evItem);
@@ -80,7 +80,7 @@ void ListVisitor::visit(Appuntamento& app){
     QLabel* orario = new QLabel(time);
     layout->addWidget(orario,3);
     buildButtons(layout,&app);
-    listItem->setData(Qt::UserRole, QVariant::fromValue(&app));
+    listItem->setData(Qt::UserRole, QVariant::fromValue(static_cast<Evento*>(&app)));   //cast esplicito a Evento in quanto Qvariant non converte automaticamente i sottotipi
     listItem->setBackground(QColor(224,224,224));
     listItem->setSizeHint(evItem->sizeHint());
     eventi->setItemWidget(listItem, evItem);

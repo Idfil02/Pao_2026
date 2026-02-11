@@ -22,7 +22,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent){
     initConnections();
 }
 
-
 void MainWindow::richiestaCreate(Evento* ev){
     QWidget* editPage = new QWidget(tabWidgets);
     tabWidgets->addTab(editPage, "Aggiungi Evento");
@@ -51,7 +50,6 @@ void MainWindow::richiestaCreate(Evento* ev){
     });
 }
 
-
 void MainWindow::richiestaEdit(Evento* ev){
     QWidget* editPage = new QWidget(tabWidgets);
     tabWidgets->addTab(editPage, "Modifica Evento");
@@ -77,7 +75,6 @@ void MainWindow::eventoModificato(const QDate& dataPrec, const QDate& newData){
     eventsTab->refresh(cal->getImpegni());
 }
 
-
 void MainWindow::eventoEliminato(Evento* ev, const QDate& data){
     Deadline* scad = dynamic_cast<Deadline*>(ev);
     if(scad){ //se è una scadenza la devo togliere anche dal vettore di scadenze
@@ -90,7 +87,6 @@ void MainWindow::eventoEliminato(Evento* ev, const QDate& data){
     eventsTab->tagsUpdate();
     eventsTab->refresh(cal->getImpegni());
 }
-
 
 void MainWindow::initConnections(){
     //connessione segnali tab agenda
