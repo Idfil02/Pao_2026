@@ -43,10 +43,24 @@ bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
                         r.readNext();
                         if(r.tokenType() == QXmlStreamReader::Characters){
                             QString value = r.text().toString();
-                            if(fieldName == "nome") deadline->setNome(value);
+                            if(fieldName == "nome"){
+                                if(!value.isEmpty() && !value.isNull())
+                                    deadline->setNome(value);
+                                else {
+                                    delete deadline;
+                                    return false;
+                                }
+                            }
                             else if(fieldName == "tag") deadline->setTag(value);
                             else if(fieldName == "desc") deadline->setDesc(value);
-                            else if(fieldName == "data") deadline->setData(QDate::fromString(value));
+                            else if(fieldName == "data"){
+                                if(QDate::fromString(value).isValid())
+                                    deadline->setData(QDate::fromString(value));
+                                else{
+                                    delete deadline;
+                                    return false;
+                                }
+                            }
                             else if(fieldName == "completato") deadline->setCompletato(value == "true");
                         }
                     }
@@ -63,12 +77,40 @@ bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
                         r.readNext();
                         if(r.tokenType() == QXmlStreamReader::Characters){
                             QString value = r.text().toString();
-                            if(fieldName == "nome") attivita->setNome(value);
+                            if(fieldName == "nome"){
+                                if(!value.isEmpty() && !value.isNull())
+                                    attivita->setNome(value);
+                                else {
+                                    delete attivita;
+                                    return false;
+                                }
+                            }
                             else if(fieldName == "tag") attivita->setTag(value);
                             else if(fieldName == "desc") attivita->setDesc(value);
-                            else if(fieldName == "data") attivita->setData(QDate::fromString(value));
-                            else if(fieldName == "ora_inizio") attivita->setOraInizio(QTime::fromString(value));
-                            else if(fieldName == "ora_fine") attivita->setOraFine(QTime::fromString(value));
+                            else if(fieldName == "data"){
+                                if(QDate::fromString(value).isValid())
+                                    attivita->setData(QDate::fromString(value));
+                                else{
+                                    delete attivita;
+                                    return false;
+                                }
+                            }
+                            else if(fieldName == "ora_inizio"){
+                                if(QTime::fromString(value).isValid())
+                                attivita->setOraInizio(QTime::fromString(value));
+                                else{
+                                    delete attivita;
+                                    return false;
+                                }
+                            }
+                            else if(fieldName == "ora_fine"){
+                                if(QTime::fromString(value).isValid())
+                                    attivita->setOraInizio(QTime::fromString(value));
+                                else{
+                                    delete attivita;
+                                    return false;
+                                }
+                            }
                         }
                     }
                 }
@@ -89,7 +131,12 @@ bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
                                 if(r.tokenType() == QXmlStreamReader::StartElement && r.name() == "persona"){
                                     r.readNext();
                                     if(r.tokenType() == QXmlStreamReader::Characters){
-                                        partecipanti.push_back(r.text().toString());
+                                        if(!r.text().toString().isEmpty() && !r.text().toString().isNull())
+                                            partecipanti.push_back(r.text().toString());
+                                        else{
+                                            delete riunione;
+                                            return false;
+                                        }
                                     }
                                 }
                                 r.readNext();
@@ -99,12 +146,40 @@ bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
                             r.readNext();
                             if(r.tokenType() == QXmlStreamReader::Characters){
                                 QString value = r.text().toString();
-                                if(fieldName == "nome") riunione->setNome(value);
+                                if(fieldName == "nome"){
+                                    if(!value.isEmpty() && !value.isNull())
+                                        riunione->setNome(value);
+                                    else {
+                                        delete riunione;
+                                        return false;
+                                    }
+                                }
                                 else if(fieldName == "tag") riunione->setTag(value);
                                 else if(fieldName == "desc") riunione->setDesc(value);
-                                else if(fieldName == "data") riunione->setData(QDate::fromString(value));
-                                else if(fieldName == "ora_inizio") riunione->setOraInizio(QTime::fromString(value));
-                                else if(fieldName == "ora_fine") riunione->setOraFine(QTime::fromString(value));
+                                else if(fieldName == "data"){
+                                    if(QDate::fromString(value).isValid())
+                                        riunione->setData(QDate::fromString(value));
+                                    else{
+                                        delete riunione;
+                                        return false;
+                                    }
+                                }
+                                else if(fieldName == "ora_inizio"){
+                                    if(QTime::fromString(value).isValid())
+                                        riunione->setOraInizio(QTime::fromString(value));
+                                    else{
+                                        delete riunione;
+                                        return false;
+                                    }
+                                }
+                                else if(fieldName == "ora_fine"){
+                                    if(QTime::fromString(value).isValid())
+                                        riunione->setOraInizio(QTime::fromString(value));
+                                    else{
+                                        delete riunione;
+                                        return false;
+                                    }
+                                }
                                 else if(fieldName == "link") riunione->setLink(value);
                             }
                         }
@@ -123,13 +198,48 @@ bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
                         r.readNext();
                         if(r.tokenType() == QXmlStreamReader::Characters){
                             QString value = r.text().toString();
-                            if(fieldName == "nome") appuntamento->setNome(value);
+                            if(fieldName == "nome"){
+                                if(!value.isEmpty() && !value.isNull())
+                                    appuntamento->setNome(value);
+                                else {
+                                    delete appuntamento;
+                                    return false;
+                                }
+                            }
                             else if(fieldName == "tag") appuntamento->setTag(value);
                             else if(fieldName == "desc") appuntamento->setDesc(value);
-                            else if(fieldName == "data") appuntamento->setData(QDate::fromString(value));
-                            else if(fieldName == "ora_inizio") appuntamento->setOraInizio(QTime::fromString(value));
-                            else if(fieldName == "ora_fine") appuntamento->setOraFine(QTime::fromString(value));
-                            else if(fieldName == "luogo") appuntamento->setLuogo(value);
+                            else if(fieldName == "data"){
+                                if(QDate::fromString(value).isValid())
+                                    appuntamento->setData(QDate::fromString(value));
+                                else{
+                                    delete appuntamento;
+                                    return false;
+                                }
+                            }
+                            else if(fieldName == "ora_inizio"){
+                                if(QTime::fromString(value).isValid())
+                                    appuntamento->setOraInizio(QTime::fromString(value));
+                                else{
+                                    delete appuntamento;
+                                    return false;
+                                }
+                            }
+                            else if(fieldName == "ora_fine"){
+                                if(QTime::fromString(value).isValid())
+                                    appuntamento->setOraInizio(QTime::fromString(value));
+                                else{
+                                    delete appuntamento;
+                                    return false;
+                                }
+                            }
+                            else if(fieldName == "luogo"){
+                                if(!value.isEmpty() && !value.isNull())
+                                    appuntamento->setNome(value);
+                                else {
+                                    delete appuntamento;
+                                    return false;
+                                }
+                            }
                             else if(fieldName == "contatto") appuntamento->setContatto(value);
                         }
                     }
