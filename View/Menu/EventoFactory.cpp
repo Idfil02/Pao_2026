@@ -70,4 +70,5 @@ bool EventoFactory::BuildEvento(Calendario* cal, QJsonObject obj){
     default:
         break;
     }
+    return true;
 };
