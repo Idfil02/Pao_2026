@@ -41,7 +41,7 @@ QWidget* DeadlineWindow::buildDeadlineItem(Deadline* d){
     tastoElimina->setStyleSheet("background-color: red");
     layout->addWidget(tastoElimina);
     //quando viene cliccata la checkbox modifico la scadenza d e aggiorno la visualizzazione
-    connect(checkbox, &QCheckBox::checkStateChanged, this, [this,d](Qt::CheckState stato){
+    connect(checkbox, &QCheckBox::stateChanged, this, [this,d](int stato){
         d->setCompletato(stato);
         viewRefresh();
         emit deadlineModificata(d->getData());

@@ -37,7 +37,7 @@ bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
             if(elementName == "deadline"){
                 //creo l'oggetto deadline e assegno i valori letti indipendentemente dall'ordine in cui si trovano
                 Deadline* deadline = new Deadline();
-                while(!(r.tokenType() == QXmlStreamReader::EndElement && r.name() == "deadline")){
+                while(!(r.tokenType() == QXmlStreamReader::EndElement && r.name().toString() == "deadline")){
                     r.readNext();
                     if(r.tokenType() == QXmlStreamReader::StartElement){
                         QString fieldName = r.name().toString();
@@ -71,7 +71,7 @@ bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
             else if(elementName == "attivita"){
                 //creo l'oggetto attivita e assegno i valori letti indipendentemente dall'ordine in cui si trovano
                 Attivita* attivita = new Attivita();
-                while(!(r.tokenType() == QXmlStreamReader::EndElement && r.name() == "attivita")){
+                while(!(r.tokenType() == QXmlStreamReader::EndElement && r.name().toString() == "attivita")){
                     r.readNext();
                     if(r.tokenType() == QXmlStreamReader::StartElement){
                         QString fieldName = r.name().toString();
@@ -121,15 +121,15 @@ bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
                 //creo l'oggetto riunione e assegno i valori letti indipendentemente dall'ordine in cui si trovano
                 Riunione* riunione = new Riunione();
                 QVector<QString> partecipanti;
-                while(!(r.tokenType() == QXmlStreamReader::EndElement && r.name() == "riunione")){
+                while(!(r.tokenType() == QXmlStreamReader::EndElement && r.name().toString() == "riunione")){
                     r.readNext();
                     if(r.tokenType() == QXmlStreamReader::StartElement){
                         QString fieldName = r.name().toString();
                         if(fieldName == "partecipanti"){
                             r.readNext();
                             //inserisco partecipanti nel vettore per ogni elemento persona che trovo
-                            while(!(r.tokenType() == QXmlStreamReader::EndElement && r.name() == "partecipanti")){
-                                if(r.tokenType() == QXmlStreamReader::StartElement && r.name() == "persona"){
+                            while(!(r.tokenType() == QXmlStreamReader::EndElement && r.name().toString() == "partecipanti")){
+                                if(r.tokenType() == QXmlStreamReader::StartElement && r.name().toString() == "persona"){
                                     r.readNext();
                                     if(r.tokenType() == QXmlStreamReader::Characters){
                                         if(!r.text().toString().isEmpty() && !r.text().toString().isNull())
@@ -192,7 +192,7 @@ bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
             else if(elementName == "appuntamento"){
                 //creo l'oggetto appuntamento e assegno i valori letti indipendentemente dall'ordine in cui si trovano
                 Appuntamento* appuntamento = new Appuntamento();
-                while(!(r.tokenType() == QXmlStreamReader::EndElement && r.name() == "appuntamento")){
+                while(!(r.tokenType() == QXmlStreamReader::EndElement && r.name().toString() == "appuntamento")){
                     r.readNext();
                     if(r.tokenType() == QXmlStreamReader::StartElement){
                         QString fieldName = r.name().toString();

@@ -25,6 +25,7 @@ SOURCES += \
     View/Visitors/EditVisitor.cpp \
     View/Visitors/InfoVisitor.cpp \
     View/Visitors/ListVisitor.cpp \
+    View/Visitors/RicercaVisitor.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -46,6 +47,7 @@ HEADERS += \
     View/Visitors/EditVisitor.h \
     View/Visitors/InfoVisitor.h \
     View/Visitors/ListVisitor.h \
+    View/Visitors/RicercaVisitor.h \
     mainwindow.h
 FORMS += \
     mainwindow.ui

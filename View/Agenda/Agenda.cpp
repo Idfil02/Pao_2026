@@ -36,9 +36,9 @@ void Agenda::giornoSelezionato(const QDate& data){
     eventiDelGiorno->clear(); //pulisco la lista degli eventi
     clearInfo(); //pulisco la vista
     QVector<Evento*> impegniGiorno = calendario->getImpegniByData(data); //prendo tutti gli impegni della data selezionata
-    AgendaVisitor visitor(eventiDelGiorno, this);
+    AgendaVisitor AV(eventiDelGiorno, this);
     for(int i=0; i<impegniGiorno.size(); ++i){        //visito gli eventi
-        impegniGiorno.at(i)->acceptVisitor(visitor);
+        impegniGiorno.at(i)->acceptVisitor(AV);
     }
     if(eventiDelGiorno->count()==0){ //se la data non ha eventi, metto un placeholder per segnalarlo
         QListWidgetItem* placeholder = new QListWidgetItem("Nessun Evento", eventiDelGiorno);
@@ -59,8 +59,8 @@ void Agenda::cambioEvento(QListWidgetItem* item){ //quando cliccato un evento, m
     clearInfo();//ripulisco le informazioni vecchie
     Evento* e = item->data(Qt::UserRole).value<Evento*>(); //recupero il puntatore dalla lista degli eventi
     if(e){
-        InfoVisitor visitor(dettagliEvento);
-        e->acceptVisitor(visitor); //visito l'evento
+        InfoVisitor IV(dettagliEvento);
+        e->acceptVisitor(IV); //visito l'evento
     }
 }
 

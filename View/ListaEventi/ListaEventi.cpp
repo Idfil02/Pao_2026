@@ -1,5 +1,5 @@
 #include "ListaEventi.h"
-#include "View/Visitors/ListVisitor.h"
+#include "View/Visitors/RicercaVisitor.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
@@ -37,11 +37,11 @@ void ListaEventi::tagsUpdate(){
 
 void ListaEventi::refresh(const QVector<Evento*>& evs){
     listaEventi->clear();
-    ListVisitor visitor(listaEventi, this);
+    RicercaVisitor RV(listaEventi, this);
     for(int i=0; i<evs.size(); i++){
         Evento* e = evs.at(i);
         if(e){
-            e->acceptVisitor(visitor);
+            e->acceptVisitor(RV);
         }
     }
 }

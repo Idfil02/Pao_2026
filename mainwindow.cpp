@@ -118,6 +118,9 @@ void MainWindow::initConnections(){
         deadlinesTab->viewRefresh();
         eventsTab->tagsUpdate();
         eventsTab->refresh(cal->getImpegni());
+        while(tabWidgets->count()>3){
+            tabWidgets->removeTab(3);
+        }
     });
     connect(menu, &Menu::createNew, this, &MainWindow::richiestaCreate);
 }
