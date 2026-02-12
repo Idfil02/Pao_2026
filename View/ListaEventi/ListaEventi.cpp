@@ -48,7 +48,7 @@ void ListaEventi::refresh(const QVector<Evento*>& evs){
 
 QVector<Evento*>ListaEventi::filtraNome(QVector<Evento*>& in, const QString& nome) const{
     if(!nome.isEmpty()){
-        for(int i=in.size()-1;i>=0; i--){
+        for(int i=in.size()-1;i>=0; i--){ //dalla fine all'inizio per evitare che in.erase() salti un elemento quando incremento i;
             if(!((in.at(i))->getNome()).contains(nome)){
                 in.erase(in.begin()+i);
             }
@@ -60,7 +60,7 @@ QVector<Evento*>ListaEventi::filtraNome(QVector<Evento*>& in, const QString& nom
 QVector<Evento*> ListaEventi::filtraTag(QVector<Evento*>& in, const QString& tag) const {
     if(tag == "Tutti") return calendario->getImpegni();
     if(!tag.isEmpty()){
-        for(int i=in.size()-1;i>=0; i--){
+        for(int i=in.size()-1;i>=0; i--){ //dalla fine all'inizio per evitare che in.erase() salti un elemento quando incremento i;
             if(in.at(i)->getTag() != tag){
                 in.erase(in.begin()+i);
             }

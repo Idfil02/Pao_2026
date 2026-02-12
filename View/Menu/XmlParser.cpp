@@ -4,6 +4,7 @@
 #include "Model/Appuntamento.h"
 #include <QDate>
 #include <QFile>
+#include <QMessageBox>
 
 bool XmlParser::saveToXml(const QString& filename, const Calendario& calendario){
     QFile save(filename);

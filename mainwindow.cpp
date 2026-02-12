@@ -38,7 +38,7 @@ void MainWindow::richiestaCreate(Evento* ev){
             if(t){
                 this->deadlinesTab->addDeadline(t);
             }
-            this->eventoModificato(ev->getData(),ev->getData());
+            this->modificaEvento(ev->getData(),ev->getData());
         }
         else{
             QMessageBox::critical(this, "ERRORE","Non è stato possibile creare l'evento");
@@ -57,14 +57,14 @@ void MainWindow::richiestaEdit(Evento* ev){
     QFormLayout* layout = new QFormLayout(editPage);
     EditVisitor* editor = new EditVisitor(layout, editPage);
     ev->acceptVisitor(*editor);
-    connect(editor, &EditVisitor::eventoModificato, this, &MainWindow::eventoModificato);
+    connect(editor, &EditVisitor::eventoModificato, this, &MainWindow::modificaEvento);
     connect(editor, &EditVisitor::eventoAnnullato, this, [this](){
         //chiusura finestra di creazione evento
         tabWidgets->removeTab(tabWidgets->currentIndex());
     });
 }
 
-void MainWindow::eventoModificato(const QDate& dataPrec, const QDate& newData){
+void MainWindow::modificaEvento(const QDate& dataPrec, const QDate& newData){
     //chiusura finestra di creazione-edit
     tabWidgets->removeTab(tabWidgets->currentIndex());
     //aggiornamento visualizzazione eventi
@@ -75,7 +75,7 @@ void MainWindow::eventoModificato(const QDate& dataPrec, const QDate& newData){
     eventsTab->refresh(cal->getImpegni());
 }
 
-void MainWindow::eventoEliminato(Evento* ev, const QDate& data){
+void MainWindow::eliminaEvento(Evento* ev, const QDate& data){
     Deadline* scad = dynamic_cast<Deadline*>(ev);
     if(scad){ //se è una scadenza la devo togliere anche dal vettore di scadenze
         deadlinesTab->deleteDeadline(scad);
@@ -90,14 +90,14 @@ void MainWindow::eventoEliminato(Evento* ev, const QDate& data){
 
 void MainWindow::initConnections(){
     //connessione segnali tab agenda
-    connect(agendaTab, &Agenda::eventoEliminato, this, &MainWindow::eventoEliminato);
+    connect(agendaTab, &Agenda::eventoEliminato, this, &MainWindow::eliminaEvento);
     connect(agendaTab, &Agenda::richiestaEdit, this, &MainWindow::richiestaEdit);
     //connessione segnali tab deadlines
-    connect(deadlinesTab, &DeadlineWindow::eventoEliminato, this, &MainWindow::eventoEliminato);
+    connect(deadlinesTab, &DeadlineWindow::eventoEliminato, this, &MainWindow::eliminaEvento);
     connect(deadlinesTab, &DeadlineWindow::richiestaEdit, this, &MainWindow::richiestaEdit);
     connect(deadlinesTab, &DeadlineWindow::deadlineModificata, agendaTab, &Agenda::giornoSelezionato);
     //connessione segnali tab lista eventi
-    connect(eventsTab, &ListaEventi::eventoEliminato, this, &MainWindow::eventoEliminato);
+    connect(eventsTab, &ListaEventi::eventoEliminato, this, &MainWindow::eliminaEvento);
     connect(eventsTab, &ListaEventi::richiestaEdit, this, &MainWindow::richiestaEdit);
     connect(eventsTab, &ListaEventi::goTo, this, [this](Evento* ev){
         //focus sull evento nell'agenda

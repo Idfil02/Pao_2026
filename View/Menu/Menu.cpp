@@ -135,7 +135,7 @@ void Menu:: initConnections(){
             calendario->clear();
             for(int i=0; i<eventi.size(); ++i){
                 QJsonObject ev = (eventi.at(i)).toObject();
-                bool success = evFactory.BuildEvento(calendario, ev);
+                bool success = evFactory.buildEvento(calendario, ev);
                 if (!success){
                     QMessageBox::critical(this, "IMPORTAZIONE", "Errore nell'importazione del file JSON:\n" + percorso);
                     return;

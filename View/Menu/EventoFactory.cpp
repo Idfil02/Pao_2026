@@ -7,7 +7,7 @@
 
 EventoFactory::EventoFactory() {}
 
-bool EventoFactory::BuildEvento(Calendario* cal, QJsonObject obj){
+bool EventoFactory::buildEvento(Calendario* cal, QJsonObject obj){
     int tipo = obj["Tipo"].toInt();
     switch(tipo){
     case tipoEvento::deadline:{

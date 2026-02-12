@@ -27,8 +27,8 @@ public:
 
 public slots:
     void richiestaEdit(Evento*);
-    void eventoModificato(const QDate &dataPrec, const QDate& newData);
-    void eventoEliminato(Evento*, const QDate&);
+    void modificaEvento(const QDate &dataPrec, const QDate& newData);
+    void eliminaEvento(Evento*, const QDate&);
     void richiestaCreate(Evento*);
 };
 #endif // MAINWINDOW_H
