@@ -25,30 +25,21 @@ bool XmlParser::saveToXml(const QString& filename, const Calendario& calendario)
 
 bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
     QFile file(filename);
-    qDebug() << "super inizio";
-
     if(!file.open(QFile::ReadOnly | QFile::Text)){
         return false;
     }
-
     QXmlStreamReader r(&file);
-
     while(!r.atEnd() && !r.hasError()){
         QXmlStreamReader::TokenType token = r.readNext();
-
         if(token == QXmlStreamReader::StartElement){
             QString elementName = r.name().toString();
-
             if(elementName == "deadline"){
                 Deadline* deadline = new Deadline();
-
                 while(!(r.tokenType() == QXmlStreamReader::EndElement && r.name().toString() == "deadline")){
                     r.readNext();
-
                     if(r.tokenType() == QXmlStreamReader::StartElement){
                         QString fieldName = r.name().toString();
                         QString value = r.readElementText().trimmed();
-
                         if(fieldName == "nome"){
                             if(!value.isEmpty()){
                                 deadline->setNome(value);
@@ -125,22 +116,16 @@ bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
                 }
                 calendario.addEvento(attivita);
             }
-
             else if(elementName == "riunione"){
                 Riunione* riunione = new Riunione();
                 QVector<QString> partecipanti;
-
                 while(!(r.tokenType() == QXmlStreamReader::EndElement && r.name().toString() == "riunione")){
                     r.readNext();
-
                     if(r.tokenType() == QXmlStreamReader::StartElement){
                         QString fieldName = r.name().toString();
-
                         if(fieldName == "partecipanti"){
-                            // Legge l'elemento partecipanti che contiene più elementi persona
                             while(!(r.tokenType() == QXmlStreamReader::EndElement && r.name().toString() == "partecipanti")){
                                 r.readNext();
-
                                 if(r.tokenType() == QXmlStreamReader::StartElement && r.name().toString() == "persona"){
                                     QString persona = r.readElementText().trimmed();
                                     if(!persona.isEmpty()){
@@ -153,9 +138,7 @@ bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
                             }
                         }
                         else {
-                            // Campi semplici della riunione
                             QString value = r.readElementText().trimmed();
-
                             if(fieldName == "nome"){
                                 if(!value.isEmpty()){
                                     riunione->setNome(value);
@@ -200,19 +183,13 @@ bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
                 riunione->setPartecipanti(partecipanti);
                 calendario.addEvento(riunione);
             }
-
             else if(elementName == "appuntamento"){
                 Appuntamento* appuntamento = new Appuntamento();
-
                 while(!(r.tokenType() == QXmlStreamReader::EndElement && r.name().toString() == "appuntamento")){
                     r.readNext();
-
                     if(r.tokenType() == QXmlStreamReader::StartElement){
                         QString fieldName = r.name().toString();
                         QString value = r.readElementText().trimmed();
-
-                        qDebug() << "Leggo campo:" << fieldName << "valore:" << value;
-
                         if(fieldName == "nome"){
                             if(!value.isEmpty()){
                                 appuntamento->setNome(value);
@@ -271,12 +248,9 @@ bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
             }
         }
     }
-
     if(r.hasError()){
-        qDebug() << "Errore XML:" << r.errorString();
         return false;
     }
-
     file.close();
     return true;
 }
