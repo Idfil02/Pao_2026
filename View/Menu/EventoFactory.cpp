@@ -11,7 +11,9 @@ bool EventoFactory::buildEvento(Calendario* cal, QJsonObject obj){
     int tipo = obj["Tipo"].toInt();
     switch(tipo){
     case tipoEvento::deadline:{
-        if(obj["Nome"].toString().isEmpty() || obj["Nome"].toString().isNull() || !QDate::fromString(obj["Data"].toString()).isValid()){
+        if(obj["Nome"].toString().isEmpty()
+            || obj["Tag"].toString().isEmpty()
+            || !QDate::fromString(obj["Data"].toString()).isValid()){
             return false;
         }
         Deadline* newEvento = new Deadline(obj["Nome"].toString(),
@@ -22,8 +24,11 @@ bool EventoFactory::buildEvento(Calendario* cal, QJsonObject obj){
         cal->addEvento(newEvento);
         break;}
     case tipoEvento::attivita:{
-        if(obj["Nome"].toString().isEmpty() || obj["Nome"].toString().isNull() || !QDate::fromString(obj["Data"].toString()).isValid()
-            || !QTime::fromString(obj["OraInizio"].toString()).isValid() || !QTime::fromString(obj["OraFine"].toString()).isValid())
+        if(obj["Nome"].toString().isEmpty()
+            || obj["Tag"].toString().isEmpty()
+            || !QDate::fromString(obj["Data"].toString()).isValid()
+            || !QTime::fromString(obj["OraInizio"].toString()).isValid()
+            || !QTime::fromString(obj["OraFine"].toString()).isValid())
             return false;
         Attivita* newEvento = new Attivita(obj["Nome"].toString(),
                                        obj["Tag"].toString(),
@@ -34,8 +39,12 @@ bool EventoFactory::buildEvento(Calendario* cal, QJsonObject obj){
         cal->addEvento(newEvento);
         break;}
     case tipoEvento::riunione:{
-        if(obj["Nome"].toString().isEmpty() || obj["Nome"].toString().isNull() || !QDate::fromString(obj["Data"].toString()).isValid()
-            || !QTime::fromString(obj["OraInizio"].toString()).isValid() || !QTime::fromString(obj["OraFine"].toString()).isValid() || obj["Partecipanti"].toArray().isEmpty())
+        if(obj["Nome"].toString().isEmpty()
+            || obj["Tag"].toString().isEmpty()
+            || !QDate::fromString(obj["Data"].toString()).isValid()
+            || !QTime::fromString(obj["OraInizio"].toString()).isValid()
+            || !QTime::fromString(obj["OraFine"].toString()).isValid()
+            || obj["Partecipanti"].toArray().isEmpty())
             return false;
         Riunione* newEvento = new Riunione(obj["Nome"].toString(),
                                        obj["Tag"].toString(),
@@ -53,9 +62,12 @@ bool EventoFactory::buildEvento(Calendario* cal, QJsonObject obj){
         cal->addEvento(newEvento);
         break;}
     case tipoEvento::appuntamento:{
-        if(obj["Nome"].toString().isEmpty() || obj["Nome"].toString().isNull() || !QDate::fromString(obj["Data"].toString()).isValid()
-            || !QTime::fromString(obj["OraInizio"].toString()).isValid() || !QTime::fromString(obj["OraFine"].toString()).isValid()
-            || obj["Luogo"].toString().isEmpty() || obj["Luogo"].toString().isNull())
+        if(obj["Nome"].toString().isEmpty()
+            || obj["Tag"].toString().isEmpty()
+            || !QDate::fromString(obj["Data"].toString()).isValid()
+            || !QTime::fromString(obj["OraInizio"].toString()).isValid()
+            || !QTime::fromString(obj["OraFine"].toString()).isValid()
+            || obj["Luogo"].toString().isEmpty())
             return false;
         Appuntamento* newEvento = new Appuntamento(obj["Nome"].toString(),
                                             obj["Tag"].toString(),

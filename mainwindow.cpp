@@ -9,11 +9,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent){
     tabWidgets = new QTabWidget(this);
     setCentralWidget(tabWidgets);
     agendaTab = new Agenda(cal,this);
-    tabWidgets->addTab(agendaTab, "Agenda");
+    tabWidgets->addTab(agendaTab, "&1) Agenda");
     deadlinesTab = new DeadlineWindow(cal,this);
-    tabWidgets->addTab(deadlinesTab, "Scadenze");
+    tabWidgets->addTab(deadlinesTab, "&2) Scadenze");
     eventsTab = new ListaEventi(cal, this);
-    tabWidgets->addTab(eventsTab, "Cerca Evento");
+    tabWidgets->addTab(eventsTab, "&3) Cerca Evento");
     //Aggiunta del Menu
     menu = new Menu(cal, deadlinesTab, this);
     addToolBar(Qt::TopToolBarArea, menu);
@@ -106,10 +106,12 @@ void MainWindow::initConnections(){
     });
     //connesione segnali menu
     connect(menu, &Menu::agendaLoaded, this, [this](){
+        agendaTab->decoloraCalendario();
         //refresh tab secondarie dopo il caricamento del calendario
         deadlinesTab->clearDeadlines();
         QVector<Evento*> impegni = cal->getImpegni();
-        for(int i=0; i<impegni.size(); ++i){
+        int i = 0;
+        for(; i<impegni.size(); ++i){
             auto ev = dynamic_cast<Deadline*>(impegni.at(i));
             if(ev){ //voglio inserire nella lista solo le scadenze
                 deadlinesTab->addDeadline(ev);
@@ -121,6 +123,7 @@ void MainWindow::initConnections(){
         while(tabWidgets->count()>3){
             tabWidgets->removeTab(3);
         }
+        agendaTab->giornoSelezionato(i == 0 ? QDate::currentDate() : impegni.at(i-1)->getData());
     });
     connect(menu, &Menu::createNew, this, &MainWindow::richiestaCreate);
 }

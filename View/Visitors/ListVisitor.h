@@ -1,8 +1,8 @@
 #ifndef LISTVISITOR_H
 #define LISTVISITOR_H
 #include "Model/EventVisitor.h"
-#include "qboxlayout.h"
-#include "qlistwidget.h"
+#include <QHBoxLayout>
+#include <QListWidget>
 
 class ListVisitor : public EventVisitor{
 private:

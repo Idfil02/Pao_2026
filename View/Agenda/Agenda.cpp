@@ -55,6 +55,12 @@ void Agenda::dataConImpegni(const QDate& data) const{ //attivato quando si aggiu
     calendarWidget->setDateTextFormat(data, *format);
 }
 
+void Agenda::decoloraCalendario() const {
+    QTextCharFormat* format = new QTextCharFormat;
+    format->setBackground(Qt::white);
+    calendarWidget->setDateTextFormat(QDate(), *format);
+}
+
 void Agenda::cambioEvento(QListWidgetItem* item){ //quando cliccato un evento, mostro i suoi dettagli
     clearInfo();//ripulisco le informazioni vecchie
     Evento* e = item->data(Qt::UserRole).value<Evento*>(); //recupero il puntatore dalla lista degli eventi

@@ -137,6 +137,8 @@ void Menu:: initConnections(){
                 QJsonObject ev = (eventi.at(i)).toObject();
                 bool success = evFactory.buildEvento(calendario, ev);
                 if (!success){
+                    calendario->clear();
+                    emit agendaLoaded();
                     QMessageBox::critical(this, "IMPORTAZIONE", "Errore nell'importazione del file JSON:\n" + percorso);
                     return;
                 }
@@ -148,6 +150,8 @@ void Menu:: initConnections(){
             calendario->clear();
             bool success = XmlParser::loadFromXml(percorso,*calendario);
             if (!success){
+                calendario->clear();
+                emit agendaLoaded();
                 QMessageBox::critical(this, "IMPORTAZIONE", "Errore nell'importazione del file XML:\n" + percorso);
                 return;
             }

@@ -20,6 +20,7 @@ private:
 public:
     explicit Agenda(Calendario*,QWidget *parent = nullptr);
     ~Agenda() = default;
+    void decoloraCalendario() const;
     void clearInfo();
 
 public slots:

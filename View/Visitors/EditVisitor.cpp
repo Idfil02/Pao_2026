@@ -30,6 +30,8 @@ void EditVisitor::visit(Deadline& scadenza){
         //validazione del form e applicazione modifiche
         if(nome->text().isEmpty() || nome->text().isNull())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo nome non può essere vuoto");
+        else if(tag->text().isEmpty() || tag->text().isNull())
+            QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo tag non può essere vuoto");
         else if(data->date().isNull() || !data->date().isValid())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo data non è valido");
         else{
@@ -69,6 +71,8 @@ void EditVisitor::visit(Attivita& att){
         //validazione del form e applicazione modifiche
         if(nome->text().isEmpty() || nome->text().isNull())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo nome non può essere vuoto");
+        else if(tag->text().isEmpty() || tag->text().isNull())
+            QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo tag non può essere vuoto");
         else if(data->date().isNull() || !data->date().isValid())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo data non è valido");
         else if(oraInizio->time().isNull() || !oraInizio->time().isValid())
@@ -119,6 +123,8 @@ void EditVisitor::visit(Riunione& riun){
         //validazione del form e applicazione modifiche
         if(nome->text().isEmpty() || nome->text().isNull())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo nome non può essere vuoto");
+        else if(tag->text().isEmpty() || tag->text().isNull())
+            QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo tag non può essere vuoto");
         else if(data->date().isNull() || !data->date().isValid())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo data non è valido");
         else if(oraInizio->time().isNull() || !oraInizio->time().isValid())
@@ -172,6 +178,8 @@ void EditVisitor::visit(Appuntamento& app){
         //validazione del form e applicazione modifiche
         if(nome->text().isEmpty() || nome->text().isNull())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo nome non può essere vuoto");
+        else if(tag->text().isEmpty() || tag->text().isNull())
+            QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo tag non può essere vuoto");
         else if(data->date().isNull() || !data->date().isValid())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo data non è valido");
         else if(oraInizio->time().isNull() || !oraInizio->time().isValid())

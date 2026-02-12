@@ -49,8 +49,6 @@ HEADERS += \
     View/Visitors/ListVisitor.h \
     View/Visitors/RicercaVisitor.h \
     mainwindow.h
-FORMS += \
-    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

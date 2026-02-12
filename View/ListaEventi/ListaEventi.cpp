@@ -2,6 +2,7 @@
 #include "View/Visitors/RicercaVisitor.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QShortcut>
 
 ListaEventi::ListaEventi(Calendario* cal,QWidget* parent):
     QWidget(parent), calendario(cal){
@@ -16,6 +17,7 @@ ListaEventi::ListaEventi(Calendario* cal,QWidget* parent):
     searchLayout->addWidget(searchText,1);
     searchBtn = new QPushButton(searchBar);
     searchBtn->setIcon(style()->standardIcon(QStyle::SP_FileDialogContentsView));
+    searchBtn->setShortcut(Qt::Key_Return);
     searchLayout->addWidget(searchBtn,0);
     layout->addWidget(searchBar);
     listaEventi = new QListWidget(this);

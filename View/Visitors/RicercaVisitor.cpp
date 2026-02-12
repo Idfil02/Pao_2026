@@ -5,7 +5,6 @@
 RicercaVisitor::RicercaVisitor(QListWidget* listaParent, ListaEventi* ricerca):
     ListVisitor(listaParent), listaRicerca(ricerca){}
 
-
 //metodo di utility per la visuallazzione dei bottoni a lato dei singoli eventi listati
 void RicercaVisitor::buildButtons(QHBoxLayout* layout, Evento* ev){
     ListaEventi* listaLocale = listaRicerca;
