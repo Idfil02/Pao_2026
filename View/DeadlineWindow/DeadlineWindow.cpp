@@ -81,8 +81,8 @@ void DeadlineWindow::viewRefresh(){
         clearInfo();
         Deadline* d = item->data(Qt::UserRole).value<Deadline*>();//recupero l'oggetto collegato all'elemento selezionato
         if(d){
-            InfoVisitor visitor(dettagliLayout);
-            d->acceptVisitor(visitor);
+            InfoVisitor iv(dettagliLayout);
+            d->acceptVisitor(iv);
         }
     });
 }

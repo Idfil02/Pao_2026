@@ -10,7 +10,7 @@
 #include <QFile>
 #include <QFileDialog>
 
-Menu::Menu(Calendario* cal, DeadlineWindow* scad, QWidget *parent) : QToolBar("Menu", parent),calendario(cal),scadenze(scad){
+Menu::Menu(Calendario* cal, Agenda* agenda,DeadlineWindow* scad, QWidget *parent) : QToolBar("Menu", parent),calendario(cal),scadenze(scad),agendaTab(agenda){
     this->setMovable(false);
     this->setFloatable(false);
     //menu di creazione eventi
@@ -132,6 +132,7 @@ void Menu:: initConnections(){
             }
             QJsonArray eventi = eventiInput.array();
             EventoFactory evFactory;
+            agendaTab->decoloraCalendario();
             calendario->clear();
             for(int i=0; i<eventi.size(); ++i){
                 QJsonObject ev = (eventi.at(i)).toObject();
@@ -147,6 +148,7 @@ void Menu:: initConnections(){
         //import xml
         if(percorso.endsWith(".xml",Qt::CaseInsensitive)){
             input.close();
+            agendaTab->decoloraCalendario();
             calendario->clear();
             bool success = XmlParser::loadFromXml(percorso,*calendario);
             if (!success){

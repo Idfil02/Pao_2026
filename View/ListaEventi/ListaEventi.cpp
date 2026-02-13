@@ -39,11 +39,11 @@ void ListaEventi::tagsUpdate(){
 
 void ListaEventi::refresh(const QVector<Evento*>& evs){
     listaEventi->clear();
-    RicercaVisitor RV(listaEventi, this);
+    RicercaVisitor rv(listaEventi, this);
     for(int i=0; i<evs.size(); i++){
         Evento* e = evs.at(i);
         if(e){
-            e->acceptVisitor(RV);
+            e->acceptVisitor(rv);
         }
     }
 }

@@ -6,6 +6,7 @@
 #include <QAction>
 #include <QToolButton>
 #include "Model/Calendario.h"
+#include "View/Agenda/Agenda.h"
 #include "View/DeadlineWindow/DeadlineWindow.h"
 
 class Menu: public QToolBar{    
@@ -14,6 +15,7 @@ class Menu: public QToolBar{
 private:
     Calendario* calendario;
     DeadlineWindow* scadenze;
+    Agenda* agendaTab;
     QToolButton* addNew;
     QAction* addAppuntamento;
     QAction* addAttivita;
@@ -27,7 +29,7 @@ private:
     QAction* import;
     void initConnections();
 public:
-    Menu(Calendario* cal,DeadlineWindow* scad,QWidget* parent = nullptr);
+    Menu(Calendario* cal,Agenda* agenda, DeadlineWindow* scad,QWidget* parent = nullptr);
     ~Menu() = default;
 
 signals:

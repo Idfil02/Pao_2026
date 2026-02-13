@@ -1,6 +1,9 @@
 #include "Agenda.h"
 #include "View/Visitors/AgendaVisitor.h"
 #include "View/Visitors/InfoVisitor.h"
+#include "qmenu.h"
+#include "qpushbutton.h"
+#include "qtoolbutton.h"
 #include <QFormLayout>
 #include <QVBoxLayout>
 #include <QLabel>
@@ -36,16 +39,37 @@ void Agenda::giornoSelezionato(const QDate& data){
     eventiDelGiorno->clear(); //pulisco la lista degli eventi
     clearInfo(); //pulisco la vista
     QVector<Evento*> impegniGiorno = calendario->getImpegniByData(data); //prendo tutti gli impegni della data selezionata
-    AgendaVisitor AV(eventiDelGiorno, this);
+    AgendaVisitor av(eventiDelGiorno, this);
     for(int i=0; i<impegniGiorno.size(); ++i){        //visito gli eventi
-        impegniGiorno.at(i)->acceptVisitor(AV);
+        impegniGiorno.at(i)->acceptVisitor(av);
     }
     if(eventiDelGiorno->count()==0){ //se la data non ha eventi, metto un placeholder per segnalarlo
         QListWidgetItem* placeholder = new QListWidgetItem("Nessun Evento", eventiDelGiorno);
         placeholder->setFlags(Qt::ItemIsEnabled);
     }
-    dataConImpegni(data);
+    QListWidgetItem* nuovoEvento = new QListWidgetItem(eventiDelGiorno);
+    QToolButton* addNew = new QToolButton;
+    addNew->setIcon(QIcon(":/Icons/View/Icons/addnew.svg"));
+    addNew->setToolButtonStyle(Qt::ToolButtonIconOnly);
+    QMenu* addMenu = new QMenu("Nuovo", this);
+    QAction* addAppuntamento = new QAction("Appuntamento",addMenu);
+    QAction* addAttivita = new QAction("Attivita",addMenu);
+    QAction* addDeadline = new QAction("Deadline",addMenu);
+    QAction* addRiunione = new QAction("Riunione",addMenu);
+    addMenu->addAction(addAppuntamento);
+    addMenu->addAction(addAttivita);
+    addMenu->addAction(addDeadline);
+    addMenu->addAction(addRiunione);
+    addNew->setMenu(addMenu);
+    addNew->setPopupMode(QToolButton::InstantPopup);
+    addNew->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+
+    //CONNETTERE SEGNALI BOTTONI
+
+
+    eventiDelGiorno->setItemWidget(nuovoEvento, addNew);
     calendarWidget->setSelectedDate(data);
+    dataConImpegni(data);
 }
 
 void Agenda::dataConImpegni(const QDate& data) const{ //attivato quando si aggiunge un impegno a una data, cambio colore per segnalare
@@ -65,8 +89,8 @@ void Agenda::cambioEvento(QListWidgetItem* item){ //quando cliccato un evento, m
     clearInfo();//ripulisco le informazioni vecchie
     Evento* e = item->data(Qt::UserRole).value<Evento*>(); //recupero il puntatore dalla lista degli eventi
     if(e){
-        InfoVisitor IV(dettagliEvento);
-        e->acceptVisitor(IV); //visito l'evento
+        InfoVisitor iv(dettagliEvento);
+        e->acceptVisitor(iv); //visito l'evento
     }
 }
 

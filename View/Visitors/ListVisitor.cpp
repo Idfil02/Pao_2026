@@ -4,7 +4,7 @@ ListVisitor::ListVisitor(QListWidget* listaParent): listaEventi(listaParent){}
 QWidget* ListVisitor::buildListItem(Evento* ev, QHBoxLayout* layout){
     QWidget* eventItem = new QWidget;
     eventItem->setLayout(layout);
-    layout->setContentsMargins(2, 2, 2, 2);
+    layout->setContentsMargins(1, 1, 1, 1);
     QLabel* nome = new QLabel(ev->getNome());
     layout->addWidget(nome,3);
     return eventItem;
@@ -14,6 +14,7 @@ void ListVisitor::visit(Deadline& scadenza){
     QListWidgetItem* listItem = new QListWidgetItem(listaEventi);
     QHBoxLayout* layout = new QHBoxLayout;
     QWidget* evItem = buildListItem(&scadenza, layout);
+    layout->addStretch(3);
     buildButtons(layout,&scadenza);
     listItem->setData(Qt::UserRole, QVariant::fromValue(static_cast<Evento*>(&scadenza)));  //cast esplicito a Evento in quanto Qvariant non converte automaticamente i sottotipi
     listItem->setBackground(scadenza.getCompletato() ? QColor(165,214,167) : QColor(225,0,0));

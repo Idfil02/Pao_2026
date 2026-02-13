@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent){
     eventsTab = new ListaEventi(cal, this);
     tabWidgets->addTab(eventsTab, "&3) Cerca Evento");
     //Aggiunta del Menu
-    menu = new Menu(cal, deadlinesTab, this);
+    menu = new Menu(cal, agendaTab, deadlinesTab, this);
     addToolBar(Qt::TopToolBarArea, menu);
     this->setContextMenuPolicy(Qt::PreventContextMenu);
     //connessione dei segnali
@@ -108,7 +108,6 @@ void MainWindow::initConnections(){
     });
     //connesione segnali menu
     connect(menu, &Menu::agendaLoaded, this, [this](){
-        agendaTab->decoloraCalendario();
         //refresh tab secondarie dopo il caricamento del calendario
         deadlinesTab->clearDeadlines();
         QVector<Evento*> impegni = cal->getImpegni();
