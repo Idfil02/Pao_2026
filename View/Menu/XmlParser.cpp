@@ -41,14 +41,21 @@ bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
                         QString fieldName = r.name().toString();
                         QString value = r.readElementText().trimmed();
                         if(fieldName == "nome"){
-                            if(!value.isEmpty()){
+                            if(!value.isEmpty())
                                 deadline->setNome(value);
-                            } else {
+                            else {
                                 delete deadline;
                                 return false;
                             }
                         }
-                        else if(fieldName == "tag") deadline->setTag(value);
+                        else if(fieldName == "tag"){
+                            if(!value.isEmpty())
+                                deadline->setTag(value);
+                            else {
+                                delete deadline;
+                                return false;
+                            }
+                        }
                         else if(fieldName == "desc") deadline->setDesc(value);
                         else if(fieldName == "data"){
                             QDate date = QDate::fromString(value);
@@ -76,14 +83,21 @@ bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
                         QString value = r.readElementText().trimmed();
 
                         if(fieldName == "nome"){
-                            if(!value.isEmpty()){
+                            if(!value.isEmpty())
                                 attivita->setNome(value);
-                            } else {
+                            else {
                                 delete attivita;
                                 return false;
                             }
                         }
-                        else if(fieldName == "tag") attivita->setTag(value);
+                        else if(fieldName == "tag"){
+                            if(!value.isEmpty())
+                                attivita->setTag(value);
+                            else {
+                                delete attivita;
+                                return false;
+                            }
+                        }
                         else if(fieldName == "desc") attivita->setDesc(value);
                         else if(fieldName == "data"){
                             QDate date = QDate::fromString(value);
@@ -140,14 +154,21 @@ bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
                         else {
                             QString value = r.readElementText().trimmed();
                             if(fieldName == "nome"){
-                                if(!value.isEmpty()){
+                                if(!value.isEmpty())
                                     riunione->setNome(value);
-                                } else {
+                                else {
                                     delete riunione;
                                     return false;
                                 }
                             }
-                            else if(fieldName == "tag") riunione->setTag(value);
+                            else if(fieldName == "tag"){
+                                if(!value.isEmpty())
+                                    riunione->setTag(value);
+                                else {
+                                    delete riunione;
+                                    return false;
+                                }
+                            }
                             else if(fieldName == "desc") riunione->setDesc(value);
                             else if(fieldName == "data"){
                                 QDate date = QDate::fromString(value);
@@ -191,15 +212,20 @@ bool XmlParser::loadFromXml(const QString& filename, Calendario& calendario){
                         QString fieldName = r.name().toString();
                         QString value = r.readElementText().trimmed();
                         if(fieldName == "nome"){
-                            if(!value.isEmpty()){
+                            if(!value.isEmpty())
                                 appuntamento->setNome(value);
-                            } else {
+                            else {
                                 delete appuntamento;
                                 return false;
                             }
                         }
                         else if(fieldName == "tag"){
-                            appuntamento->setTag(value);
+                            if(!value.isEmpty())
+                                appuntamento->setTag(value);
+                            else {
+                                delete appuntamento;
+                                return false;
+                            }
                         }
                         else if(fieldName == "desc"){
                             appuntamento->setDesc(value);

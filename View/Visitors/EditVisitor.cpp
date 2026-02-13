@@ -28,11 +28,11 @@ void EditVisitor::visit(Deadline& scadenza){
     QObject::connect(bottoni->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &EditVisitor::eventoAnnullato);
     QObject::connect(bottoni->button(QDialogButtonBox::Ok), &QPushButton::clicked,[=, &scadenza](){
         //validazione del form e applicazione modifiche
-        if(nome->text().isEmpty() || nome->text().isNull())
+        if(nome->text().trimmed().isEmpty())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo nome non può essere vuoto");
-        else if(tag->text().isEmpty() || tag->text().isNull())
+        else if(tag->text().trimmed().isEmpty())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo tag non può essere vuoto");
-        else if(data->date().isNull() || !data->date().isValid())
+        else if(!data->date().isValid())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo data non è valido");
         else{
             scadenza.setNome(nome->text());
@@ -69,15 +69,15 @@ void EditVisitor::visit(Attivita& att){
     QObject::connect(bottoni->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &EditVisitor::eventoAnnullato);
     QObject::connect(bottoni->button(QDialogButtonBox::Ok), &QPushButton::clicked,[=, &att](){
         //validazione del form e applicazione modifiche
-        if(nome->text().isEmpty() || nome->text().isNull())
+        if(nome->text().trimmed().isEmpty())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo nome non può essere vuoto");
-        else if(tag->text().isEmpty() || tag->text().isNull())
+        else if(tag->text().trimmed().isEmpty())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo tag non può essere vuoto");
-        else if(data->date().isNull() || !data->date().isValid())
+        else if(!data->date().isValid())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo data non è valido");
-        else if(oraInizio->time().isNull() || !oraInizio->time().isValid())
+        else if(!oraInizio->time().isValid())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo ora inizio non è valido");
-        else if(oraFine->time().isNull() || !oraFine->time().isValid())
+        else if(!oraFine->time().isValid())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo ora fine non è valido");
         else{
             att.setNome(nome->text());
@@ -121,17 +121,24 @@ void EditVisitor::visit(Riunione& riun){
     QObject::connect(bottoni->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &EditVisitor::eventoAnnullato);
     QObject::connect(bottoni->button(QDialogButtonBox::Ok), &QPushButton::clicked,[=, &riun](){
         //validazione del form e applicazione modifiche
-        if(nome->text().isEmpty() || nome->text().isNull())
+        if(nome->text().trimmed().isEmpty())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo nome non può essere vuoto");
-        else if(tag->text().isEmpty() || tag->text().isNull())
+        else if(tag->text().trimmed().isEmpty())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo tag non può essere vuoto");
-        else if(data->date().isNull() || !data->date().isValid())
+        else if(!data->date().isValid())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo data non è valido");
-        else if(oraInizio->time().isNull() || !oraInizio->time().isValid())
+        else if(!oraInizio->time().isValid())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo ora inizio non è valido");
-        else if(oraFine->time().isNull() || !oraFine->time().isValid())
+        else if(!oraFine->time().isValid())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo ora fine non è valido");
         else{
+            QStringList membri = partecipanti->toPlainText().trimmed().split(',', Qt::SkipEmptyParts);
+            for(QString& m : membri)
+                m = m.trimmed();
+            membri.removeAll(QString());
+            if(membri.isEmpty()) {
+                QMessageBox::warning(bottoni, "ATTENZIONE", "Inserire almeno un partecipante valido");}
+            else{
             riun.setNome(nome->text());
             riun.setTag(tag->text());
             riun.setDesc(desc->toPlainText());
@@ -140,10 +147,10 @@ void EditVisitor::visit(Riunione& riun){
             riun.setOraInizio(oraInizio->time());
             riun.setOraFine(oraFine->time());
             riun.setLink(link->text());
-            QStringList membri = partecipanti->toPlainText().split(',');
             QVector<QString> part = membri.toVector();
             riun.setPartecipanti(part);
             emit eventoModificato(dataPrec, newData);
+            }
         }
     });
 }
@@ -176,15 +183,15 @@ void EditVisitor::visit(Appuntamento& app){
     QObject::connect(bottoni->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &EditVisitor::eventoAnnullato);
     QObject::connect(bottoni->button(QDialogButtonBox::Ok), &QPushButton::clicked,[=, &app](){
         //validazione del form e applicazione modifiche
-        if(nome->text().isEmpty() || nome->text().isNull())
+        if(nome->text().trimmed().isEmpty())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo nome non può essere vuoto");
-        else if(tag->text().isEmpty() || tag->text().isNull())
+        else if(tag->text().trimmed().isEmpty())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo tag non può essere vuoto");
-        else if(data->date().isNull() || !data->date().isValid())
+        else if(!data->date().isValid())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo data non è valido");
-        else if(oraInizio->time().isNull() || !oraInizio->time().isValid())
+        else if(!oraInizio->time().isValid())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo ora inizio non è valido");
-        else if(luogo->text().isEmpty() || luogo->text().isNull())
+        else if(luogo->text().trimmed().isEmpty())
             QMessageBox::warning(bottoni, "ATTENZIONE", "Il campo luogo non può essere vuoto");
         else{
             app.setNome(nome->text());

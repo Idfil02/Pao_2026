@@ -16,8 +16,8 @@ bool EventoFactory::buildEvento(Calendario* cal, QJsonObject obj){
             || !QDate::fromString(obj["Data"].toString()).isValid()){
             return false;
         }
-        Deadline* newEvento = new Deadline(obj["Nome"].toString(),
-                                       obj["Tag"].toString(),
+        Deadline* newEvento = new Deadline(obj["Nome"].toString().trimmed(),
+                                       obj["Tag"].toString().trimmed(),
                                        obj["Desc"].toString(),
                                        QDate::fromString(obj["Data"].toString()),
                                        obj["Completato"].toInt());
@@ -30,8 +30,8 @@ bool EventoFactory::buildEvento(Calendario* cal, QJsonObject obj){
             || !QTime::fromString(obj["OraInizio"].toString()).isValid()
             || !QTime::fromString(obj["OraFine"].toString()).isValid())
             return false;
-        Attivita* newEvento = new Attivita(obj["Nome"].toString(),
-                                       obj["Tag"].toString(),
+        Attivita* newEvento = new Attivita(obj["Nome"].toString().trimmed(),
+                                       obj["Tag"].toString().trimmed(),
                                        obj["Desc"].toString(),
                                        QDate::fromString(obj["Data"].toString()),
                                        QTime::fromString(obj["OraInizio"].toString()),
@@ -46,8 +46,8 @@ bool EventoFactory::buildEvento(Calendario* cal, QJsonObject obj){
             || !QTime::fromString(obj["OraFine"].toString()).isValid()
             || obj["Partecipanti"].toArray().isEmpty())
             return false;
-        Riunione* newEvento = new Riunione(obj["Nome"].toString(),
-                                       obj["Tag"].toString(),
+        Riunione* newEvento = new Riunione(obj["Nome"].toString().trimmed(),
+                                       obj["Tag"].toString().trimmed(),
                                        obj["Desc"].toString(),
                                        QDate::fromString(obj["Data"].toString()),
                                        QTime::fromString(obj["OraInizio"].toString()),
@@ -56,7 +56,7 @@ bool EventoFactory::buildEvento(Calendario* cal, QJsonObject obj){
         QVector<QString> partecipanti;
         QJsonArray p = obj["Partecipanti"].toArray();
         for(int i=0; i<p.size(); ++i){
-            partecipanti.push_back((p.at(i)).toString());
+            partecipanti.push_back((p.at(i)).toString().trimmed());
         }
         newEvento->setPartecipanti(partecipanti);
         cal->addEvento(newEvento);
@@ -69,8 +69,8 @@ bool EventoFactory::buildEvento(Calendario* cal, QJsonObject obj){
             || !QTime::fromString(obj["OraFine"].toString()).isValid()
             || obj["Luogo"].toString().isEmpty())
             return false;
-        Appuntamento* newEvento = new Appuntamento(obj["Nome"].toString(),
-                                            obj["Tag"].toString(),
+        Appuntamento* newEvento = new Appuntamento(obj["Nome"].toString().trimmed(),
+                                            obj["Tag"].toString().trimmed(),
                                             obj["Desc"].toString(),
                                             QDate::fromString(obj["Data"].toString()),
                                             QTime::fromString(obj["OraInizio"].toString()),
