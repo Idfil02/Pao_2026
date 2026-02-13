@@ -63,10 +63,27 @@ void Agenda::giornoSelezionato(const QDate& data){
     addNew->setMenu(addMenu);
     addNew->setPopupMode(QToolButton::InstantPopup);
     addNew->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-
-    //CONNETTERE SEGNALI BOTTONI
-
-
+    //connessione segnali di creazione eventi
+    connect(addAppuntamento, &QAction::triggered, this, [this, data](){
+        Appuntamento* appuntamento = new Appuntamento();
+        appuntamento->setData(data);
+        emit richiestaCreate(appuntamento);
+    });
+    connect(addAttivita, &QAction::triggered, this, [this, data](){
+        Attivita* attivita = new Attivita();
+        attivita->setData(data);
+        emit richiestaCreate(attivita);
+    });
+    connect(addDeadline, &QAction::triggered, this, [this, data](){
+        Deadline* deadline = new Deadline();
+        deadline->setData(data);
+        emit richiestaCreate(deadline);
+    });
+    connect(addRiunione, &QAction::triggered, this, [this, data](){
+        Riunione* riunione = new Riunione();
+        riunione->setData(data);
+        emit richiestaCreate(riunione);
+    });
     eventiDelGiorno->setItemWidget(nuovoEvento, addNew);
     calendarWidget->setSelectedDate(data);
     dataConImpegni(data);

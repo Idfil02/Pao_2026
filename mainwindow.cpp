@@ -94,6 +94,7 @@ void MainWindow::initConnections(){
     //connessione segnali tab agenda
     connect(agendaTab, &Agenda::eventoEliminato, this, &MainWindow::eliminaEvento);
     connect(agendaTab, &Agenda::richiestaEdit, this, &MainWindow::richiestaEdit);
+    connect(agendaTab, &Agenda::richiestaCreate, this, &MainWindow::richiestaCreate);
     //connessione segnali tab deadlines
     connect(deadlinesTab, &DeadlineWindow::eventoEliminato, this, &MainWindow::eliminaEvento);
     connect(deadlinesTab, &DeadlineWindow::richiestaEdit, this, &MainWindow::richiestaEdit);

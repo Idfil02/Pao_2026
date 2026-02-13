@@ -139,17 +139,17 @@ void EditVisitor::visit(Riunione& riun){
             if(membri.isEmpty()) {
                 QMessageBox::warning(bottoni, "ATTENZIONE", "Inserire almeno un partecipante valido");}
             else{
-            riun.setNome(nome->text());
-            riun.setTag(tag->text());
-            riun.setDesc(desc->toPlainText());
-            QDate newData(data->date());
-            riun.setData(newData);
-            riun.setOraInizio(oraInizio->time());
-            riun.setOraFine(oraFine->time());
-            riun.setLink(link->text());
-            QVector<QString> part = membri.toVector();
-            riun.setPartecipanti(part);
-            emit eventoModificato(dataPrec, newData);
+                riun.setNome(nome->text());
+                riun.setTag(tag->text());
+                riun.setDesc(desc->toPlainText());
+                QDate newData(data->date());
+                riun.setData(newData);
+                riun.setOraInizio(oraInizio->time());
+                riun.setOraFine(oraFine->time());
+                riun.setLink(link->text());
+                QVector<QString> part = membri.toVector();
+                riun.setPartecipanti(part);
+                emit eventoModificato(dataPrec, newData);
             }
         }
     });

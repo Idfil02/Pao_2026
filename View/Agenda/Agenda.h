@@ -28,6 +28,7 @@ public slots:
     void giornoSelezionato(const QDate&); 
 signals:
     void richiestaEdit(Evento*);
+    void richiestaCreate(Evento*);
     void eventoEliminato(Evento*, QDate);
 };
 
