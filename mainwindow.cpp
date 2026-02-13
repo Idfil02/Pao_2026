@@ -24,7 +24,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent){
 
 void MainWindow::richiestaCreate(Evento* ev){
     QWidget* editPage = new QWidget(tabWidgets);
-    tabWidgets->addTab(editPage, "Aggiungi Evento");
+    QString tabName = "&"+(QString::number(tabWidgets->count()+1)+") Aggiungi Evento");
+    tabWidgets->addTab(editPage,tabName);
     tabWidgets->setCurrentWidget(editPage);
     QFormLayout* layout = new QFormLayout(editPage);
     EditVisitor* editor = new EditVisitor(layout, editPage);
@@ -52,7 +53,8 @@ void MainWindow::richiestaCreate(Evento* ev){
 
 void MainWindow::richiestaEdit(Evento* ev){
     QWidget* editPage = new QWidget(tabWidgets);
-    tabWidgets->addTab(editPage, "Modifica Evento");
+    QString tabName = "&"+(QString::number(tabWidgets->count()+1)+") Modfica Evento");
+    tabWidgets->addTab(editPage, tabName);
     tabWidgets->setCurrentWidget(editPage);
     QFormLayout* layout = new QFormLayout(editPage);
     EditVisitor* editor = new EditVisitor(layout, editPage);
