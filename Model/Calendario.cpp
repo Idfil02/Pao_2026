@@ -70,3 +70,14 @@ QVector<Evento*> Calendario::getImpegniByTag(const QString& tag) const{
 QList<QString> Calendario::getTags() const {
     return tags.keys();
 }
+void Calendario::refreshTags(){
+    tags.clear();
+    for(int i=0; i<impegni.size(); i++){
+        QString tag = impegni[i]->getTag();
+        if(tags[tag]==0){
+            tags.insert(tag, 1);
+        }else{
+            tags[tag]++;
+        }
+    }
+}

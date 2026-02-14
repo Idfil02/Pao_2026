@@ -73,6 +73,7 @@ void MainWindow::modificaEvento(const QDate& dataPrec, const QDate& newData){
     deadlinesTab->viewRefresh();
     agendaTab->giornoSelezionato(dataPrec);
     agendaTab->giornoSelezionato(newData);
+    cal->refreshTags();
     eventsTab->tagsUpdate();
     eventsTab->refresh(cal->getImpegni());
 }

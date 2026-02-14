@@ -31,7 +31,7 @@ void ListVisitor::visit(Attivita& att){
     layout->addWidget(orario,3);
     buildButtons(layout,&att);
     listItem->setData(Qt::UserRole, QVariant::fromValue(static_cast<Evento*>(&att)));   //cast esplicito a Evento in quanto Qvariant non converte automaticamente i sottotipi
-    listItem->setBackground(QColor(0,204,204));
+    listItem->setBackground(QColor(127, 165, 245));
     listItem->setSizeHint(evItem->sizeHint());
     listaEventi->setItemWidget(listItem, evItem);
 }
@@ -45,7 +45,7 @@ void ListVisitor::visit(Riunione& riun){
     layout->addWidget(orario,3);
     buildButtons(layout,&riun);
     listItem->setData(Qt::UserRole, QVariant::fromValue(static_cast<Evento*>(&riun)));  //cast esplicito a Evento in quanto Qvariant non converte automaticamente i sottotipi
-    listItem->setBackground(QColor(224,224,224));
+    listItem->setBackground(QColor(203, 156, 230));
     listItem->setSizeHint(evItem->sizeHint());
     listaEventi->setItemWidget(listItem, evItem);
 }
@@ -59,7 +59,7 @@ void ListVisitor::visit(Appuntamento& app){
     layout->addWidget(orario,3);
     buildButtons(layout,&app);
     listItem->setData(Qt::UserRole, QVariant::fromValue(static_cast<Evento*>(&app)));   //cast esplicito a Evento in quanto Qvariant non converte automaticamente i sottotipi
-    listItem->setBackground(QColor(224,224,224));
+    listItem->setBackground(QColor(224, 197, 117));
     listItem->setSizeHint(evItem->sizeHint());
     listaEventi->setItemWidget(listItem, evItem);
 }
