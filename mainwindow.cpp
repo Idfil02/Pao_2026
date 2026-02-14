@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "View/Visitors/EditVisitor.h"
 #include <QMessageBox>
+#include <QFile>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent){
     setWindowTitle("Agenda - PAO 2026");
@@ -75,7 +76,7 @@ void MainWindow::modificaEvento(const QDate& dataPrec, const QDate& newData){
     agendaTab->giornoSelezionato(newData);
     cal->refreshTags();
     eventsTab->tagsUpdate();
-    eventsTab->refresh(cal->getImpegni());
+    eventsTab->refresh();
 }
 
 void MainWindow::eliminaEvento(Evento* ev, const QDate& data){
@@ -88,7 +89,7 @@ void MainWindow::eliminaEvento(Evento* ev, const QDate& data){
     cal->removeEvento(ev);
     agendaTab->giornoSelezionato(data);
     eventsTab->tagsUpdate();
-    eventsTab->refresh(cal->getImpegni());
+    eventsTab->refresh();
 }
 
 void MainWindow::initConnections(){
@@ -100,6 +101,9 @@ void MainWindow::initConnections(){
     connect(deadlinesTab, &DeadlineWindow::eventoEliminato, this, &MainWindow::eliminaEvento);
     connect(deadlinesTab, &DeadlineWindow::richiestaEdit, this, &MainWindow::richiestaEdit);
     connect(deadlinesTab, &DeadlineWindow::deadlineModificata, agendaTab, &Agenda::giornoSelezionato);
+    connect(deadlinesTab, &DeadlineWindow::deadlineModificata, this, [this](){
+        eventsTab->refresh();
+    });
     //connessione segnali tab lista eventi
     connect(eventsTab, &ListaEventi::eventoEliminato, this, &MainWindow::eliminaEvento);
     connect(eventsTab, &ListaEventi::richiestaEdit, this, &MainWindow::richiestaEdit);

@@ -67,6 +67,7 @@ void DeadlineWindow::viewRefresh(){
         QWidget* dItem = buildDeadlineItem(scad);
         item->setBackground(scad->getCompletato() ? QColor(165,214,167) : Qt::gray);
         item->setData(Qt::UserRole,QVariant::fromValue(scad));//allego il puntatore
+        item->setSizeHint(dItem->sizeHint());
         scadenze->setItemWidget(item, dItem);
     }
     //visualizzazione dettagli in caso lista vuota

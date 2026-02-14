@@ -27,7 +27,7 @@ public:
     ~ListaEventi() = default;
     void tagsUpdate();
     void refresh(const QVector<Evento*>&);
-
+    void refresh();
 signals:
     void richiestaEdit(Evento*);
     void eventoEliminato(Evento*, const QDate&);

@@ -47,11 +47,13 @@ void ListaEventi::refresh(const QVector<Evento*>& evs){
         }
     }
 }
-
+void ListaEventi::refresh(){
+    emit searchBtn->clicked();
+}
 QVector<Evento*>ListaEventi::filtraNome(QVector<Evento*>& in, const QString& nome) const{
     if(!nome.isEmpty()){
         for(int i=in.size()-1;i>=0; i--){ //dalla fine all'inizio per evitare che in.erase() salti un elemento quando incremento i;
-            if(!((in.at(i))->getNome()).contains(nome)){
+            if(!((in.at(i))->getNome()).contains(nome, Qt::CaseInsensitive)){
                 in.erase(in.begin()+i);
             }
         }
