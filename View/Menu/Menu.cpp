@@ -127,7 +127,7 @@ void Menu:: initConnections(){
         if(percorso.endsWith(".json",Qt::CaseInsensitive)){
             QJsonDocument eventiInput = QJsonDocument::fromJson(input.readAll());
             if(eventiInput.isNull()){
-                QMessageBox::critical(this, "IMPORTAZIONE", "Formato del file\n" + percorso+"\n Non supportato");
+                QMessageBox::critical(this, "IMPORTAZIONE", "File vuoto");
                 return;
             }
             QJsonArray eventi = eventiInput.array();
@@ -146,7 +146,7 @@ void Menu:: initConnections(){
             }
         }
         //import xml
-        if(percorso.endsWith(".xml",Qt::CaseInsensitive)){
+        else if(percorso.endsWith(".xml",Qt::CaseInsensitive)){
             input.close();
             agendaTab->decoloraCalendario();
             calendario->clear();
@@ -157,6 +157,9 @@ void Menu:: initConnections(){
                 QMessageBox::critical(this, "IMPORTAZIONE", "Errore nell'importazione del file XML:\n" + percorso);
                 return;
             }
+        }
+        else{
+            QMessageBox::critical(this, "IMPORTAZIONE", "Formato del file\n" + percorso+"\n Non supportato");
         }
         QMessageBox::information(this, "IMPORTAZIONE", "Importazione da\n" + percorso + "\nTerminata");
         emit agendaLoaded();
