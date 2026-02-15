@@ -10,7 +10,8 @@ class EditVisitor : public QObject, public EventVisitor
 private:
     QFormLayout* editPage;
 public:
-    explicit EditVisitor(QFormLayout*, QWidget *parent = nullptr);
+    EditVisitor(QFormLayout*, QWidget *parent = nullptr);
+    ~EditVisitor() = default;
     virtual void visit(Deadline&) override;
     virtual void visit(Attivita&) override;
     virtual void visit(Riunione&) override;

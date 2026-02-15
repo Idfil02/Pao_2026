@@ -11,6 +11,7 @@ private:
     Agenda* agenda;
     void buildButtons(QHBoxLayout*, Evento *ev) override;
 public:
+    ~AgendaVisitor() = default;
     AgendaVisitor(QListWidget*, Agenda*);
 };
 

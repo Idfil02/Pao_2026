@@ -6,6 +6,7 @@
 
 class EventVisitor{
 public:
+    virtual ~EventVisitor() = default;
     virtual void visit(Deadline&) = 0;
     virtual void visit(Attivita&) = 0;
     virtual void visit(Riunione&) = 0;

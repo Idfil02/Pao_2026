@@ -12,6 +12,7 @@ private:
     void buildButtons(QHBoxLayout*, Evento *ev) override;
 public:
     RicercaVisitor(QListWidget*, ListaEventi*);
+    ~RicercaVisitor() = default;
 };
 
 #endif // RICERCAVISITOR_H

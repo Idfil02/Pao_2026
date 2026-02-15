@@ -11,6 +11,7 @@ private:
     virtual void buildButtons(QHBoxLayout*, Evento *ev) = 0;
 public:
     ListVisitor(QListWidget*);
+    ~ListVisitor() = default;
     virtual void visit(Deadline&) override;
     virtual void visit(Attivita&) override;
     virtual void visit(Riunione&) override;

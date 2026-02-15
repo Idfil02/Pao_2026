@@ -1,0 +1,53 @@
+[
+    {
+        "Completato": false,
+        "Data": "Mon Feb 16 2026",
+        "Desc": "Ricordarsi di riguardare la relazione",
+        "Nome": "Progetto PaO",
+        "Tag": "Università",
+        "Tipo": 0
+    },
+    {
+        "Data": "Wed Feb 18 2026",
+        "Desc": "call per definire le richieste del cliente ",
+        "Link": "https://meet.google.com/hyo-nyko-wor",
+        "Nome": "Meeting",
+        "OraFine": "10:00:00",
+        "OraInizio": "09:00:00",
+        "Partecipanti": [
+            "Marco Sellitto",
+            "Luca Morelli",
+            "Jessica Carretta"
+        ],
+        "Tag": "Lavoro",
+        "Tipo": 2
+    },
+    {
+        "Data": "Wed Feb 18 2026",
+        "Desc": "Scheda core + gambe",
+        "Nome": "Palestra",
+        "OraFine": "15:30:00",
+        "OraInizio": "14:00:00",
+        "Tag": "Salute",
+        "Tipo": 1
+    },
+    {
+        "Contatto": "mario.rossi@pec.it",
+        "Data": "Fri Feb 20 2026",
+        "Desc": "portare richiesta isee + lettura contatori",
+        "Luogo": "Via Ugo Foscolo 6",
+        "Nome": "Commercialista",
+        "OraFine": "16:30:00",
+        "OraInizio": "16:00:00",
+        "Tag": "Lavoro",
+        "Tipo": 3
+    },
+    {
+        "Completato": false,
+        "Data": "Tue Feb 24 2026",
+        "Desc": "riscrivere la funzione di input + fornire documentazione",
+        "Nome": "Progetto Calcolo Numerico",
+        "Tag": "Università",
+        "Tipo": 0
+    }
+]

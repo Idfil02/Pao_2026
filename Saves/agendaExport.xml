@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<calendario>
+    <deadline>
+        <nome>Progetto PaO</nome>
+        <tag>Università</tag>
+        <desc>Ricordarsi di riguardare la relazione</desc>
+        <data>Mon Feb 16 2026</data>
+        <completato>true</completato>
+    </deadline>
+    <riunione>
+        <nome>Meeting</nome>
+        <tag>Lavoro</tag>
+        <desc>call per definire le richieste del cliente </desc>
+        <data>Wed Feb 18 2026</data>
+        <ora_inizio>09:00:00</ora_inizio>
+        <ora_fine>10:00:00</ora_fine>
+        <link>https://meet.google.com/hyo-nyko-wor</link>
+        <partecipanti>
+            <persona>Marco Sellitto</persona>
+            <persona>Luca Morelli</persona>
+            <persona>Jessica Carretta</persona>
+        </partecipanti>
+    </riunione>
+    <attivita>
+        <nome>Palestra</nome>
+        <tag>Salute</tag>
+        <desc>Scheda core + gambe</desc>
+        <data>Wed Feb 18 2026</data>
+        <ora_inizio>14:00:00</ora_inizio>
+        <ora_fine>15:30:00</ora_fine>
+    </attivita>
+    <appuntamento>
+        <nome>Commercialista</nome>
+        <tag>Lavoro</tag>
+        <desc>portare richiesta isee + lettura contatori</desc>
+        <data>Fri Feb 20 2026</data>
+        <ora_inizio>16:00:00</ora_inizio>
+        <ora_fine>16:30:00</ora_fine>
+        <luogo>Via Ugo Foscolo 6</luogo>
+        <contatto>mario.rossi@pec.it</contatto>
+    </appuntamento>
+    <deadline>
+        <nome>Progetto Calcolo Numerico</nome>
+        <tag>Università</tag>
+        <desc>riscrivere la funzione di input + fornire documentazione</desc>
+        <data>Tue Feb 24 2026</data>
+        <completato>false</completato>
+    </deadline>
+</calendario>

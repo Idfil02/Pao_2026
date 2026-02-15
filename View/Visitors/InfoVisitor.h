@@ -7,7 +7,8 @@ class InfoVisitor : public EventVisitor{
 private:
     QFormLayout* dettagliEvento;
 public:
-    explicit InfoVisitor(QFormLayout*);
+    InfoVisitor(QFormLayout*);
+    ~InfoVisitor() = default;
     virtual void visit(Deadline&) override;
     virtual void visit(Attivita&) override;
     virtual void visit(Riunione&) override;
