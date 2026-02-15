@@ -43,6 +43,7 @@ void MainWindow::richiestaCreate(Evento* ev){
             this->modificaEvento(ev->getData(),ev->getData());
         }
         else{
+            delete ev;
             QMessageBox::critical(this, "ERRORE","Non è stato possibile creare l'evento");
         }
     });
